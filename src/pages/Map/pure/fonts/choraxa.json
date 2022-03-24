@@ -1,0 +1,50 @@
+{
+  "cameras": [
+    { "query": "#Road > polygon:nth-child(55)", "id": 221 },
+    { "query": "#Road > polygon:nth-child(54)", "id": 220 },
+    { "query": "#Road > polygon:nth-child(52)", "id": 208 },
+    { "query": "#Road > polygon:nth-child(53)", "id": 219 },
+    { "query": "#Road > polygon:nth-child(56)", "id": 202 },
+    { "query": "#Road > polygon:nth-child(58)", "id": 200 },
+    { "query": "#Road > polygon:nth-child(57)", "id": 204 },
+    { "query": "#Road > polygon:nth-child(50)", "id": 224 },
+    { "query": "#Road > polygon:nth-child(49)", "id": 223 },
+    { "query": "#Road > polygon.fil6.str15", "id": 206 },
+    { "query": "#Road > polygon:nth-child(47)", "id": 222 },
+    { "query": "#Road > polygon:nth-child(48)", "id": 201 },
+    { "query": "#Road > polygon:nth-child(45)", "id": 205 },
+    { "query": "#Road > polygon:nth-child(46)", "id": 207 },
+    { "query": "#Road > path.fil5.str16", "id": 210 }
+  ],
+  "right": [
+    "#Road > g:nth-child(74) > g:nth-child(1) > path.fil7",
+    "#Road > g:nth-child(68) > g:nth-child(1) > path.fil7",
+    "#Road > g:nth-child(71) > g:nth-child(1) > path.fil7",
+    "#Road > g:nth-child(64) > g:nth-child(1) > path.fil7"
+  ],
+  "directions": {
+    "205": {
+      "left": ["#Road > g:nth-child(60) > path", "#Road > g:nth-child(69) > path"],
+      "straight": [
+        "#Road > g:nth-child(67) > path",
+        "#Road > g:nth-child(66) > path",
+        "#Road > g:nth-child(65) > path",
+        "#Road > g:nth-child(63) > path",
+        "#Road > g:nth-child(62) > path",
+        "#Road > g:nth-child(61) > path",
+        "#Road > g:nth-child(68) > g:nth-child(2) > path",
+        "#Road > g:nth-child(64) > g:nth-child(2) > path"
+      ]
+    },
+    "200": {
+      "left": ["#Road > g:nth-child(75) > path", "#Road > g:nth-child(72) > path"],
+      "straight": [
+        "#Road > g:nth-child(71) > g:nth-child(2) > path",
+        "#Road > g:nth-child(74) > g:nth-child(2) > path",
+        "#Road > g:nth-child(73) > path",
+        "#Road > g:nth-child(70) > path",
+        "#Road > g:nth-child(74)"
+      ]
+    }
+  }
+}

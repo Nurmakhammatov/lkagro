@@ -1,0 +1,63 @@
+[
+  {
+    "id": "kindergarden",
+    "icon": "custom-baby",
+    "color": "#d54262"
+  },
+  {
+    "id": "schools",
+    "icon": "custom-school",
+    "color": "#00af3e"
+  },
+  {
+    "id": 3,
+    "icon": "custom-college",
+    "color": "#0081b4"
+  },
+  {
+    "id": 4,
+    "icon": "custom-licey",
+    "color": "#D90000"
+  },
+  {
+    "id": "institutes",
+    "icon": "custom-university",
+    "color": "#ffbb00"
+  },
+  {
+    "id": "mosque",
+    "icon": "custom-mosque",
+    "color": "#F25E5E"
+  },
+  {
+    "id": 24,
+    "icon": "custom-church",
+    "color": "#9F540B"
+  },
+  {
+    "id": 25,
+    "icon": "custom-synagogue",
+    "color": "#9013fe"
+  },
+  {
+    "id": 26,
+    "icon": "custom-shop",
+    "color": "#A2364B"
+  },
+
+  {
+    "id": 38,
+    "icon": "custom-hospital",
+    "color": "#393479"
+  },
+  {
+    "id": 39,
+    "icon": "custom-medical",
+    "color": "#2B7F47"
+  },
+  {
+    "id": 40,
+    "icon": "custom-birth",
+    "color": "#CF001D"
+  }
+]
