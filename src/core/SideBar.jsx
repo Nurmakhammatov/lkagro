@@ -1,8 +1,6 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import MuiDrawer from "@mui/material/Drawer";
-import { List, Typography } from "@mui/material";
+import { Avatar, List, Typography, MenuItem, Menu, Paper } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -13,60 +11,45 @@ import { ListItem } from "@mui/material";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useDispatch, useSelector } from "react-redux";
 import { handleChangeKontur } from "../redux/features/sideBar/sideBarSlice";
+import authApi from "./../services/authService";
+import { Drawer, DrawerHeader } from "./../styles/styles";
+import Logout from "@mui/icons-material/Logout";
+import Settings from "@mui/icons-material/Settings";
 
-const drawerWidth = 200;
-
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
-
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+const menuItems = [
+  {
+    text: "My maps",
+    icon: <MapIcon color="black" />,
+    path: "/map",
   },
-});
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
-}));
+  {
+    text: "Add map",
+    icon: <AddCircleOutlined color="black" />,
+    path: "/add",
+  },
+];
 
 export default function SideBar() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const count = useSelector((state) => state.sideBarToggle.maps);
-  console.log(count);
+
+  useEffect(() => {
+    const { user } = authApi.getCurrentUser();
+    setUser(user);
+  }, []);
+
+  console.log(user);
+  const fullName = user?.full_name?.split(" ");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -76,18 +59,6 @@ export default function SideBar() {
     setOpen(false);
   };
   const location = useLocation();
-  const menuItems = [
-    {
-      text: "My maps",
-      icon: <MapIcon color="black" />,
-      path: "/map",
-    },
-    {
-      text: "Add map",
-      icon: <AddCircleOutlined color="black" />,
-      path: "/add",
-    },
-  ];
 
   return (
     <>
@@ -131,23 +102,101 @@ export default function SideBar() {
           </IconButton>
         </DrawerHeader>
         <List sx={{ py: 0, my: 0 }}>
-          {menuItems.map((item) => (
-            <NavLink
-              onClick={
-                item.path === "/map"
-                  ? () => dispatch(handleChangeKontur(!count))
-                  : null
-              }
-              key={item.text}
-              to={item.path}
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <ListItem button selected={location.pathname === item.path}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "calc(100vh - 70px)",
+            }}
+          >
+            <div>
+              {menuItems.map((item) => (
+                <NavLink
+                  onClick={
+                    item.path === "/map"
+                      ? () => dispatch(handleChangeKontur(!count))
+                      : null
+                  }
+                  key={item.text}
+                  to={item.path}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  <ListItem button selected={location.pathname === item.path}>
+                    <ListItemIcon>
+                      {location.pathname === item.path ? (
+                        <Paper
+                          square={true}
+                          elevation={0}
+                          sx={{
+                            minWidth: "5px",
+                            minHeight: "100%",
+                            bgcolor: "yellow",
+                            ml: -1.9,
+                            mr: 1.3,
+                          }}
+                        ></Paper>
+                      ) : null}
+                      {item.icon}
+                    </ListItemIcon>
+
+                    <ListItemText primary={item.text} />
+                  </ListItem>
+                </NavLink>
+              ))}
+            </div>
+            <div>
+              <ListItem
+                button
+                sx={{ mx: -0.5 }}
+                onClick={handleClick}
+                size="small"
+                aria-controls={openMenu ? "account-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={openMenu ? "true" : undefined}
+              >
+                <ListItemIcon alignItems="center">
+                  <Avatar src={user?.avatar || "./"} alt={user?.full_name} />
+                </ListItemIcon>
+                <ListItemText primary={fullName?.[0]} />
               </ListItem>
-            </NavLink>
-          ))}
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={openMenu}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <Avatar
+                      src={user?.avatar || "./"}
+                      alt={user?.full_name}
+                      sx={{ width: 20, height: 20 }}
+                    />
+                  </ListItemIcon>{" "}
+                  Профиль
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  Созламалар
+                </MenuItem>
+                <MenuItem onClick={authApi.logout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Тизимдан чиқиш
+                </MenuItem>
+              </Menu>
+            </div>
+          </div>
         </List>
       </Drawer>
     </>

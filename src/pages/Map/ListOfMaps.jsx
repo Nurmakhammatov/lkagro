@@ -7,10 +7,8 @@ import {
   ListItemButton,
   List,
   Grow,
-  Paper,
   Menu,
   MenuItem,
-  TextField,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -38,7 +36,7 @@ const menuOptions = [
 
 const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const [sidebar, setSidebar] = React.useState(false);
+  const [sidebar, setSidebar] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
 
   const handleOpen = () => setOpenModal(true);
