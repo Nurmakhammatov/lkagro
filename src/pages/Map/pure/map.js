@@ -36,7 +36,8 @@ import "./styles/leaflet/leaflet.loader.css";
 import "./styles/leaflet/leaflet.markercluster.css";
 import "./styles/leaflet/leaflet.markercluster.default.css";
 
-const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
+const initMap = (map, center, intl) => {
+  console.log(center);
   const attr = {
     maxZoom: 18,
     attribution: `&copy; ABL-Soft&SS 2014-${new Date().getFullYear()}`,
@@ -58,23 +59,23 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
 
   function addControlPlaceholders(map) {
     let corners = map._controlCorners,
-        l = 'leaflet-',
-        container = map._controlContainer;
+      l = "leaflet-",
+      container = map._controlContainer;
 
     function createCorner(vSide, hSide) {
-        const className = l + vSide + ' ' + l + hSide;
+      const className = l + vSide + " " + l + hSide;
 
-        corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+      corners[vSide + hSide] = L.DomUtil.create("div", className, container);
     }
 
-    createCorner('verticalcenter', 'left');
-    createCorner('verticalcenter', 'right');
-}
-addControlPlaceholders(map);
-
+    createCorner("verticalcenter", "left");
+    createCorner("verticalcenter", "right");
+  }
+  addControlPlaceholders(map);
+  console.log(localStorage.getItem("center"));
   map.removeControl(map.zoomControl);
   // L.control.zoomLabel().setPosition("bottomright").addTo(map);
-  
+
   L.control.scale({ imperial: false }).setPosition("bottomright").addTo(map);
   F.address({ intl }).addTo(map);
   L.control.layers(baseMaps).addTo(map);
@@ -89,14 +90,15 @@ addControlPlaceholders(map);
           iconCls: "fa fa-crosshairs",
           callback: (e) => {
             e.target.click();
-            map.flyTo([41, 69], 11);
+            let coor = localStorage.getItem("center").split(",");
+            map.flyTo(L.latLng(Number(coor[0]), Number(coor[1])), 14);
           },
         },
       ],
     ])
     .setPosition("topright")
     .addTo(map);
-    L.control.zoom({position: 'verticalcenterright'}).addTo(map);   
+  L.control.zoom({ position: "verticalcenterright" }).addTo(map);
 
   // map.on("baselayerchange", function (e) {
   //   dispatch(mapLayerChanged(e.name));

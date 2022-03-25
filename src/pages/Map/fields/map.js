@@ -13,10 +13,20 @@ export default function FIELDS(map) {
           opacity: 0.75,
           fillOpacity: 0.3,
           fillColor: "#a9cc52",
-          color: "green",
+          color: d.field_img ? "white" : "green",
         },
       }).addTo(this._fg);
-      if (cond) this._map.flyToBounds(g, 18);
+
+      if (cond) this._map.flyTo(g.getBounds().getCenter(), 16.5);
+      if (d.field_img) {
+        L.imageOverlay(
+          `data:image/png;base64,${d.field_img}`,
+          g.getBounds(),
+          {}
+        )
+          .bringToFront()
+          .addTo(this._fg);
+      }
     });
   };
 

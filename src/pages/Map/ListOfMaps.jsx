@@ -19,7 +19,6 @@ import { ArrowForwardIos } from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Kontur from "././../../assets/pngwing.png";
 import ButtonPrimary from "../components/Button";
 import AddIcon from "@mui/icons-material/Add";
 import ModalPrimary from "../components/Modal";
@@ -36,6 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   handleChangeSidebar,
   handleSelectedIndex,
+  handleCenterMap,
 } from "../../redux/features/sideBar/sideBarSlice";
 
 const menuOptions = [
@@ -55,6 +55,7 @@ const ListOfMaps = ({ open }) => {
   const [fields, setFields] = React.useState([]);
   const [mapData, setMapData] = React.useState([]);
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
+  const centerMap = useSelector((state) => state.sideBarToggle.centerMap);
 
   const handleOpen = () => setOpenModal(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -82,6 +83,8 @@ const ListOfMaps = ({ open }) => {
     setResult(data?.[0]?.fields);
     setFields(data?.[0]?.fields);
     setMapData(data?.[0]?.fields);
+    dispatch(handleCenterMap(data?.[0]?.centeroid));
+    localStorage.setItem("center", data?.[0]?.centeroid);
   };
 
   useEffect(() => {
@@ -100,6 +103,12 @@ const ListOfMaps = ({ open }) => {
     if (!mapInstance) return;
     setOnMapView(new FIELDS(mapInstance.map));
   }, [mapInstance]);
+
+  useEffect(() => {
+    if (!centerMap) return;
+
+    mapInstance.map.flyTo(centerMap, 14);
+  }, [centerMap]);
 
   useEffect(() => {
     if (!onMapView || !mapData) return;
@@ -124,7 +133,7 @@ const ListOfMaps = ({ open }) => {
         <Box
           sx={{
             position: "absolute",
-            width: sidebar ? "20%" : "5%",
+            width: sidebar ? "15%" : "5%",
             height: "100vh",
             zIndex: "1300",
             bgcolor: "rgba(255, 255, 255, 0.7)",
