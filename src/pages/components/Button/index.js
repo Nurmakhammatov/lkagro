@@ -10,18 +10,16 @@ const ButtonPrimary = ({
   left,
   right,
   sidebar = true,
-  width,
+  width = "100%",
   onClick,
+  defaultMinWidth = "100%",
+  minWidth = "100%",
 }) => {
   return (
     <Box
       onClick={onClick}
       sx={{
-        // display: "flex",
-        // justifyContent: "center",
         position: absolute ? "absolute" : "static",
-        // bottom: absolute && bottom,
-        // left: absolute && left,
         left: left,
         bottom: bottom,
         right: right,
@@ -31,7 +29,7 @@ const ButtonPrimary = ({
       }}
     >
       <Button
-        style={{ minWidth: sidebar ? "300px" : "60px" }}
+        style={{ minWidth: sidebar ? minWidth : defaultMinWidth }}
         justify="center"
         align="center"
         variant="contained"

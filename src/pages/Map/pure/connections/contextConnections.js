@@ -39,10 +39,10 @@ const initMapContext = (map) => {
           modalCls: "modal-dialog-centered modal-sm",
           title: "Кординаталар",
           content: (
-            <>
-              <h6>Долгота: {e.latlng.lat}</h6>
-              <h6>Широта: {e.latlng.lng}</h6>
-            </>
+            <div style={{ marginLeft: "20px" }}>
+              <h3>Долгота: {e.latlng.lat}</h3>
+              <h3>Широта: {e.latlng.lng}</h3>
+            </div>
           ),
           visible: true,
         });
@@ -72,16 +72,16 @@ const initMapContext = (map) => {
       iconCls: "fa fa-draw-polygon",
       callback: geomConnections.drawPolygon,
     },
-    {
-      text: "Линия",
-      iconCls: "fa fa-wave-square",
-      callback: geomConnections.drawLine,
-    },
-    {
-      text: "Айлана",
-      iconCls: "fa fa-circle-notch",
-      callback: geomConnections.drawCircle,
-    },
+    // {
+    //   text: "Линия",
+    //   iconCls: "fa fa-wave-square",
+    //   callback: geomConnections.drawLine,
+    // },
+    // {
+    //   text: "Айлана",
+    //   iconCls: "fa fa-circle-notch",
+    //   callback: geomConnections.drawCircle,
+    // },
   ].forEach((item) => map.contextmenu.addItem(item));
 };
 

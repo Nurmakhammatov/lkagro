@@ -37,7 +37,6 @@ export async function register(
   password,
   passwordConfirm
 ) {
-  console.log(firstName);
   const { data } = await http.post(signUpEndpoint, {
     firstName,
     lastName,

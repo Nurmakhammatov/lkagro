@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "react-toastify/dist/ReactToastify.css";
 import "uppy/dist/uppy.css";
 import "@uppy/status-bar/dist/style.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 function App() {
   return (

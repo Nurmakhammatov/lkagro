@@ -66,7 +66,6 @@ export default function SideBar() {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
   const count = useSelector((state) => state.sideBarToggle.maps);
-  console.log(count);
 
   const handleDrawerOpen = () => {
     setOpen(true);

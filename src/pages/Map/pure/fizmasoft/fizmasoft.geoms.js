@@ -7,6 +7,7 @@ import "../leaflet/leaflet.reactwindow";
 import "./fizmasoft.ordinaryPeople";
 // import CustomInput from "reactstrap/lib/CustomInput"
 import axios from "axios";
+import { TextField } from "@mui/material";
 // import useJwt from "@src/auth/jwt/useJwt";
 // const config = useJwt.jwtConfig;
 // import onListConnections from "../connections/onlistConnections"
@@ -120,6 +121,7 @@ F.Geoms = F.Class.extend({
     this._map.spin(false);
   },
   _fetchPolygonData: async function (l, list, geojson, radius) {
+    console.log(l, list, radius, geojson);
     const { data } = await axios.post(
       `${config.url}/foreign/xatlov/criminal-in-polygon`,
       {
@@ -155,63 +157,43 @@ F.Geoms = F.Class.extend({
           [this.options.left, this.options.right]
         ),
       cancelCb: () => this._fg.removeLayer(layer),
-      // title: this.options.intl.formatMessage({ id: "OnListSearchFilters" }),
+      title: "Маълумотлар",
       content: (
         <>
-          {isLine && (
-            <div className="d-flex">
-              <label htmlFor="left">
-                {/* {this.options.intl.formatMessage({ id: "OnList_from_left" })}: */}
-                <Input
-                  placeholder="50"
-                  onChange={(e) => this._leftRightLine(e, true, false)}
-                  id="left"
-                  type="number"
-                  bsize="sm"
-                />
-              </label>
-              <label htmlFor="right">
-                {/* {this.options.intl.formatMessage({ id: "OnList_from_right" })}: */}
-                <Input
-                  placeholder="50"
-                  onChange={(e) => this._leftRightLine(e, false, true)}
-                  id="right"
-                  type="number"
-                  bsize="sm"
-                />
-              </label>
-            </div>
-          )}
-          <div key={-1} className="d-flex mt-1">
-            <CustomInput
-              onChange={() => this._addToSelected(-1)}
-              className="ml-2"
-              id={-1 + "f"}
-              type="checkbox"
-            />
-            <h5>
-              {/* <label htmlFor={-1 + "f"} className="ml-1">
-                {this.options.intl
-                  .formatMessage({ id: "GeomCitizen" })
-                  .toUpperCase()}
-              </label> */}
-            </h5>
-          </div>
-          {this._types.map((type) => (
-            <div key={type.id} className="d-flex mt-1">
-              <CustomInput
-                onChange={() => this._addToSelected(type.id)}
-                className="ml-2"
-                id={type.id + "f"}
-                type="checkbox"
+          <div style={{ padding: "10px 20px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h3>Экин тури:</h3>
+              <TextField
+                id="outlined-basic"
+                label="Outlined"
+                variant="outlined"
               />
-              <h5>
-                <label htmlFor={type.id + "f"} className="ml-1">
-                  {type.title.toUpperCase()}
-                </label>
-              </h5>
             </div>
-          ))}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h3>Майдон рақами:</h3>
+              <TextField
+                id="outlined-basic"
+                label="Outlined"
+                variant="outlined"
+              />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h3>Майдон юзаси:</h3>
+              <TextField
+                id="outlined-basic"
+                label="Outlined"
+                variant="outlined"
+              />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h3>Майдон переметри:</h3>
+              <TextField
+                id="outlined-basic"
+                label="Outlined"
+                variant="outlined"
+              />
+            </div>
+          </div>
         </>
       ),
       visible: true,
@@ -232,18 +214,17 @@ F.Geoms = F.Class.extend({
       })
       .on("pm:remove", (e) => {
         this._fg.removeLayer(e.layer);
-        this._onListfuncs.removeOnListMarkers();
       });
 
-    L.DomEvent.on(this._fg, "layerremove", () =>
-      this._onListfuncs.removeOnListMarkers()
-    );
+    // L.DomEvent.on(this._fg, "layerremove", () =>
+    //   this._onListfuncs.removeOnListMarkers()
+    // );
   },
   drawLine: function () {
     this._map.pm.enableDraw("Line");
   },
   drawPolygon: function () {
-    this._map.pm.enableDraw("Polygon");
+    this._map.pm.enableDraw("Polygon", { finishOn: "dblclick" });
   },
   drawCircle: function () {
     this._map.pm.enableDraw("Circle");

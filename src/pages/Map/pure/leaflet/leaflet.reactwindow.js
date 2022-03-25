@@ -1,7 +1,6 @@
 /* eslint-disable */
-// import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
-// import ReactDOM from "react-dom";
-// import { useState } from "react";
+import ReactDOM from "react-dom";
+import { useState } from "react";
 // import { IntlProviderWrapper } from "../../../../../utility/context/Internationalization";
 // import { ThemeContext } from "../../../../../utility/context/ThemeColors";
 // import PerfectScrollbar from "react-perfect-scrollbar";
@@ -9,52 +8,58 @@
 // import { store } from "../../../../../redux/storeConfig/store";
 
 const LModal = ({ options }) => {
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "30%",
+    bgcolor: "background.paper",
+    borderRadius: "8px",
+    boxShadow: 24,
+    p: 4,
+    zIndex: 9999,
+    padding: 0,
+  };
   const [open, setOpen] = useState(true);
   return (
-    <Modal isOpen={open} className={options.modalCls}>
-      <ModalHeader
-        toggle={() => {
-          options.cancelCb && options.cancelCb();
-          setOpen(false);
-        }}
+    <>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        {options.title}
-      </ModalHeader>
-      <PerfectScrollbar
-        style={{
-          height:
-            options.carDebtHeight && options.content.props.children.length > 4
-              ? "700px"
-              : options.carDebtHeight &&
-                options.content.props.children.length > 1
-              ? "400px"
-              : "",
-        }}
-      >
-        <ModalBody
-          style={{ height: options.height ? options.height : "inherit" }}
-        >
-          {options.content}
-        </ModalBody>
-      </PerfectScrollbar>
-      <ModalFooter>
-        {options.footerContent}
-        <Button
-          outline
-          color="primary"
-          onClick={() => {
-            options.okCb && options.okCb();
-            setOpen(false);
-          }}
-        >
-          Ok
-        </Button>
-      </ModalFooter>
-    </Modal>
+        <Box sx={style}>
+          <div
+            style={{ borderBottom: "1px solid black", position: "relative" }}
+          >
+            <h3 style={{ textAlign: "center", margin: 5 }}>{options.title}</h3>
+            <hr />
+            <div
+              onClick={() => setOpen(false)}
+              style={{
+                position: "absolute",
+                top: -5,
+                right: 10,
+                cursor: "pointer",
+              }}
+            >
+              <IconButton color="primary" aria-label="add to shopping cart">
+                <Close />
+              </IconButton>
+            </div>
+            {options.content}
+          </div>
+        </Box>
+      </Modal>
+    </>
   );
 };
 
 import L from "leaflet";
+import { Box, IconButton, Modal, TextField } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 L.Control.ReactWindow = L.Control.extend({
   includes: L.Evented.prototype || L.Mixin.Events,
@@ -79,13 +84,13 @@ L.Control.ReactWindow = L.Control.extend({
     L.setOptions(this, options);
     const div = L.DomUtil.create("div");
     ReactDOM.render(
-      <Provider store={store}>
-        <IntlProviderWrapper>
-          <ThemeContext>
-            <LModal options={this.options} />
-          </ThemeContext>
-        </IntlProviderWrapper>
-      </Provider>,
+      // <Provider>
+      // <IntlProviderWrapper>
+      // <ThemeContext>
+      <LModal options={this.options} />,
+      // {/* </ThemeContext> */}
+      // </IntlProviderWrapper>
+      // </Provider>,
       div
     );
   },
