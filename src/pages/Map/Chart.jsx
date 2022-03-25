@@ -1,6 +1,8 @@
-import { Grow, Paper } from "@mui/material";
+import { Grow, Box } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
+
+import PickerDate from "./../components/DatePicker/index";
 
 const Chart = () => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
@@ -8,7 +10,7 @@ const Chart = () => {
 
   return (
     <Grow in={chart} timeout={1500}>
-      <Paper
+      <Box
         square={true}
         sx={{
           width: !chart ? 0 : sidebar ? "80%" : "95%",
@@ -20,7 +22,11 @@ const Chart = () => {
           backgroundColor: "rgba(255, 255, 255, 0.5)",
           backdropFilter: "blur(7px)",
         }}
-      ></Paper>
+      >
+        <div style={{ width: "17.5%", margin: "1%" }}>
+          <PickerDate />
+        </div>
+      </Box>
     </Grow>
   );
 };
