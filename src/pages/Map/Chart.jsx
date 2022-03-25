@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Grow, Box, Button } from "@mui/material";
+import { Grow, Box, Button, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import Satellite from "../../assets/satellite.png";
 import FieldChart from "../charts";
 import api from "./api/index";
 import PickerDate from "./../components/DatePicker/index";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import MultipleSelect from "./../components/MultiSelect/index";
+
+const names = ["MVC", "MVTS"];
 
 const Chart = ({ selectedIndex }) => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
@@ -48,7 +51,11 @@ const Chart = ({ selectedIndex }) => {
                 alignItems: "center",
               }}
             >
-              <Button onClick={() => setExtraSidebar(true)} variant="contained">
+              <Button
+                style={{ backgroundColor: "#fad652" }}
+                onClick={() => setExtraSidebar(true)}
+                variant="contained"
+              >
                 <ArrowDownward />
               </Button>
 
@@ -70,15 +77,15 @@ const Chart = ({ selectedIndex }) => {
                 {chartData?.[0]?.analysis?.map((d) => d.day)}
               </Button>
             </div>
-            <div style={{ width: "20%" }}>
-              {/* <div style={{ width: "17.5%", margin: "1%" }}> */}
-
-              <PickerDate />
-              {/* </div> */}
-            </div>
-            <div style={{ width: "80%" }}>
-              <FieldChart chartData={chartData} />
-            </div>
+            <Grid container px={1}>
+              <Grid item xs={1.2}>
+                <MultipleSelect names={names} />
+                <PickerDate />
+              </Grid>
+              <Grid item xs={10.8}>
+                <FieldChart chartData={chartData} />
+              </Grid>
+            </Grid>
           </>
         ) : (
           <div
@@ -89,7 +96,11 @@ const Chart = ({ selectedIndex }) => {
               alignItems: "center",
             }}
           >
-            <Button onClick={() => setExtraSidebar(false)} variant="contained">
+            <Button
+              style={{ backgroundColor: "#fad652" }}
+              onClick={() => setExtraSidebar(false)}
+              variant="contained"
+            >
               <ArrowUpward />
             </Button>
 

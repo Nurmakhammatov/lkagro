@@ -34,9 +34,9 @@ const FieldChart = ({ chartData }) => {
       },
     },
     grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "3%",
+      // left: "3%",
+      // right: "4%",
+      // bottom: "3%",
       containLabel: true,
     },
     xAxis: [
@@ -81,7 +81,7 @@ const FieldChart = ({ chartData }) => {
         emphasis: {
           focus: "series",
         },
-        data: kirishArr,
+        data: chartData?.[0]?.graph.map((d) => d),
         symbol: "circle",
         symbolSize: 10,
       },
@@ -183,7 +183,7 @@ const FieldChart = ({ chartData }) => {
         <ReactECharts
           theme="dark_theme"
           option={options}
-          style={{ height: "100%" }}
+          // style={{ height: "400px" }}
           //   theme={"theme_name"}
         />
       </div>
