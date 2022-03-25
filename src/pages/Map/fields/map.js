@@ -10,7 +10,6 @@ export default function FIELDS(map) {
     data.forEach((d) => {
       L.geoJSON(d.polygon, {
         style: {
-          color: "#1167b1",
           opacity: 0.75,
           fillOpacity: 0.3,
           fillColor: "#a9cc52",
