@@ -1,11 +1,9 @@
 /* eslint-disable */
 import ReactDOM from "react-dom";
 import { useState } from "react";
-// import { IntlProviderWrapper } from "../../../../../utility/context/Internationalization";
-// import { ThemeContext } from "../../../../../utility/context/ThemeColors";
-// import PerfectScrollbar from "react-perfect-scrollbar";
-// import { Provider } from "react-redux";
-// import { store } from "../../../../../redux/storeConfig/store";
+import L from "leaflet";
+import { Box, Button, IconButton, Modal } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 const LModal = ({ options }) => {
   const style = {
@@ -35,7 +33,7 @@ const LModal = ({ options }) => {
             style={{ borderBottom: "1px solid black", position: "relative" }}
           >
             <h3 style={{ textAlign: "center", margin: 5 }}>{options.title}</h3>
-            <hr />
+            <hr style={{ margin: "0px 20px" }} />
             <div
               onClick={() => setOpen(false)}
               style={{
@@ -50,16 +48,40 @@ const LModal = ({ options }) => {
               </IconButton>
             </div>
             {options.content}
+            {options.addField && (
+              <>
+                <hr />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "end",
+                    margin: "0px 10px 10px 0px",
+                  }}
+                >
+                  <Button
+                    onClick={() => setOpen(false)}
+                    style={{ margin: "0px 5px" }}
+                    variant="contained"
+                    color="error"
+                  >
+                    Бекор қилиш
+                  </Button>
+                  <Button
+                    style={{ margin: "0px 5px" }}
+                    variant="contained"
+                    color="success"
+                  >
+                    Сақлаш
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         </Box>
       </Modal>
     </>
   );
 };
-
-import L from "leaflet";
-import { Box, IconButton, Modal, TextField } from "@mui/material";
-import { Close } from "@mui/icons-material";
 
 L.Control.ReactWindow = L.Control.extend({
   includes: L.Evented.prototype || L.Mixin.Events,
@@ -79,6 +101,7 @@ L.Control.ReactWindow = L.Control.extend({
     position: "top",
     footerContent: null,
     carDebtHeight: false,
+    addField: false,
   },
   initialize: function (options) {
     L.setOptions(this, options);

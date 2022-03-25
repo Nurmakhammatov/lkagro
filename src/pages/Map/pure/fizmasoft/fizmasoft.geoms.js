@@ -17,6 +17,7 @@ import { TextField } from "@mui/material";
 F.Geoms = F.Class.extend({
   options: {
     selectedTypes: [],
+    area: 0,
     onListForma1: () => {},
     left: 50,
     right: 50,
@@ -197,6 +198,7 @@ F.Geoms = F.Class.extend({
         </>
       ),
       visible: true,
+      addField: true,
     });
   },
   _initDrawEvents: function () {
@@ -211,6 +213,10 @@ F.Geoms = F.Class.extend({
           radius = layer.options.radius;
         }
         this._selectModal(layer, layer.pm.getShape() === "Line", radius);
+        const seeArea = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+        const inHectares = seeArea / 10000;
+        const removeDecimals = Math.floor(inHectares);
+        this.options.area = removeDecimals;
       })
       .on("pm:remove", (e) => {
         this._fg.removeLayer(e.layer);
