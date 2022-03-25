@@ -8,12 +8,12 @@ const getFieldById = (id) => {
   return http.post(`${url}/main/fields/analysis/image/${id}`);
 };
 const getChartsData = (fieldId, from, to, indexes) => {
-  http.post(`${url}/main/fields/analysis`, {
-    fieldId: 1,
-    from: "2021-04-14",
-    to: "2021-04-14",
-    indexes: ["ndvi", "mndvi"],
-  });
+ return http.post(`${url}/main/fields/analysis`, {
+   fieldId,
+   from,
+   to,
+   indexes,
+ });
 };
 
 const api = { getFields, getFieldById, getChartsData };

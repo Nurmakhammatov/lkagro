@@ -2,21 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { MapContainer } from "react-leaflet";
 import initMap from "./pure/map";
+import { useSelector } from "react-redux";
 
 export let mapInstance;
 export let lfMapInstance;
 const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
   const [map, setMap] = useState(null);
   const [lfMap, setLFMap] = useState(null);
+  const centerMap = useSelector((state) => state.sideBarToggle.centerMap);
+
   useEffect(() => {
     if (!map) return;
     setTimeout(() => {
       map.invalidateSize();
     }, 300);
   }, [isSmallVertical, isSmallHorizontal, map]);
+
   useEffect(() => {
     if (map && !lfMap) {
-      setLFMap(initMap(map));
+      setLFMap(initMap(map, centerMap));
     }
   }, [map, lfMap]);
 
@@ -29,7 +33,6 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
     if (!lfMap) return;
     mapInstance = { map };
     lfMapInstance = { lfMap };
-    // lfMap.drawPolygon(polygon);
   }, [lfMap]);
 
   return (
@@ -40,6 +43,7 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
         height: "100vh",
       }}
     >
+      {/* {centerMap && ( */}
       <MapContainer
         zoomDelta={0.5}
         zoomSnap={0.5}

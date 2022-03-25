@@ -5,7 +5,6 @@ import Chart from "./Chart";
 import BasicMap from "./BasicMap";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import api from "./api/index";
 
 import {
   handleChangeIsChartOpen,
@@ -19,6 +18,7 @@ const Map = () => {
   const selectedIndex = useSelector(
     (state) => state.sideBarToggle.selectedIndex
   );
+  const centerMap = useSelector((state) => state.sideBarToggle.centerMap);
 
   // const [checkedChart, setCheckedChart] = useState(true);
   const containerRef = useRef(null);
@@ -28,10 +28,6 @@ const Map = () => {
   const handleChangeChart = () => {
     dispatch(handleChangeIsChartOpen(!isOpenChart));
   };
-
-  useEffect(() => {
-    // api.getChartsData();
-  }, []);
 
   return (
     <>
@@ -51,13 +47,17 @@ const Map = () => {
           openChart={handleChangeChart}
           openKontur={changeKontur}
         />
-        {selectedIndex && <Chart open={isOpenChart} />}
+        {selectedIndex && (
+          <Chart open={isOpenChart} selectedIndex={selectedIndex} />
+        )}
         <Grid container spacing={0}>
           <Grid item xs={12}>
+            {/* {centerMap && ( */}
             <BasicMap
               isSmallVertical={isOpenChart}
               isSmallHorizontal={isOpen}
             />
+            {/* )} */}
           </Grid>
           {/* {isOpenChart && (
             <Grid item xs={12}> */}

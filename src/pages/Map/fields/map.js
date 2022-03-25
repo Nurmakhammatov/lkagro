@@ -8,6 +8,7 @@ export default function FIELDS(map) {
   this.addLayers = function (data, cond) {
     this.removeLayers();
     data.forEach((d) => {
+     
       const g = L.geoJSON(d.polygon, {
         style: {
           opacity: 0.75,
@@ -16,7 +17,11 @@ export default function FIELDS(map) {
           color: "green",
         },
       }).addTo(this._fg);
-      if (cond) this._map.flyToBounds(g, 18);
+      // console.log(g.getBounds().getCenter().wrap());
+      if (cond) this._map.flyTo(g.getBounds().getCenter(), 16.5);
+      L.imageOverlay(`data:image/png;base64,${d.field_image}`, g.getBounds())
+        .bringToFront()
+        .addTo(this._fg);
     });
   };
 
