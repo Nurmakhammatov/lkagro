@@ -4,21 +4,37 @@ import {
   Grid,
   Typography,
   IconButton,
-  ListItemText,
   ListItemButton,
   List,
   Grow,
-  Collapse,
   Paper,
+  Menu,
+  MenuItem,
+  TextField,
 } from "@mui/material";
+
+import SearchIcon from "@mui/icons-material/Search";
+
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { ArrowForwardIos } from "@mui/icons-material";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
+// import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Kontur from "././../../assets/pngwing.png";
 import ButtonPrimary from "../components/Button";
 import AddIcon from "@mui/icons-material/Add";
 import ModalPrimary from "../components/Modal";
+import {
+  Search,
+  SearchIconWrapper,
+  StyledInputBase,
+} from "./../../styles/styles";
+
+const menuOptions = [
+  { name: "Ўзгартириш", icon: <EditIcon /> },
+  { name: "Ўчириш", icon: <DeleteIcon /> },
+];
 
 const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -26,22 +42,29 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   const [openModal, setOpenModal] = React.useState(false);
 
   const handleOpen = () => setOpenModal(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
-  const handleOpenSideBar = () => {
-    setSidebar(!sidebar);
-  };
+  // const handleOpenSideBar = () => {
+  //   setSidebar(!sidebar);
+  // };
   const handleChange = () => {
     setSidebar((prev) => !prev);
+  };
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
     <>
       <ModalPrimary open={openModal} setOpen={setOpenModal} />
       <Grow in={open} {...(open ? { timeout: 1500 } : {})}>
-        {/* <Collapse orientation="horizontal" in={sidebar} collapsedSize={40}> */}
         <Box
           sx={{
             position: "absolute",
@@ -54,45 +77,74 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
         >
           <Grid container sx={{ pt: 2 }}>
             {sidebar && (
-              <Grid
-                item
-                xs={10}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography align="center" variant="subtitle2">
-                  Контурлар рўйхати
-                </Typography>
-              </Grid>
+              <>
+                <Grid
+                  item
+                  xs={10}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography align="center" variant="h6" noWrap={true}>
+                    Контурлар рўйхати
+                  </Typography>
+                </Grid>
+              </>
             )}
-
             <Grid
               item
-              xs={sidebar ? 1 : 10}
-              sx={{ display: "flex", justifyContent: "end" }}
+              xs={sidebar ? 2 : 12}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                maxWidth: "100%",
+                bgcolor: "primary",
+              }}
             >
               <IconButton onClick={handleChange}>
                 {sidebar ? <ArrowBackIosNewIcon /> : <ArrowForwardIos />}
               </IconButton>
             </Grid>
           </Grid>
+          {sidebar && (
+            <Grid item xs={5}>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Излаш…"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </Search>
+            </Grid>
+          )}
+
           {sidebar ? (
-            <List component="nav" aria-label="main mailbox folders">
+            <List component="nav">
               <ListItemButton
                 selected={selectedIndex === 0}
                 onClick={(event) => handleListItemClick(event, 0)}
+                disableGutters="true"
               >
-                <Box sx={{ width: "100%", height: "60px", display: "flex" }}>
-                  <Box
-                    sx={{ width: "25%", height: "100%", position: "relative" }}
+                <Grid container spacing={0}>
+                  <Grid
+                    // sx={{ width: "60px", height: "60px"q, position: "relative" }}
+                    item
+                    xs={3}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
                     <img
                       style={{
-                        width: "90%",
-                        height: "100%",
+                        width: "70px",
+                        height: "70px",
                       }}
                       src={Kontur}
                       alt="kontur"
@@ -105,13 +157,12 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
                     width: "20px",
                   }}
                 /> */}
-                  </Box>
-                  <Box sx={{ width: "75%" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
+                  </Grid>
+                  <Grid item xs={9} container paddingRight={1.5}>
+                    <Grid
+                      item
+                      xs={10}
+                      sx={{ display: "flex", flexDirection: "column" }}
                     >
                       <Typography
                         sx={{ fontWeight: "bold" }}
@@ -120,48 +171,70 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
                       >
                         Контур номи
                       </Typography>
-                      <IconButton
-                      // sx={{ width: "15px", height: "15px" }}
-                      >
-                        <MoreVertIcon sx={{ height: "20px", width: 20 }} />
-                      </IconButton>
-                    </div>
-                    <Grid container>
-                      <Grid item xs={9}>
-                        <Typography variant="body2" mt={0.5} noWrap={true}>
-                          2022 - Экин номи
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography variant="body2" mt={0.5} noWrap={true}>
-                          15 га
-                        </Typography>
-                      </Grid>
+                      <Typography variant="body2">Экин: (номи)</Typography>
+                      <Typography variant="caption">2022</Typography>
                     </Grid>
-                  </Box>
-                </Box>
+                    <Grid item xs={2} align={"end"}>
+                      <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={openMenu ? "long-menu" : undefined}
+                        aria-expanded={openMenu ? "true" : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </Grid>
+                    <Menu
+                      sx={{ zIndex: 9999 }}
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={openMenu}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          width: "15ch",
+                          zIndex: "9999",
+                        },
+                      }}
+                    >
+                      {menuOptions.map((item) => (
+                        <MenuItem onClick={handleClose}>
+                          {item.icon}
+                          <Typography variant="caption" mx={1}>
+                            {item.name}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Grid>
+                </Grid>
               </ListItemButton>
             </List>
           ) : (
-            <List component="nav" aria-label="main mailbox folders">
+            <List component="nav">
               <ListItemButton
                 selected={selectedIndex === 0}
                 onClick={(event) => handleListItemClick(event, 0)}
+                disableGutters="true"
+                py={0}
               >
-                <Box sx={{ width: "100%", height: "60px", display: "flex" }}>
-                  <Box
-                    sx={{ width: "100%", height: "100%", position: "relative" }}
-                  >
+                <Grid container>
+                  <Grid item xs={12} align="center">
                     <img
                       style={{
-                        width: "100%",
-                        height: "100%",
+                        width: "70px",
+                        height: "70px",
                       }}
                       src={Kontur}
                       alt="kontur"
                     ></img>
-                  </Box>
-                </Box>
+                  </Grid>
+                </Grid>
               </ListItemButton>
             </List>
           )}
@@ -177,7 +250,6 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
             right={"0px"}
           />
         </Box>
-
         {/* </Collapse> */}
       </Grow>
     </>
