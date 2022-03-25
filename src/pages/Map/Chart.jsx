@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Grow, Box } from "@mui/material";
+import { Grow, Box, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import Satellite from "../../assets/satellite.png";
 import FieldChart from "../charts";
 import api from "./api/index";
 import PickerDate from "./../components/DatePicker/index";
+import MultipleSelect from "./../components/MultiSelect/index";
+
+const names = ["MVC", "MVTS"];
 
 const Chart = ({ selectedIndex }) => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
@@ -36,16 +39,15 @@ const Chart = ({ selectedIndex }) => {
           backdropFilter: "blur(7px)",
         }}
       >
-        <div style={{ width: "20%" }}>
-          {/* <div style={{ width: "17.5%", margin: "1%" }}> */}
-
-          <PickerDate />
-          {/* </div> */}
-        </div>
-        <div style={{ width: "80%" }}>
-          <FieldChart chartData={chartData} />
-        </div>
-        {/* <img src={Satellite} alt="satellite" /> */}
+        <Grid container px={1}>
+          <Grid item xs={2}>
+            <MultipleSelect names={names} />
+            <PickerDate />
+          </Grid>
+          <Grid item xs={10}>
+            <FieldChart chartData={chartData} />
+          </Grid>
+        </Grid>
       </Box>
     </Grow>
   );
