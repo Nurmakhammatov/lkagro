@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Button, ButtonGroup, Grid } from "@mui/material";
 import ListOfMaps from "./ListOfMaps";
 import Chart from "./Chart";
 import BasicMap from "./BasicMap";
@@ -33,7 +33,7 @@ const Map = () => {
           variant="contained"
           aria-label="outlined primary button group"
           sx={{ mb: 1 }}
-          >
+        >
           <Button onClick={() => handleChangeKontur()}>Konturlar</Button>
           <Button onClick={() => handleChangeChart()}>Charts</Button>
         </ButtonGroup> */}
@@ -43,11 +43,7 @@ const Map = () => {
           openChart={handleChangeChart}
           openKontur={changeKontur}
         />
-        <Chart
-          open={isOpenChart}
-          openChart={handleChangeChart}
-          // openKontur={changeKontur}
-        />
+        <Chart open={isOpenChart} />
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <BasicMap

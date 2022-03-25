@@ -36,7 +36,10 @@ import {
 import api from "./api";
 import FIELDS from "./fields/map";
 import { useDispatch, useSelector } from "react-redux";
-import { handleChangeSidebar } from "../../redux/features/sideBar/sideBarSlice";
+import {
+  handleChangeSidebar,
+  handleSelectedIndex,
+} from "../../redux/features/sideBar/sideBarSlice";
 
 const menuOptions = [
   { name: "Ўзгартириш", icon: <EditIcon /> },
@@ -45,7 +48,10 @@ const menuOptions = [
 const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   const dispatch = useDispatch();
   const [onMapView, setOnMapView] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(null);
+  // const [selectedIndex, setSelectedIndex] = React.useState(null);
+  const selectedIndex = useSelector(
+    (state) => state.sideBarToggle.selectedIndex
+  );
   // const [sidebar, setSidebar] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const [result, setResult] = React.useState([]);
@@ -57,7 +63,7 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   const openMenu = Boolean(anchorEl);
 
   const handleListItemClick = (id) => {
-    setSelectedIndex(id);
+    dispatch(handleSelectedIndex(id));
     api.getFieldById(id);
   };
   // const handleOpenSideBar = () => {

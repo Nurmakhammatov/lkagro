@@ -41,7 +41,7 @@ export default function SideBar() {
   };
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
-  const count = useSelector((state) => state.sideBarToggle.maps);
+  const konturs = useSelector((state) => state.sideBarToggle.maps);
 
   useEffect(() => {
     const { user } = authApi.getCurrentUser();
@@ -114,7 +114,7 @@ export default function SideBar() {
                 <NavLink
                   onClick={
                     item.path === "/map"
-                      ? () => dispatch(handleChangeKontur(!count))
+                      ? () => dispatch(handleChangeKontur(!konturs))
                       : null
                   }
                   key={item.text}
