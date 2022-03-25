@@ -6,6 +6,7 @@ const signInEndpoint = url + "/auth/login";
 const signUpEndpoint = url + "/auth/register";
 const signUpEndpointGetStats = url + "/stats";
 const tokenKey = "token";
+const user = "user";
 
 //TODO :delete
 // const token =
@@ -16,11 +17,11 @@ export async function getStats() {
   return data;
 }
 export async function login(login, password) {
-  const { data } = await http.post(signInEndpoint, {
+  const data = await http.post(signInEndpoint, {
     login,
     password,
   });
-  localStorage.setItem(tokenKey, data.access_token);
+  localStorage.setItem(tokenKey, data.data.access_token);
 }
 export async function register(
   firstName,
@@ -57,6 +58,7 @@ export async function register(
 
 export function logout() {
   localStorage.removeItem(tokenKey);
+  window.location.replace("/login");
 }
 
 export function getCurrentUser() {

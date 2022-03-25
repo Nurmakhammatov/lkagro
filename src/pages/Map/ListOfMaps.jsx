@@ -7,7 +7,6 @@ import {
   ListItemButton,
   List,
   Grow,
-  Paper,
   Menu,
   MenuItem,
   TextField,
@@ -55,7 +54,7 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
 
   const handleListItemClick = (id) => {
     setSelectedIndex(id);
-    api.getFieldById(id)
+    api.getFieldById(id);
   };
   // const handleOpenSideBar = () => {
   //   setSidebar(!sidebar);

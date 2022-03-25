@@ -2,6 +2,8 @@ import { makeStyles } from "@mui/styles";
 import { styled, alpha } from "@mui/system";
 import InputBase from "@mui/material/InputBase";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import MuiDrawer from "@mui/material/Drawer";
+import { hover } from "@testing-library/user-event/dist/hover";
 
 const theme = createTheme({
   typography: {
@@ -28,7 +30,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&.Mui-selected": {
-            backgroundColor: "lightgreen",
+            // backgroundColor: "yellow",
           },
         },
       },
@@ -108,4 +110,50 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
       },
     },
   },
+}));
+
+export const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
+
+export const closedMixin = (theme) => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+export const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+}));
+
+export const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
 }));
