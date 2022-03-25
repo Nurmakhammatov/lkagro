@@ -1,13 +1,13 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 
-const FieldChart = () => {
+const FieldChart = ({ chartData }) => {
   const [time, setTime] = useState([]);
   const [chiqishArr, setChiqishArr] = useState([]);
   const [kirishArr, setKirishArr] = useState([]);
   const [chiqish, setChiqish] = useState([]);
   const [kirish, setKirish] = useState([]);
-
+  console.log(chartData);
   const options = {
     title: {
       text: "",
@@ -34,18 +34,18 @@ const FieldChart = () => {
       },
     },
     grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "3%",
+      // left: "3%",
+      // right: "4%",
+      // bottom: "3%",
       containLabel: true,
     },
     xAxis: [
       {
         type: "category",
         boundaryGap: false,
-        data: time,
+        data: chartData?.[0]?.analysis.map((d) => d.the_day),
         axisLabel: {
-          rotate: 45,
+          // rotate: 45,
           formatter: "{value}",
           textStyle: {
             fontSize: "10px",
@@ -81,7 +81,7 @@ const FieldChart = () => {
         emphasis: {
           focus: "series",
         },
-        data: kirishArr,
+        data: chartData?.[0]?.graph.map((d) => d),
         symbol: "circle",
         symbolSize: 10,
       },
@@ -183,7 +183,7 @@ const FieldChart = () => {
         <ReactECharts
           theme="dark_theme"
           option={options}
-          style={{ height: "100%" }}
+          // style={{ height: "400px" }}
           //   theme={"theme_name"}
         />
       </div>
