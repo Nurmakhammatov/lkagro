@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 const Chart = () => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
-  console.log(sidebar);
   return (
     // <Slide direction="right" in={open} timeout={1000}>
     <Paper
