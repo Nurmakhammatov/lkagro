@@ -35,18 +35,22 @@ import {
 } from "./../../styles/styles";
 import api from "./api";
 import FIELDS from "./fields/map";
+import { useDispatch, useSelector } from "react-redux";
+import { handleChangeSidebar } from "../../redux/features/sideBar/sideBarSlice";
 
 const menuOptions = [
   { name: "Ўзгартириш", icon: <EditIcon /> },
   { name: "Ўчириш", icon: <DeleteIcon /> },
 ];
 const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
+  const dispatch = useDispatch();
   const [onMapView, setOnMapView] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(null);
-  const [sidebar, setSidebar] = React.useState(false);
+  // const [sidebar, setSidebar] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const [result, setResult] = React.useState([]);
   const [fields, setFields] = React.useState([]);
+  const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
 
   const handleOpen = () => setOpenModal(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -60,7 +64,7 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   //   setSidebar(!sidebar);
   // };
   const handleChange = () => {
-    setSidebar((prev) => !prev);
+    dispatch(handleChangeSidebar(!sidebar));
   };
   const handleClick = (event) => {
     event.stopPropagation();
@@ -112,12 +116,13 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
           sx={{
             position: "absolute",
             width: sidebar ? "20%" : "5%",
-            height: isSmall ? "calc(100vh - 35vh )" : "calc(100vh )",
+            height: "100vh",
             zIndex: "1300",
             bgcolor: "rgba(255, 255, 255, 0.7)",
             backdropFilter: "blur(5px)",
           }}
         >
+          {/* <Chart sidebar={sidebar} /> */}
           <Grid
             // style={{ backgroundColor: "rgba(250, 214, 82, 0.7)" }}
             container
