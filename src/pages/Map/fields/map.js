@@ -5,10 +5,10 @@ export default function FIELDS(map) {
   this._map = map;
   this._fg = L.featureGroup().addTo(this._map);
 
-  this.addLayers = function (data) {
-    // this.removeLayers();
+  this.addLayers = function (data, cond) {
+    this.removeLayers();
     data.forEach((d) => {
-      L.geoJSON(d.polygon, {
+      const g = L.geoJSON(d.polygon, {
         style: {
           opacity: 0.75,
           fillOpacity: 0.3,
@@ -16,6 +16,7 @@ export default function FIELDS(map) {
           color: "green",
         },
       }).addTo(this._fg);
+      if (cond) this._map.flyToBounds(g, 18);
     });
   };
 

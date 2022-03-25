@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const sideBarContursSlice = createSlice({
   name: "sideBarToggle",
   initialState: {
-    maps: false,
+    maps: true,
     chart: true,
     sidebar: true,
     selectedIndex: null,

@@ -9,9 +9,6 @@ import {
   Grow,
   Menu,
   MenuItem,
-  TextField,
-  Drawer,
-  Divider,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -45,7 +42,7 @@ const menuOptions = [
   { name: "Ўзгартириш", icon: <EditIcon /> },
   { name: "Ўчириш", icon: <DeleteIcon /> },
 ];
-const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
+const ListOfMaps = ({ open }) => {
   const dispatch = useDispatch();
   const [onMapView, setOnMapView] = React.useState(null);
   // const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -56,19 +53,19 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   const [openModal, setOpenModal] = React.useState(false);
   const [result, setResult] = React.useState([]);
   const [fields, setFields] = React.useState([]);
+  const [mapData, setMapData] = React.useState([]);
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
 
   const handleOpen = () => setOpenModal(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
 
-  const handleListItemClick = (id) => {
+  const handleListItemClick = async (id) => {
     dispatch(handleSelectedIndex(id));
-    api.getFieldById(id);
+    const { data } = await api.getFieldById(id);
+    setMapData(data);
   };
-  // const handleOpenSideBar = () => {
-  //   setSidebar(!sidebar);
-  // };
+
   const handleChange = () => {
     dispatch(handleChangeSidebar(!sidebar));
   };
@@ -84,11 +81,17 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
     const { data } = await api.getFields();
     setResult(data?.[0]?.fields);
     setFields(data?.[0]?.fields);
+    setMapData(data?.[0]?.fields);
   };
+
   useEffect(() => {
     if (open) {
       getFields();
     } else {
+      setResult([]);
+      setMapData([]);
+      setFields([]);
+      dispatch(handleSelectedIndex(null));
       if (onMapView) onMapView.removeLayers();
     }
   }, [open]);
@@ -99,9 +102,9 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
   }, [mapInstance]);
 
   useEffect(() => {
-    if (!onMapView || !result) return;
-    onMapView.addLayers(result);
-  }, [onMapView, result]);
+    if (!onMapView || !mapData) return;
+    onMapView.addLayers(mapData, selectedIndex && true);
+  }, [onMapView, mapData, selectedIndex]);
 
   const handleSearch = (e) => {
     if (e.target.value !== "") {
@@ -194,7 +197,6 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
                         backgroundColor:
                           field.id === selectedIndex && "#fad652",
                       }}
-                      // selected={field.id === selectedIndex}
                       onClick={(e) => {
                         handleListItemClick(field.id);
                       }}
@@ -202,7 +204,6 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
                     >
                       <Grid container spacing={0}>
                         <Grid
-                          // sx={{ width: "60px", height: "60px"q, position: "relative" }}
                           item
                           xs={3}
                           sx={{
@@ -219,14 +220,6 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
                             src={`data:image/png;base64,${field.field_image}`}
                             alt="kontur"
                           ></img>
-                          {/* <MyLocationIcon
-                  style={{
-                    position: "absolute",
-                    right: "80%",
-                    bottom: "5%",
-                    width: "20px",
-                  }}
-                /> */}
                         </Grid>
                         <Grid item xs={9} container paddingRight={1.5}>
                           <Grid
@@ -303,7 +296,6 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
                         backgroundColor:
                           field.id === selectedIndex && "#fad652",
                       }}
-                      // selected={field.id === selectedIndex}
                       onClick={() => handleListItemClick(field.id)}
                       disableGutters="true"
                       py={0}
@@ -339,7 +331,6 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
             minWidth={sidebar ? "90%" : "50%"}
           />
         </Box>
-        {/* </Collapse> */}
       </Grow>
     </>
   );

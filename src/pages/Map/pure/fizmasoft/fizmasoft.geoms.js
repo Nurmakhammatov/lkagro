@@ -122,7 +122,6 @@ F.Geoms = F.Class.extend({
     this._map.spin(false);
   },
   _fetchPolygonData: async function (l, list, geojson, radius) {
-    console.log(l, list, radius, geojson);
     const { data } = await axios.post(
       `${config.url}/foreign/xatlov/criminal-in-polygon`,
       {

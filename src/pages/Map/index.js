@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, ButtonGroup, Grid } from "@mui/material";
 import ListOfMaps from "./ListOfMaps";
 import Chart from "./Chart";
 import BasicMap from "./BasicMap";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import api from "./api/index";
 
 import {
   handleChangeIsChartOpen,
@@ -27,6 +28,10 @@ const Map = () => {
   const handleChangeChart = () => {
     dispatch(handleChangeIsChartOpen(!isOpenChart));
   };
+
+  useEffect(() => {
+    // api.getChartsData();
+  }, []);
 
   return (
     <>
