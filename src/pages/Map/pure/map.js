@@ -72,7 +72,7 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
           iconCls: "fa fa-crosshairs",
           callback: (e) => {
             e.target.click();
-            map.flyTo([41.31, 69.29], 11);
+            map.flyTo([41, 69], 11);
           },
         },
       ],
