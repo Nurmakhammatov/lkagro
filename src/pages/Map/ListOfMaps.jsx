@@ -91,7 +91,7 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
                   >
                     <img
                       style={{
-                        width: "100%",
+                        width: "90%",
                         height: "100%",
                       }}
                       src={Kontur}
@@ -173,7 +173,7 @@ const ListOfMaps = ({ open, isSmall, openChart, openKontur }) => {
             bottom={"10px"}
             left={sidebar ? "0px" : "0px"}
             sidebar={sidebar}
-            width={sidebar ? "200px" : "60px"}
+            width={sidebar ? "300px" : "60px"}
             right={"0px"}
           />
         </Box>

@@ -9,7 +9,7 @@ const ButtonPrimary = ({
   bottom,
   left,
   right,
-  sidebar = false,
+  sidebar = true,
   width,
   onClick,
 }) => {
@@ -30,7 +30,12 @@ const ButtonPrimary = ({
         width: width,
       }}
     >
-      <Button justify="center" align="center" variant="contained">
+      <Button
+        style={{ minWidth: sidebar ? "300px" : "60px" }}
+        justify="center"
+        align="center"
+        variant="contained"
+      >
         <div
           style={{
             display: "flex",

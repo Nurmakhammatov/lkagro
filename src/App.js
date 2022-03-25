@@ -5,6 +5,8 @@ import AppRoutes from "./routes/AppRoutes";
 import { ToastContainer } from "react-toastify";
 import "leaflet/dist/leaflet.css";
 import "react-toastify/dist/ReactToastify.css";
+import "uppy/dist/uppy.css";
+import "@uppy/status-bar/dist/style.css";
 
 function App() {
   return (
