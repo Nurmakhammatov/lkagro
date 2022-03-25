@@ -37,7 +37,7 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
       elevation={1}
       sx={{
         width: "100%",
-        height: isSmallVertical ? "calc(100vh - 35vh)" : "calc(100vh)",
+        height: "100vh",
       }}
     >
       <MapContainer
