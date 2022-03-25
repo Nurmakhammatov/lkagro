@@ -5,7 +5,7 @@ export const sideBarContursSlice = createSlice({
     maps: true,
     chart: true,
     sidebar: true,
-    selectedIndex: null,
+    selectedIndex: false,
     centerMap: null,
   },
   reducers: {

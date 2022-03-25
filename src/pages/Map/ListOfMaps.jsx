@@ -62,9 +62,19 @@ const ListOfMaps = ({ open }) => {
   const openMenu = Boolean(anchorEl);
 
   const handleListItemClick = async (id) => {
-    dispatch(handleSelectedIndex(id));
-    const { data } = await api.getFieldById(id);
-    setMapData(data);
+    if (selectedIndex !== id) {
+      dispatch(handleSelectedIndex(id));
+      mapInstance.map.scrollWheelZoom.disable()
+      mapInstance.map.zoomControl.disable()
+      const { data } = await api.getFieldById(id);
+      setMapData(data);
+    } else {
+      mapInstance.map.scrollWheelZoom.enable()
+      mapInstance.map.zoomControl.enable()
+      dispatch(handleSelectedIndex(null));
+      mapInstance.map.flyTo(centerMap, 14);
+      setMapData(result)
+    }
   };
 
   const handleChange = () => {
@@ -106,7 +116,6 @@ const ListOfMaps = ({ open }) => {
 
   useEffect(() => {
     if (!centerMap) return;
-
     mapInstance.map.flyTo(centerMap, 14);
   }, [centerMap]);
 
@@ -343,6 +352,6 @@ const ListOfMaps = ({ open }) => {
       </Grow>
     </>
   );
-};
+};;
 
 export default ListOfMaps;

@@ -1,13 +1,13 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 
-const FieldChart = () => {
+const FieldChart = ({ chartData }) => {
   const [time, setTime] = useState([]);
   const [chiqishArr, setChiqishArr] = useState([]);
   const [kirishArr, setKirishArr] = useState([]);
   const [chiqish, setChiqish] = useState([]);
   const [kirish, setKirish] = useState([]);
-
+  console.log(chartData);
   const options = {
     title: {
       text: "",
@@ -43,9 +43,9 @@ const FieldChart = () => {
       {
         type: "category",
         boundaryGap: false,
-        data: time,
+        data: chartData?.[0]?.analysis.map((d) => d.the_day),
         axisLabel: {
-          rotate: 45,
+          // rotate: 45,
           formatter: "{value}",
           textStyle: {
             fontSize: "10px",

@@ -37,7 +37,6 @@ import "./styles/leaflet/leaflet.markercluster.css";
 import "./styles/leaflet/leaflet.markercluster.default.css";
 
 const initMap = (map, center, intl) => {
-  console.log(center);
   const attr = {
     maxZoom: 18,
     attribution: `&copy; ABL-Soft&SS 2014-${new Date().getFullYear()}`,
@@ -72,7 +71,7 @@ const initMap = (map, center, intl) => {
     createCorner("verticalcenter", "right");
   }
   addControlPlaceholders(map);
-  console.log(localStorage.getItem("center"));
+
   map.removeControl(map.zoomControl);
   // L.control.zoomLabel().setPosition("bottomright").addTo(map);
 
