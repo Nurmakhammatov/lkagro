@@ -55,8 +55,26 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
     Карта: light,
     Satellite: google,
   };
-  // L.control.zoomLabel().setPosition("bottomright").addTo(map);
 
+  function addControlPlaceholders(map) {
+    let corners = map._controlCorners,
+        l = 'leaflet-',
+        container = map._controlContainer;
+
+    function createCorner(vSide, hSide) {
+        const className = l + vSide + ' ' + l + hSide;
+
+        corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+    }
+
+    createCorner('verticalcenter', 'left');
+    createCorner('verticalcenter', 'right');
+}
+addControlPlaceholders(map);
+
+  map.removeControl(map.zoomControl);
+  // L.control.zoomLabel().setPosition("bottomright").addTo(map);
+  
   L.control.scale({ imperial: false }).setPosition("bottomright").addTo(map);
   F.address({ intl }).addTo(map);
   L.control.layers(baseMaps).addTo(map);
@@ -66,7 +84,6 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
       [
         {
           id: 0,
-
           title: "Харитани кайтариш",
           // title: intl.formatMessage({ id: "ReturnMap" }),
           iconCls: "fa fa-crosshairs",
@@ -79,6 +96,7 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
     ])
     .setPosition("topright")
     .addTo(map);
+    L.control.zoom({position: 'verticalcenterright'}).addTo(map);   
 
   // map.on("baselayerchange", function (e) {
   //   dispatch(mapLayerChanged(e.name));
@@ -101,6 +119,6 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
     ...xududFuncs,
     ...geomFuncs,
   };
-};
+};;
 
 export default initMap;

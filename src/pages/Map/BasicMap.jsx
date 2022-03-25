@@ -16,7 +16,7 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
     if (map && !lfMap) {
       setLFMap(initMap(map));
     }
-  }, [map]);
+  }, [map, lfMap]);
 
   useEffect(() => {
     if (!map || !lfMap) return;
