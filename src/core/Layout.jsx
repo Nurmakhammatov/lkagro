@@ -14,6 +14,7 @@ function Layout() {
         style={{
           height: "calc(100vh)",
           width: "100%",
+          position: "relative",
         }}
       >
         <Outlet />

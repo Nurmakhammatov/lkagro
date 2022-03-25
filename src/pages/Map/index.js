@@ -33,7 +33,7 @@ const Map = () => {
           variant="contained"
           aria-label="outlined primary button group"
           sx={{ mb: 1 }}
-        >
+          >
           <Button onClick={() => handleChangeKontur()}>Konturlar</Button>
           <Button onClick={() => handleChangeChart()}>Charts</Button>
         </ButtonGroup> */}
@@ -43,6 +43,11 @@ const Map = () => {
           openChart={handleChangeChart}
           openKontur={changeKontur}
         />
+        <Chart
+          open={isOpenChart}
+          openChart={handleChangeChart}
+          // openKontur={changeKontur}
+        />
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <BasicMap
@@ -50,15 +55,10 @@ const Map = () => {
               isSmallHorizontal={isOpen}
             />
           </Grid>
-          {isOpenChart && (
-            <Grid item xs={12}>
-              <Chart
-                open={isOpenChart}
-                openChart={handleChangeChart}
-                // openKontur={changeKontur}
-              />
-            </Grid>
-          )}
+          {/* {isOpenChart && (
+            <Grid item xs={12}> */}
+          {/* </Grid>
+          )} */}
         </Grid>
       </Box>
     </>
