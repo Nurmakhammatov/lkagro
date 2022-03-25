@@ -1,24 +1,28 @@
 import React, { useRef, useState } from "react";
-import { Box, Button, ButtonGroup, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import ListOfMaps from "./ListOfMaps";
 import Chart from "./Chart";
 import BasicMap from "./BasicMap";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { styled } from "@mui/material/styles";
-import { handleChangeKontur } from "../../redux/features/sideBar/sideBarSlice";
+
+import {
+  handleChangeIsChartOpen,
+  handleChangeKontur,
+} from "../../redux/features/sideBar/sideBarSlice";
 
 const Map = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector((state) => state.sideBarToggle.maps);
+  const isOpenChart = useSelector((state) => state.sideBarToggle.chart);
 
-  const [checkedChart, setCheckedChart] = useState(false);
+  // const [checkedChart, setCheckedChart] = useState(true);
   const containerRef = useRef(null);
   const changeKontur = () => {
     dispatch(handleChangeKontur(!isOpen));
   };
   const handleChangeChart = () => {
-    setCheckedChart((prev) => !prev);
+    dispatch(handleChangeIsChartOpen(!isOpenChart));
   };
 
   return (
@@ -35,21 +39,21 @@ const Map = () => {
         </ButtonGroup> */}
         <ListOfMaps
           open={isOpen}
-          isSmall={checkedChart}
+          isSmall={isOpenChart}
           openChart={handleChangeChart}
           openKontur={changeKontur}
         />
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <BasicMap
-              isSmallVertical={checkedChart}
+              isSmallVertical={isOpenChart}
               isSmallHorizontal={isOpen}
             />
           </Grid>
-          {checkedChart && (
+          {isOpenChart && (
             <Grid item xs={12}>
               <Chart
-                open={checkedChart}
+                open={isOpenChart}
                 openChart={handleChangeChart}
                 // openKontur={changeKontur}
               />
