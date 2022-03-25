@@ -15,10 +15,11 @@ export default function BasicDatePicker({ label, value }) {
   const dispatch = useDispatch();
   const dateFrom = useSelector((state) => state.datePickers.dateFrom);
   const dateTo = useSelector((state) => state.datePickers.dateTo);
+  console.log(dateFrom);
 
   return (
     <>
-      <Box mt={1}>
+      <Box mt={1} sx={{ width: "100%" }}>
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={uzLocale}>
           <DatePicker
             label="Сана танланг (дан)"
