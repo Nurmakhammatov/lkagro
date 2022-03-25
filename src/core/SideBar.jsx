@@ -130,7 +130,7 @@ export default function SideBar() {
                           sx={{
                             minWidth: "5px",
                             minHeight: "100%",
-                            bgcolor: "yellow",
+                            bgcolor: "#FAD652",
                             ml: -1.9,
                             mr: 1.3,
                           }}

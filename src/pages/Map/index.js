@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, ButtonGroup, Grid } from "@mui/material";
+import React, { useEffect, useRef } from "react";
+import { Box, Grid } from "@mui/material";
 import ListOfMaps from "./ListOfMaps";
 import Chart from "./Chart";
 import BasicMap from "./BasicMap";
@@ -20,7 +20,6 @@ const Map = () => {
     (state) => state.sideBarToggle.selectedIndex
   );
 
-  // const [checkedChart, setCheckedChart] = useState(true);
   const containerRef = useRef(null);
   const changeKontur = () => {
     dispatch(handleChangeKontur(!isOpen));
@@ -36,15 +35,6 @@ const Map = () => {
   return (
     <>
       <Box ref={containerRef} sx={{ height: "calc(100vh)" }}>
-        {/* <ButtonGroup
-          style={{ position: "absolute", zIndex: "9999" }}
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ mb: 1 }}
-        >
-          <Button onClick={() => handleChangeKontur()}>Konturlar</Button>
-          <Button onClick={() => handleChangeChart()}>Charts</Button>
-        </ButtonGroup> */}
         <ListOfMaps
           open={isOpen}
           isSmall={isOpenChart}
@@ -59,10 +49,6 @@ const Map = () => {
               isSmallHorizontal={isOpen}
             />
           </Grid>
-          {/* {isOpenChart && (
-            <Grid item xs={12}> */}
-          {/* </Grid>
-          )} */}
         </Grid>
       </Box>
     </>
