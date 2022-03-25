@@ -59,6 +59,8 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
 
   L.control.scale({ imperial: false }).setPosition("bottomright").addTo(map);
   F.address({ intl }).addTo(map);
+  L.control.layers(baseMaps).addTo(map);
+
   L.control
     .buttons([
       [
@@ -77,7 +79,6 @@ const initMap = (map, callbacks, intl, dispatch, mapLayerChanged) => {
     ])
     .setPosition("topright")
     .addTo(map);
-  L.control.layers(baseMaps).addTo(map);
 
   // map.on("baselayerchange", function (e) {
   //   dispatch(mapLayerChanged(e.name));
