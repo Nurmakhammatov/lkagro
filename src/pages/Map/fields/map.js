@@ -16,7 +16,7 @@ export default function FIELDS(map) {
           color: "green",
         },
       }).addTo(this._fg);
-      if (cond) this._map.flyToBounds(g, 7);
+      if (cond) this._map.flyToBounds(g, 18);
     });
   };
 

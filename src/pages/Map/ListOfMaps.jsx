@@ -33,7 +33,10 @@ import {
 import api from "./api";
 import FIELDS from "./fields/map";
 import { useDispatch, useSelector } from "react-redux";
-import { handleChangeSidebar } from "../../redux/features/sideBar/sideBarSlice";
+import {
+  handleChangeSidebar,
+  handleSelectedIndex,
+} from "../../redux/features/sideBar/sideBarSlice";
 
 const menuOptions = [
   { name: "Ўзгартириш", icon: <EditIcon /> },
@@ -42,7 +45,11 @@ const menuOptions = [
 const ListOfMaps = ({ open }) => {
   const dispatch = useDispatch();
   const [onMapView, setOnMapView] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(null);
+  // const [selectedIndex, setSelectedIndex] = React.useState(null);
+  const selectedIndex = useSelector(
+    (state) => state.sideBarToggle.selectedIndex
+  );
+  // const [sidebar, setSidebar] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const [result, setResult] = React.useState([]);
   const [fields, setFields] = React.useState([]);
@@ -54,7 +61,7 @@ const ListOfMaps = ({ open }) => {
   const openMenu = Boolean(anchorEl);
 
   const handleListItemClick = async (id) => {
-    setSelectedIndex(id);
+    dispatch(handleSelectedIndex(id));
     const { data } = await api.getFieldById(id);
     setMapData(data);
   };
@@ -84,7 +91,7 @@ const ListOfMaps = ({ open }) => {
       setResult([]);
       setMapData([]);
       setFields([]);
-      setSelectedIndex(null);
+      dispatch(handleSelectedIndex(null));
       if (onMapView) onMapView.removeLayers();
     }
   }, [open]);
@@ -97,7 +104,7 @@ const ListOfMaps = ({ open }) => {
   useEffect(() => {
     if (!onMapView || !mapData) return;
     onMapView.addLayers(mapData, selectedIndex && true);
-  }, [onMapView, mapData]);
+  }, [onMapView, mapData, selectedIndex]);
 
   const handleSearch = (e) => {
     if (e.target.value !== "") {
