@@ -48,7 +48,6 @@ export default function SideBar() {
     setUser(user);
   }, []);
 
-  console.log(user);
   const fullName = user?.full_name?.split(" ");
 
   const handleDrawerOpen = () => {

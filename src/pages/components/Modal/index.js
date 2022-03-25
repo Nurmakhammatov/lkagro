@@ -23,7 +23,7 @@ const ModalPrimary = ({ open, setOpen }) => {
   };
   return (
     <Modal
-      title={"title"}
+      // title={"title"}
       open={open}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
@@ -53,11 +53,11 @@ const ModalPrimary = ({ open, setOpen }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <div>
+          <div style={{ width: "45%" }}>
             <ImageUpload />
           </div>
-          <div>
-            <DrawArea />
+          <div style={{ width: "45%" }}>
+            <DrawArea setOpen={setOpen} />
           </div>
         </div>
       </Box>

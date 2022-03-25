@@ -3,6 +3,8 @@ import { Box } from "@mui/material";
 import { MapContainer } from "react-leaflet";
 import initMap from "./pure/map";
 
+export let mapInstance;
+export let lfMapInstance;
 const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
   const [map, setMap] = useState(null);
   const [lfMap, setLFMap] = useState(null);
@@ -22,6 +24,14 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
     if (!map || !lfMap) return;
     lfMap.google.addTo(map);
   }, [map, lfMap]);
+
+  useEffect(() => {
+    if (!lfMap) return;
+    mapInstance = { map };
+    lfMapInstance = { lfMap };
+    // lfMap.drawPolygon(polygon);
+  }, [lfMap]);
+
   return (
     <Box
       elevation={1}
