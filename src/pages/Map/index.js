@@ -15,6 +15,9 @@ const Map = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector((state) => state.sideBarToggle.maps);
   const isOpenChart = useSelector((state) => state.sideBarToggle.chart);
+  const selectedIndex = useSelector(
+    (state) => state.sideBarToggle.selectedIndex
+  );
 
   // const [checkedChart, setCheckedChart] = useState(true);
   const containerRef = useRef(null);
@@ -43,7 +46,7 @@ const Map = () => {
           openChart={handleChangeChart}
           openKontur={changeKontur}
         />
-        <Chart open={isOpenChart} />
+        {selectedIndex && <Chart open={isOpenChart} />}
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <BasicMap
