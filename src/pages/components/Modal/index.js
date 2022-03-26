@@ -31,7 +31,7 @@ const ModalPrimary = ({ open, setOpen }) => {
     >
       <Box sx={style}>
         <div style={{ borderBottom: "1px solid black", position: "relative" }}>
-          <h3 style={{ textAlign: "center", margin: 5 }}>Tanlang</h3>
+          <h3 style={{ textAlign: "center", margin: 5 }}>Танланг</h3>
           <div
             onClick={handleClose}
             style={{
@@ -41,7 +41,7 @@ const ModalPrimary = ({ open, setOpen }) => {
               cursor: "pointer",
             }}
           >
-            <IconButton color="primary" aria-label="add to shopping cart">
+            <IconButton color="error" aria-label="add to shopping cart">
               <Close />
             </IconButton>
           </div>
