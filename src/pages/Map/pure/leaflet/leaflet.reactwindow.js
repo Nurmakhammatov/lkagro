@@ -20,7 +20,7 @@ const LModal = ({ options }) => {
     padding: 0,
   };
   const [open, setOpen] = useState(true);
-  console.log(options);
+
   return (
     <>
       <Modal
@@ -36,7 +36,10 @@ const LModal = ({ options }) => {
             <h3 style={{ textAlign: "center", margin: 5 }}>{options.title}</h3>
             <hr style={{ margin: "0px 20px" }} />
             <div
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                options.cancelCb && options.cancelCb();
+                setOpen(false);
+              }}
               style={{
                 position: "absolute",
                 top: -5,
@@ -60,7 +63,10 @@ const LModal = ({ options }) => {
                   }}
                 >
                   <Button
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      options.cancelCb && options.cancelCb();
+                      setOpen(false);
+                    }}
                     style={{ margin: "0px 5px" }}
                     variant="contained"
                     color="error"

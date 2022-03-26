@@ -102,6 +102,9 @@ F.Geoms = F.Class.extend({
     }
     this.options.selectedTypes = newSelecteds;
   },
+  _cropTypeInput: function (name) {
+
+  },
   _leftRightLine: function (e, left, right) {
     if (left) this.options.left = e.target.value;
     if (right) this.options.right = e.target.value;
@@ -160,33 +163,33 @@ F.Geoms = F.Class.extend({
       content: (
         <>
           <div style={{ padding: "10px 20px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <h3>Экин тури:</h3>
               <TextField
+                onChange={(e) => {
+                  console.log(e.target.value);
+                }}
                 id="outlined-basic"
                 label="Outlined"
                 variant="outlined"
               />
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <h3>Майдон рақами:</h3>
               <TextField
-                id="outlined-basic"
-                label="Outlined"
-                variant="outlined"
-              />
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h3>Майдон юзаси:</h3>
-              <TextField
-                id="outlined-basic"
-                label="Outlined"
-                variant="outlined"
-              />
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h3>Майдон переметри:</h3>
-              <TextField
+                onChange={(e) => console.log(e.target.value)}
                 id="outlined-basic"
                 label="Outlined"
                 variant="outlined"

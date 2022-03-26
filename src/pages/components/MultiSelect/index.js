@@ -5,7 +5,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useSelector } from "react-redux";
 import authApi from "../../../services/authService";
 
 export default function MultipleSelect({
@@ -32,7 +31,7 @@ export default function MultipleSelect({
       <Select
         labelId="demo-multiple-name-label"
         id="demo-multiple-name"
-        multiple
+        // multiple
         value={selectedChartTypes}
         onChange={handleChange}
         input={<OutlinedInput label="Танланг" sx={{ width: "100%" }} />}

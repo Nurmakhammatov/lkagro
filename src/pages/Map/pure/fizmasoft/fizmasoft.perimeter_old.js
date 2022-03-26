@@ -24,31 +24,31 @@ F.Perimeter = F.Class.extend({
     })
   },
   addPoint: function (data) {
-    const layers = this._fg.getLayers()
-    let flag
+    const layers = this._fg.getLayers();
+    let flag;
     for (let i = 0; i < data.length; i++) {
       if (!data[i].selected) {
-        this._removeMarker(data[i])
-        continue
+        this._removeMarker(data[i]);
+        continue;
       }
       if (this._count === 80) {
-        this._newPerimeterAdded = true
-        continue
+        this._newPerimeterAdded = true;
+        continue;
       }
       if (!data[i].id && !this._newPerimeterAdded) {
-        this._addMarker(data[i])
-        this._count += 1
-        continue
+        this._addMarker(data[i]);
+        this._count += 1;
+        continue;
       }
-      flag = false
+      flag = false;
       for (let j = 0; j < layers; j++) {
         if (data[i].id !== layers[j].options.id) {
-          flag = true
+          flag = true;
         }
       }
-      if (!flag) this._addMarker(data[i])
+      if (!flag) this._addMarker(data[i]);
     }
-    contextConnections.perimeterContext(this._fg)
+    // contextConnections.perimeterContext(this._fg)
   },
 
   _addMarker: function (data) {
