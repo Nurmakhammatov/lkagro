@@ -12,6 +12,7 @@ import { TextField } from "@mui/material";
 // const config = useJwt.jwtConfig;
 // import onListConnections from "../connections/onlistConnections"
 // import Input from "reactstrap/lib/Input"
+import url from "../../../../config";
 
 /* eslint-disable */
 F.Geoms = F.Class.extend({
@@ -107,29 +108,27 @@ F.Geoms = F.Class.extend({
   },
   _getSelectedData: async function (list, layer, isLine, radius, leftRight) {
     const geojson = layer.toGeoJSON();
-    this.options.selectedTypes = [];
-    this._map.spin(true);
-    const { data, l } = isLine
-      ? await this._fetchLineData(list, geojson, leftRight)
-      : await this._fetchPolygonData(layer, list, geojson, radius);
-    this._onListfuncs.addOnListMarkers(
-      data.data,
-      this._types,
-      this.options.onListForma1
-    );
-    if (list.includes(-1))
-      this._ordinaryPeople.addPopup(l, isLine, radius, leftRight);
-    this._map.spin(false);
+    // this.options.selectedTypes = [];
+    // this._map.spin(true);
+    const { data, l } = isLine;
+    // ? await this._fetchLineData(list, geojson, leftRight)
+    await this._fetchPolygonData(layer, list, geojson, radius);
+    // this._onListfuncs.addOnListMarkers(
+    //   data.data,
+    //   this._types,
+    //   this.options.onListForma1
+    // );
+    // if (list.includes(-1))
+    //   this._ordinaryPeople.addPopup(l, isLine, radius, leftRight);
+    // this._map.spin(false);
   },
   _fetchPolygonData: async function (l, list, geojson, radius) {
-    const { data } = await axios.post(
-      `${config.url}/foreign/xatlov/criminal-in-polygon`,
-      {
-        types: list,
-        geojson,
-        radius,
-      }
-    );
+    const { data } = await axios.post(`${url}/main/fields/add/${1}`, {
+      counterNumber: 100,
+      cropType: "bug'doy",
+      polygon: geojson.geometry,
+    });
+    console.log(data);
     return { data, l };
   },
   _fetchLineData: async function (list, geojson, leftRight) {

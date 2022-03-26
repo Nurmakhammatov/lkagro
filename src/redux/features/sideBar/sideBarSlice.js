@@ -7,7 +7,7 @@ export const sideBarContursSlice = createSlice({
     sidebar: true,
     selectedIndex: false,
     centerMap: null,
-    indexes: ["ndvi"],
+    indexes: ["NDVI"],
   },
   reducers: {
     handleSelectedIndex: (state, action) => {
