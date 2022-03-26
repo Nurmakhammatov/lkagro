@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "uppy/dist/uppy.css";
 import "@uppy/status-bar/dist/style.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import "react-alice-carousel/lib/alice-carousel.css";
 
 function App() {
   return (

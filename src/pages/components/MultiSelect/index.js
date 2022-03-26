@@ -28,14 +28,14 @@ export default function MultipleSelect({
 
   return (
     <FormControl sx={{ width: "100%", mt: 2 }}>
-      <InputLabel id="demo-multiple-name-label">Танланг</InputLabel>
+      <InputLabel id="demo-multiple-name-label">Индекс</InputLabel>
       <Select
         labelId="demo-multiple-name-label"
         id="demo-multiple-name"
         multiple
         value={selectedChartTypes}
         onChange={handleChange}
-        input={<OutlinedInput label="Танланг" sx={{ width: "100%" }} />}
+        input={<OutlinedInput label="Индекс" sx={{ width: "100%" }} />}
         // MenuProps={MenuProps}
       >
         {indexes?.map((name) => (
