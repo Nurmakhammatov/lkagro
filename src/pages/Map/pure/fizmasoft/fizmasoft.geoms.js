@@ -18,6 +18,8 @@ import url from "../../../../config";
 F.Geoms = F.Class.extend({
   options: {
     selectedTypes: [],
+    cropTypeInput: "",
+    cropTypeInput: "",
     area: 0,
     onListForma1: () => {},
     left: 50,
@@ -103,7 +105,7 @@ F.Geoms = F.Class.extend({
     this.options.selectedTypes = newSelecteds;
   },
   _cropTypeInput: function (name) {
-
+    this.options.cropTypeInput = name;
   },
   _leftRightLine: function (e, left, right) {
     if (left) this.options.left = e.target.value;
