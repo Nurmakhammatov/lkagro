@@ -31,47 +31,47 @@ const initMapContext = (map) => {
     map.contextmenu.enable();
   }
   [
-    {
-      text: "Кординатани кўрсатиш",
-      iconCls: "fa fa-map-marked-alt",
-      callback: (e) => {
-        L.control.reactWindow({
-          modalCls: "modal-dialog-centered modal-sm",
-          title: "Кординаталар",
-          content: (
-            <div style={{ marginLeft: "20px" }}>
-              <h3>Долгота: {e.latlng.lat}</h3>
-              <h3>Широта: {e.latlng.lng}</h3>
-            </div>
-          ),
-          visible: true,
-        });
-      },
-    },
-    {
-      text: "Шу жойни марказга олиш",
-      iconCls: "fa fa-crosshairs",
-      callback: (e) => map.panTo(e.latlng),
-    },
-    "-",
-    {
-      text: "Яқинлаштириш",
-      iconCls: "fa fa-search-plus",
-      callback: (e) => map.zoomIn(),
-    },
-    {
-      text: "Узоқлаштириш",
-      iconCls: "fa fa-search-minus",
-      callback: (e) => map.zoomOut(),
-    },
-    {
-      separator: true,
-    },
-    {
-      text: "Полигон",
-      iconCls: "fa fa-draw-polygon",
-      callback: geomConnections.drawPolygon,
-    },
+    // {
+    //   text: "Кординатани кўрсатиш",
+    //   iconCls: "fa fa-map-marked-alt",
+    //   callback: (e) => {
+    //     L.control.reactWindow({
+    //       modalCls: "modal-dialog-centered modal-sm",
+    //       title: "Кординаталар",
+    //       content: (
+    //         <div style={{ marginLeft: "20px" }}>
+    //           <h3>Долгота: {e.latlng.lat}</h3>
+    //           <h3>Широта: {e.latlng.lng}</h3>
+    //         </div>
+    //       ),
+    //       visible: true,
+    //     });
+    //   },
+    // },
+    // {
+    //   text: "Шу жойни марказга олиш",
+    //   iconCls: "fa fa-crosshairs",
+    //   callback: (e) => map.panTo(e.latlng),
+    // },
+    // "-",
+    // {
+    //   text: "Яқинлаштириш",
+    //   iconCls: "fa fa-search-plus",
+    //   callback: (e) => map.zoomIn(),
+    // },
+    // {
+    //   text: "Узоқлаштириш",
+    //   iconCls: "fa fa-search-minus",
+    //   callback: (e) => map.zoomOut(),
+    // },
+    // {
+    //   separator: true,
+    // },
+    // {
+    //   text: "Полигон",
+    //   iconCls: "fa fa-draw-polygon",
+    //   callback: geomConnections.drawPolygon,
+    // },
     // {
     //   text: "Линия",
     //   iconCls: "fa fa-wave-square",
@@ -222,10 +222,10 @@ const editDeleteContext = (fg) => {
 };
 
 const contextConnections = {
-  addXatlovContext,
-  initMapContext,
+  // addXatlovContext,
+  // initMapContext,
   editDeleteContext,
-  perimeterContext,
+  // perimeterContext,
 };
 
 export default contextConnections;

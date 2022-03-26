@@ -83,8 +83,8 @@ const Chart = ({ selectedIndex }) => {
           bottom: 0,
           left: !chart ? 0 : sidebar ? "15%" : "5%",
           zIndex: 1200,
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
-          backdropFilter: "blur(7px)",
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
+          backdropFilter: "blur(10px)",
         }}
       >
         {!extraSidebar ? (

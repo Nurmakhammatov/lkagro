@@ -111,7 +111,7 @@ const initMap = (map, center, intl) => {
     intl
   );
 
-  contextConnections.initMapContext(map);
+  // contextConnections.initMapContext(map);
 
   return {
     google,

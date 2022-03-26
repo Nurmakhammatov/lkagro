@@ -67,6 +67,7 @@ const FieldChart = ({ chartData }) => {
           textStyle: {
             fontSize: "10px",
             letterSpacing: "30px",
+            color: "black",
           },
         },
       },
@@ -82,6 +83,7 @@ const FieldChart = ({ chartData }) => {
           textStyle: {
             fontSize: "12px",
             letterSpacing: "30px",
+            color: "black",
           },
         },
       },

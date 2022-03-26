@@ -102,6 +102,8 @@ const ListOfMaps = ({ open }) => {
     if (open) {
       getFields();
     } else {
+      mapInstance.map.scrollWheelZoom.enable();
+      mapInstance.map.flyTo(centerMap, 14);
       setResult([]);
       setMapData([]);
       setFields([]);
