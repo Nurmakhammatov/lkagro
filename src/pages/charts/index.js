@@ -7,7 +7,7 @@ const FieldChart = ({ chartData }) => {
   const [kirishArr, setKirishArr] = useState([]);
   const [chiqish, setChiqish] = useState([]);
   const [kirish, setKirish] = useState([]);
-  console.log(chartData);
+
   const options = {
     title: {
       text: "",
@@ -16,9 +16,25 @@ const FieldChart = ({ chartData }) => {
         fontWeight: "bolder",
       },
     },
+
     color: ["#7367f0", "#03a9f4"],
     tooltip: {
-      trigger: "axis",
+      formatter: (params) => {
+        return `<div style="display: flex; justify-content: space-between; flex-direction: column" class='tooltip-key'><div style="display: flex; justify-content: space-between"> ${"Мин"}
+         <span style="margin: 0px 20px 0px 0px"> ${" - "}${chartData?.[0]?.analysis.map(
+          (d) => d.min
+        )}</div>
+         <div style="display: flex; justify-content: space-between"> ${"Ўрта "}
+         <span style="margin: 0px 20px 0px 0px"> ${" - "}${chartData?.[0]?.analysis.map(
+          (d) => d.mean
+        )}</div>
+         <div style="display: flex; justify-content: space-between"> ${"Макс "} 
+         <span style="margin: 0px 20px 0px 0px"> ${"  - "}${chartData?.[0]?.analysis.map(
+          (d) => d.max
+        )}</div>
+         </div>`;
+      },
+      trigger: "item",
       axisPointer: {
         animation: false,
         label: {
@@ -34,9 +50,9 @@ const FieldChart = ({ chartData }) => {
       },
     },
     grid: {
-      // left: "3%",
-      // right: "4%",
-      // bottom: "3%",
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
       containLabel: true,
     },
     xAxis: [
@@ -56,6 +72,9 @@ const FieldChart = ({ chartData }) => {
     ],
     yAxis: [
       {
+        min: 0,
+        max: 1,
+        interval: 0.1,
         type: "value",
         axisLabel: {
           formatter: "{value}",
@@ -69,7 +88,6 @@ const FieldChart = ({ chartData }) => {
     series: [
       {
         smooth: true,
-        name: "",
         type: "line",
         label: {
           show: false,
@@ -85,29 +103,8 @@ const FieldChart = ({ chartData }) => {
         symbol: "circle",
         symbolSize: 10,
       },
-      {
-        smooth: true,
-        name: "",
-        type: "line",
-        label: {
-          show: false,
-          position: "top",
-        },
-        areaStyle: {
-          opacity: 0,
-        },
-        emphasis: {
-          focus: "series",
-        },
-        data: chiqishArr,
-        symbol: "circle",
-        symbolSize: 10,
-      },
     ],
   };
-
-  const [total, setTotal] = useState(0);
-  const [pending, setPending] = useState(1);
 
   async function fetchNewData() {
     // try {
@@ -173,7 +170,7 @@ const FieldChart = ({ chartData }) => {
 
   return (
     <>
-      <div>
+      <div style={{ height: "100%" }}>
         {/* {active === "1" && <Timer name={intl.formatMessage({ id: "NtfsInfoModalGeneral" })} condition={dayTimer} />} */}
         {/* <h1
           style={{ position: "absolute", right: "5%", top: "10px" }}
@@ -183,7 +180,7 @@ const FieldChart = ({ chartData }) => {
         <ReactECharts
           theme="dark_theme"
           option={options}
-          // style={{ height: "400px" }}
+          style={{ height: "100%" }}
           //   theme={"theme_name"}
         />
       </div>

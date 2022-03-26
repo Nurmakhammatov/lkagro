@@ -7,6 +7,7 @@ export const sideBarContursSlice = createSlice({
     sidebar: true,
     selectedIndex: false,
     centerMap: null,
+    indexes: [],
   },
   reducers: {
     handleSelectedIndex: (state, action) => {
@@ -24,6 +25,9 @@ export const sideBarContursSlice = createSlice({
     handleCenterMap: (state, action) => {
       state.centerMap = action.payload;
     },
+    handleGetIndexes: (state, action) => {
+      state.indexes = action.payload;
+    },
   },
 });
 
@@ -33,6 +37,7 @@ export const {
   handleChangeSidebar,
   handleSelectedIndex,
   handleCenterMap,
+  handleGetIndexes,
 } = sideBarContursSlice.actions;
 
 export default sideBarContursSlice.reducer;
