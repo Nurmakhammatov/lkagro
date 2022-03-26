@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Grow, Box, Button, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import Satellite from "../../assets/satellite.png";
+import { Grow, Box, Button, Grid, IconButton } from "@mui/material";
+import moment from "moment";
 import FieldChart from "../charts";
 import api from "./api/index";
-import PickerDate from "./../components/DatePicker/index";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import PickerDate from "./../components/DatePicker/index";
 import MultipleSelect from "./../components/MultiSelect/index";
-import moment from "moment";
 import AliceCarousel from "react-alice-carousel";
+import Satellite from "../../assets/satellite.png";
 
 const Chart = ({ selectedIndex }) => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
@@ -37,7 +39,9 @@ const Chart = ({ selectedIndex }) => {
           color: "black",
           border: "2px solid #7f7f7d",
           fontSize: 10,
-          minWidth: 125,
+          padding: "2px 2px",
+          // minWidth: 125,
+          maxWidth: 125,
         }}
         // color="primary"
         variant="outlined"
@@ -89,27 +93,25 @@ const Chart = ({ selectedIndex }) => {
       >
         {!extraSidebar ? (
           <>
-            <div
-              style={{
-                width: "99%",
-                overflow: "hidden",
-                margin: "5px 0px 0px 5px",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                style={{
-                  backgroundColor: "#a9cc52",
-                }}
-                onClick={() => setExtraSidebar(true)}
-                variant="contained"
-              >
-                <ArrowDownward />
-              </Button>
+            <Grid container pt={0.5} px={1}>
+              <Grid item xs={0.5} alignItems={"center"}>
+                <Button
+                  style={{
+                    backgroundColor: "#a9cc52",
+                  }}
+                  onClick={() => setExtraSidebar(true)}
+                  variant="contained"
+                >
+                  <ArrowDownward />
+                </Button>
+              </Grid>{" "}
+              <Grid item xs={0.25}>
+                <IconButton>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </Grid>
               {chartData?.[0]?.analysis && (
-                <>
+                <Grid item xs={11} pt={1}>
                   <AliceCarousel
                     mouseTracking
                     items={items}
@@ -117,39 +119,23 @@ const Chart = ({ selectedIndex }) => {
                     controlsStrategy="alternate"
                     disableButtonsControls={true}
                     disableDotsControls={true}
+                    paddingLeft="50"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   />
-                  {/* {chartData?.[0]?.analysis?.map((d, index) => (
-                    <Button
-                      sx={{
-                        ":hover": {
-                          color: "white",
-                          border: "2px solid #333333 !important",
-                        },
-                      }}
-                      style={{
-                        margin: "0px 0px 0px 5px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        color: "black",
-                        border: "2px solid #7f7f7d",
-                        fontSize: 10,
-                        minWidth: 125,
-                      }}
-                      // color="primary"
-                      variant="outlined"
-                    >
-                      <img
-                        style={{ marginRight: 5, width: 15 }}
-                        src={Satellite}
-                        alt="satellite"
-                      />
-                      {d.day}
-                    </Button> */}
-                  {/* ))} */}
-                </>
+                </Grid>
               )}
-            </div>
+              <Grid item xs={0.25}>
+                <IconButton
+                //  onClick={() => slideNext}
+                >
+                  <ChevronRightIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
             <Grid container px={1}>
               <Grid item xs={1.2}>
                 {indexes.length > 0 && (
@@ -168,67 +154,47 @@ const Chart = ({ selectedIndex }) => {
             </Grid>
           </>
         ) : (
-          <div
-            style={{
-              margin: "5px 0px 0px 5px",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              width: "99%",
-              overflow: "hidden",
-            }}
-          >
-            <Button
-              style={{
-                backgroundColor: "#a9cc52",
-              }}
-              onClick={() => setExtraSidebar(false)}
-              variant="contained"
-            >
-              <ArrowUpward />
-            </Button>
+          <Grid container pt={0.5} px={1}>
+            <Grid item xs={0.5} alignItems={"center"}>
+              <Button
+                style={{
+                  backgroundColor: "#a9cc52",
+                }}
+                onClick={() => setExtraSidebar(false)}
+                variant="contained"
+              >
+                <ArrowUpward />
+              </Button>
+            </Grid>
+            <Grid item xs={0.25}>
+              <IconButton>
+                <ChevronLeftIcon />
+              </IconButton>
+            </Grid>
             {chartData?.[0]?.analysis && (
-              <AliceCarousel
-                mouseTracking
-                items={items}
-                responsive={responsive}
-                controlsStrategy="alternate"
-                disableButtonsControls={true}
-                disableDotsControls={true}
-              />
-              // <>
-              //   {chartData?.[0]?.analysis?.map((d, index) => (
-              //     <Button
-              //       sx={{
-              //         ":hover": {
-              //           color: "white",
-              //           border: "2px solid #333333 !important",
-              //         },
-              //       }}
-              //       style={{
-              //         margin: "0px 0px 0px 5px",
-              //         display: "flex",
-              //         justifyContent: "center",
-              //         alignItems: "center",
-              //         color: "black",
-              //         border: "2px solid #7f7f7d",
-              //         fontSize: 10,
-              //         minWidth: 125,
-              //       }}
-              //       // color="primary"
-              //       variant="outlined"
-              //     >
-              //       <img
-              //         style={{ marginRight: 5, width: 15 }}
-              //         src={Satellite}
-              //         alt="satellite"
-              //       />
-              //       {d.day}
-              //     </Button>
-              //   ))}
-              // </>
+              <Grid item xs={11} pt={0.4} container>
+                <AliceCarousel
+                  mouseTracking
+                  items={items}
+                  responsive={responsive}
+                  controlsStrategy="alternate"
+                  disableButtonsControls={true}
+                  disableDotsControls={true}
+                  paddingLeft="50"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                />
+              </Grid>
             )}
-          </div>
+            <Grid item xs={0.25}>
+              <IconButton>
+                <ChevronRightIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
         )}
       </Box>
     </Grow>
