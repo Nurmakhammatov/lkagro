@@ -21,7 +21,7 @@ export default function BasicDatePicker({ label, value }) {
       <Box mt={2} sx={{ width: "100%" }}>
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={uzLocale}>
           <DatePicker
-            label="Сана танланг (дан)"
+            label="Сана (дан)"
             value={dateFrom}
             onChange={(newValue) => {
               dispatch(handleSelectDateFrom(newValue));
@@ -33,7 +33,7 @@ export default function BasicDatePicker({ label, value }) {
       <Box mt={2}>
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={uzLocale}>
           <DatePicker
-            label="Сана танланг (гача)"
+            label="Сана (гача)"
             value={dateTo}
             onChange={(newValue) => {
               dispatch(handleSelectDateTo(newValue));
