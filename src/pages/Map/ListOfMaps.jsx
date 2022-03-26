@@ -36,6 +36,7 @@ import {
   handleChangeSidebar,
   handleSelectedIndex,
   handleCenterMap,
+  handleGetIndexes,
 } from "../../redux/features/sideBar/sideBarSlice";
 
 const menuOptions = [
@@ -64,16 +65,17 @@ const ListOfMaps = ({ open }) => {
   const handleListItemClick = async (id) => {
     if (selectedIndex !== id) {
       dispatch(handleSelectedIndex(id));
-      mapInstance.map.scrollWheelZoom.disable()
-      mapInstance.map.zoomControl.disable()
+      mapInstance.map.scrollWheelZoom.disable();
+      // mapInstance.map.zoomControl.disable()
       const { data } = await api.getFieldById(id);
       setMapData(data);
+      dispatch(handleGetIndexes(data));
     } else {
-      mapInstance.map.scrollWheelZoom.enable()
-      mapInstance.map.zoomControl.enable()
+      mapInstance.map.scrollWheelZoom.enable();
+      // mapInstance.map.zoomControl.enable()
       dispatch(handleSelectedIndex(null));
       mapInstance.map.flyTo(centerMap, 14);
-      setMapData(result)
+      setMapData(result);
     }
   };
 

@@ -7,23 +7,29 @@ import api from "./api/index";
 import PickerDate from "./../components/DatePicker/index";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import MultipleSelect from "./../components/MultiSelect/index";
-
-const names = ["MVC", "MVTS"];
+import moment from "moment";
 
 const Chart = ({ selectedIndex }) => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
   const chart = useSelector((state) => state.sideBarToggle.chart);
   const [chartData, setChartData] = useState([]);
   const [extraSidebar, setExtraSidebar] = useState(true);
+  const [selectedChartTypes, setSelectedChartTypes] = useState([]);
+  const dateFrom = useSelector((state) => state.datePickers.dateFrom);
+  const dateTo = useSelector((state) => state.datePickers.dateTo);
 
-  useEffect(async () => {
+  const getChartDetails = async () => {
     const { data } = await api.getChartsData(
       selectedIndex,
-      "2021-01-01",
-      "2022-01-01",
+      moment(dateFrom).format("YYYY-MM-DD"),
+      moment(dateTo).format("YYYY-MM-DD"),
       ["ndvi"]
     );
     setChartData(data);
+  };
+
+  useEffect(() => {
+    getChartDetails();
   }, [selectedIndex]);
 
   return (
@@ -52,7 +58,9 @@ const Chart = ({ selectedIndex }) => {
               }}
             >
               <Button
-                style={{ backgroundColor: "#fad652" }}
+                style={{
+                  backgroundColor: "#a9cc52",
+                }}
                 onClick={() => setExtraSidebar(true)}
                 variant="contained"
               >
@@ -60,13 +68,21 @@ const Chart = ({ selectedIndex }) => {
               </Button>
 
               <Button
+                sx={{
+                  ":hover": {
+                    color: "white",
+                    border: "2px solid #333333 !important",
+                  },
+                }}
                 style={{
                   margin: "0px 0px 0px 5px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  color: "black",
+                  border: "2px solid #7f7f7d",
                 }}
-                color="secondary"
+                // color="primary"
                 variant="outlined"
               >
                 <img
@@ -79,7 +95,10 @@ const Chart = ({ selectedIndex }) => {
             </div>
             <Grid container px={1}>
               <Grid item xs={1.2}>
-                <MultipleSelect names={names} />
+                {/* <MultipleSelect
+                  setSelectedChartTypes={setSelectedChartTypes}
+                  selectedChartTypes={selectedChartTypes}
+                /> */}
                 <PickerDate />
               </Grid>
               <Grid item xs={10.8}>
@@ -97,7 +116,9 @@ const Chart = ({ selectedIndex }) => {
             }}
           >
             <Button
-              style={{ backgroundColor: "#fad652" }}
+              style={{
+                backgroundColor: "#a9cc52",
+              }}
               onClick={() => setExtraSidebar(false)}
               variant="contained"
             >
@@ -105,13 +126,21 @@ const Chart = ({ selectedIndex }) => {
             </Button>
 
             <Button
+              sx={{
+                ":hover": {
+                  color: "white",
+                  border: "2px solid #333333 !important",
+                },
+              }}
               style={{
                 margin: "0px 0px 0px 5px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                color: "black",
+                border: "2px solid #7f7f7d",
               }}
-              color="secondary"
+              // color="primary"
               variant="outlined"
             >
               <img style={{ marginRight: 5 }} src={Satellite} alt="satellite" />
