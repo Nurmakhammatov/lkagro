@@ -8,6 +8,7 @@ import PickerDate from "./../components/DatePicker/index";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import MultipleSelect from "./../components/MultiSelect/index";
 import moment from "moment";
+import AliceCarousel from "react-alice-carousel";
 
 const Chart = ({ selectedIndex }) => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
@@ -18,6 +19,38 @@ const Chart = ({ selectedIndex }) => {
   const dateFrom = useSelector((state) => state.datePickers.dateFrom);
   const dateTo = useSelector((state) => state.datePickers.dateTo);
   const indexes = useSelector((state) => state.sideBarToggle.indexes);
+
+  const items = chartData?.[0]?.analysis?.map((d, index) => [
+    <div className="item">
+      <Button
+        sx={{
+          ":hover": {
+            color: "white",
+            border: "2px solid #333333 !important",
+          },
+        }}
+        style={{
+          margin: "0px 0px 0px 5px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "black",
+          border: "2px solid #7f7f7d",
+          fontSize: 10,
+          minWidth: 125,
+        }}
+        // color="primary"
+        variant="outlined"
+      >
+        <img
+          style={{ marginRight: 5, width: 15 }}
+          src={Satellite}
+          alt="satellite"
+        />
+        {d.day}
+      </Button>
+    </div>,
+  ]);
 
   const getChartDetails = async () => {
     const { data } = await api.getChartsData(
@@ -32,6 +65,12 @@ const Chart = ({ selectedIndex }) => {
   useEffect(() => {
     getChartDetails();
   }, [selectedIndex, selectedChartTypes, dateFrom, dateTo]);
+
+  const responsive = {
+    0: { items: 1 },
+    568: { items: 2 },
+    1024: { items: 8 },
+  };
 
   return (
     <Grow in={chart} timeout={1500}>
@@ -71,7 +110,15 @@ const Chart = ({ selectedIndex }) => {
               </Button>
               {chartData?.[0]?.analysis && (
                 <>
-                  {chartData?.[0]?.analysis?.map((d, index) => (
+                  <AliceCarousel
+                    mouseTracking
+                    items={items}
+                    responsive={responsive}
+                    controlsStrategy="alternate"
+                    disableButtonsControls={true}
+                    disableDotsControls={true}
+                  />
+                  {/* {chartData?.[0]?.analysis?.map((d, index) => (
                     <Button
                       sx={{
                         ":hover": {
@@ -98,8 +145,8 @@ const Chart = ({ selectedIndex }) => {
                         alt="satellite"
                       />
                       {d.day}
-                    </Button>
-                  ))}
+                    </Button> */}
+                  {/* ))} */}
                 </>
               )}
             </div>
@@ -141,37 +188,45 @@ const Chart = ({ selectedIndex }) => {
               <ArrowUpward />
             </Button>
             {chartData?.[0]?.analysis && (
-              <>
-                {chartData?.[0]?.analysis?.map((d, index) => (
-                  <Button
-                    sx={{
-                      ":hover": {
-                        color: "white",
-                        border: "2px solid #333333 !important",
-                      },
-                    }}
-                    style={{
-                      margin: "0px 0px 0px 5px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      color: "black",
-                      border: "2px solid #7f7f7d",
-                      fontSize: 10,
-                      minWidth: 125,
-                    }}
-                    // color="primary"
-                    variant="outlined"
-                  >
-                    <img
-                      style={{ marginRight: 5, width: 15 }}
-                      src={Satellite}
-                      alt="satellite"
-                    />
-                    {d.day}
-                  </Button>
-                ))}
-              </>
+              <AliceCarousel
+                mouseTracking
+                items={items}
+                responsive={responsive}
+                controlsStrategy="alternate"
+                disableButtonsControls={true}
+                disableDotsControls={true}
+              />
+              // <>
+              //   {chartData?.[0]?.analysis?.map((d, index) => (
+              //     <Button
+              //       sx={{
+              //         ":hover": {
+              //           color: "white",
+              //           border: "2px solid #333333 !important",
+              //         },
+              //       }}
+              //       style={{
+              //         margin: "0px 0px 0px 5px",
+              //         display: "flex",
+              //         justifyContent: "center",
+              //         alignItems: "center",
+              //         color: "black",
+              //         border: "2px solid #7f7f7d",
+              //         fontSize: 10,
+              //         minWidth: 125,
+              //       }}
+              //       // color="primary"
+              //       variant="outlined"
+              //     >
+              //       <img
+              //         style={{ marginRight: 5, width: 15 }}
+              //         src={Satellite}
+              //         alt="satellite"
+              //       />
+              //       {d.day}
+              //     </Button>
+              //   ))}
+              // </>
             )}
           </div>
         )}
