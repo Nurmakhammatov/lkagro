@@ -52,7 +52,7 @@ const Chart = ({ selectedIndex }) => {
           <>
             <div
               style={{
-                width: "90%",
+                width: "99%",
                 overflow: "hidden",
                 margin: "5px 0px 0px 5px",
                 display: "flex",
@@ -86,12 +86,14 @@ const Chart = ({ selectedIndex }) => {
                         alignItems: "center",
                         color: "black",
                         border: "2px solid #7f7f7d",
+                        fontSize: 10,
+                        minWidth: 125,
                       }}
                       // color="primary"
                       variant="outlined"
                     >
                       <img
-                        style={{ marginRight: 5 }}
+                        style={{ marginRight: 5, width: 15 }}
                         src={Satellite}
                         alt="satellite"
                       />
@@ -125,7 +127,7 @@ const Chart = ({ selectedIndex }) => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              width: "90%",
+              width: "99%",
               overflow: "hidden",
             }}
           >
@@ -155,13 +157,14 @@ const Chart = ({ selectedIndex }) => {
                       alignItems: "center",
                       color: "black",
                       border: "2px solid #7f7f7d",
-                      width: "200px",
+                      fontSize: 10,
+                      minWidth: 125,
                     }}
                     // color="primary"
                     variant="outlined"
                   >
                     <img
-                      style={{ marginRight: 5 }}
+                      style={{ marginRight: 5, width: 15 }}
                       src={Satellite}
                       alt="satellite"
                     />
