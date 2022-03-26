@@ -10,8 +10,8 @@ import { useSelector } from "react-redux";
 export default function MultipleSelect({
   setSelectedChartTypes,
   selectedChartTypes,
+  indexes,
 }) {
-  const indexes = useSelector((state) => state.sideBarToggle.indexes);
   const handleChange = (event) => {
     const {
       target: { value },
@@ -31,7 +31,7 @@ export default function MultipleSelect({
         input={<OutlinedInput label="Танланг" sx={{ width: "100%" }} />}
         // MenuProps={MenuProps}
       >
-        {indexes?.[0].index.map((name) => (
+        {indexes?.map((name) => (
           <MenuItem key={name} value={name}>
             {name}
           </MenuItem>

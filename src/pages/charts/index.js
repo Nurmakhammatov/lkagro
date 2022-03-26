@@ -20,6 +20,7 @@ const FieldChart = ({ chartData }) => {
     color: ["#7367f0", "#03a9f4"],
     tooltip: {
       formatter: (params) => {
+        console.log(params);
         return `<div style="display: flex; justify-content: space-between; flex-direction: column" class='tooltip-key'><div style="display: flex; justify-content: space-between"> ${"Мин"}
          <span style="margin: 0px 20px 0px 0px"> ${" - "}${chartData?.[0]?.analysis.map(
           (d) => d.min
@@ -50,16 +51,17 @@ const FieldChart = ({ chartData }) => {
       },
     },
     grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "3%",
+      left: "2%",
+      right: "2%",
+      top: "10%",
+      bottom: "0%",
       containLabel: true,
     },
     xAxis: [
       {
         type: "category",
         boundaryGap: false,
-        data: chartData?.[0]?.analysis.map((d) => d.the_day),
+        data: chartData?.[0]?.analysis?.map((d) => d.the_day),
         axisLabel: {
           // rotate: 45,
           formatter: "{value}",
@@ -72,9 +74,9 @@ const FieldChart = ({ chartData }) => {
     ],
     yAxis: [
       {
-        min: 0,
-        max: 1,
-        interval: 0.1,
+        // min: 0,
+        // max: 1,
+        // interval: 0.1,
         type: "value",
         axisLabel: {
           formatter: "{value}",
