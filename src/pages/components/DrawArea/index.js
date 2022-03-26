@@ -12,6 +12,7 @@ const DrawArea = ({ setOpen }) => {
   return (
     <div
       style={{
+        height: "100%",
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
@@ -20,22 +21,22 @@ const DrawArea = ({ setOpen }) => {
     >
       <div
         style={{
+          height: "100%",
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
           alignItems: "center",
         }}
       >
         <img style={{ width: 48, height: 48 }} src={Pen} alt="Pen" />
+
+        <ButtonPrimary
+          onClick={handleDrawPolygon}
+          title={"Maydon chizish"}
+          width={"100%"}
+          minWidth={"100%"}
+        />
       </div>
-      <p>
-        lorem30sadfas dfas fasdf dasf dskjfk sdajkfhjka shdjk fhajksdh jkfhdsajk
-      </p>
-      <ButtonPrimary
-        onClick={handleDrawPolygon}
-        title={"Maydon chizish"}
-        width={"100%"}
-        minWidth={"100%"}
-      />
     </div>
   );
 };
