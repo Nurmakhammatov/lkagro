@@ -17,29 +17,28 @@ const FieldChart = ({ chartData }) => {
       },
     },
 
-    color: ["#7367f0", "#03a9f4"],
+    color: ["#a9cc52"],
     tooltip: {
       formatter: (params) => {
-        console.log(params);
-        return `<div style="display: flex; justify-content: space-between; flex-direction: column" class='tooltip-key'><div style="display: flex; justify-content: space-between"> ${"Мин"}
-         <span style="margin: 0px 20px 0px 0px"> ${" - "}${chartData?.[0]?.analysis.map(
-          (d) => d.min
-        )}</div>
-         <div style="display: flex; justify-content: space-between"> ${"Ўрта "}
-         <span style="margin: 0px 20px 0px 0px"> ${" - "}${chartData?.[0]?.analysis.map(
-          (d) => d.mean
-        )}</div>
-         <div style="display: flex; justify-content: space-between"> ${"Макс "} 
-         <span style="margin: 0px 20px 0px 0px"> ${"  - "}${chartData?.[0]?.analysis.map(
-          (d) => d.max
-        )}</div>
-         </div>`;
+        let tooltip;
+        chartData?.[0]?.analysis.map((d, index) => {
+          if (index === params.dataIndex) {
+            tooltip = `<div style="display: flex; justify-content: space-between; flex-direction: column" class='tooltip-key'><div style="display: flex; justify-content: space-between"> ${"Мин"}
+            <span style="margin: 0px 20px 0px 0px"> ${" - "}${d.min}</div>
+            <div style="display: flex; justify-content: space-between"> ${"Ўрта "}
+            <span style="margin: 0px 20px 0px 0px"> ${" - "}${d.mean}</div>
+            <div style="display: flex; justify-content: space-between"> ${"Макс "}
+            <span style="margin: 0px 20px 0px 0px"> ${"  - "}${d.max}</div>
+            </div>`;
+          }
+        });
+        return tooltip;
       },
       trigger: "item",
       axisPointer: {
         animation: false,
         label: {
-          backgroundColor: "#6a7985",
+          backgroundColor: "black",
         },
       },
     },
@@ -95,8 +94,11 @@ const FieldChart = ({ chartData }) => {
           show: false,
           position: "bottom",
         },
+
+        lineStyle: { color: "#a9cc52" },
         areaStyle: {
           opacity: 0,
+          color: "black",
         },
         emphasis: {
           focus: "series",
@@ -104,6 +106,7 @@ const FieldChart = ({ chartData }) => {
         data: chartData?.[0]?.graph.map((d) => d),
         symbol: "circle",
         symbolSize: 10,
+        markPoint: { itemStyle: { color: "red" } },
       },
     ],
   };

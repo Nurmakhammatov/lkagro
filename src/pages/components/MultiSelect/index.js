@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -6,12 +6,19 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useSelector } from "react-redux";
+import authApi from "../../../services/authService";
 
 export default function MultipleSelect({
   setSelectedChartTypes,
   selectedChartTypes,
-  indexes,
+  // indexes,
 }) {
+  const [indexes, setIndexes] = useState([]);
+  useEffect(async () => {
+    const { data } = await authApi.getStats();
+    setIndexes(data.data.indexes);
+  }, []);
+
   const handleChange = (event) => {
     const {
       target: { value },
@@ -32,8 +39,15 @@ export default function MultipleSelect({
         // MenuProps={MenuProps}
       >
         {indexes?.map((name) => (
-          <MenuItem key={name} value={name}>
-            {name}
+          <MenuItem
+            style={{
+              backgroundColor:
+                selectedChartTypes.includes(name.index_name) && "#fad652",
+            }}
+            key={name.index_name}
+            value={name.index_name}
+          >
+            {name.index_name}
           </MenuItem>
         ))}
       </Select>

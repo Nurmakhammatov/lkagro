@@ -66,14 +66,12 @@ const ListOfMaps = ({ open }) => {
     if (selectedIndex !== id) {
       dispatch(handleSelectedIndex(id));
       mapInstance.map.scrollWheelZoom.disable();
-      // mapInstance.map.zoomControl.disable()
+
       const { data } = await api.getFieldById(id);
       setMapData(data);
-      
       dispatch(handleGetIndexes([data?.[0]?.index]));
     } else {
       mapInstance.map.scrollWheelZoom.enable();
-      // mapInstance.map.zoomControl.enable()
       dispatch(handleSelectedIndex(null));
       mapInstance.map.flyTo(centerMap, 14);
       setMapData(result);
@@ -355,6 +353,6 @@ const ListOfMaps = ({ open }) => {
       </Grow>
     </>
   );
-};;
+};
 
 export default ListOfMaps;

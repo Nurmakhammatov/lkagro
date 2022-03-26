@@ -20,6 +20,7 @@ const LModal = ({ options }) => {
     padding: 0,
   };
   const [open, setOpen] = useState(true);
+  console.log(options);
   return (
     <>
       <Modal
@@ -67,6 +68,7 @@ const LModal = ({ options }) => {
                     Бекор қилиш
                   </Button>
                   <Button
+                    onClick={() => options.okCb && options.okCb()}
                     style={{ margin: "0px 5px" }}
                     variant="contained"
                     color="success"

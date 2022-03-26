@@ -10,9 +10,6 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
   const [map, setMap] = useState(null);
   const [lfMap, setLFMap] = useState(null);
   const centerMap = useSelector((state) => state.sideBarToggle.centerMap);
-  const selectedIndex = useSelector(
-    (state) => state.sideBarToggle.selectedIndex
-  );
 
   useEffect(() => {
     if (!map) return;

@@ -14,7 +14,7 @@ const Chart = ({ selectedIndex }) => {
   const chart = useSelector((state) => state.sideBarToggle.chart);
   const [chartData, setChartData] = useState([]);
   const [extraSidebar, setExtraSidebar] = useState(true);
-  const [selectedChartTypes, setSelectedChartTypes] = useState([]);
+  const [selectedChartTypes, setSelectedChartTypes] = useState(["NDVI"]);
   const dateFrom = useSelector((state) => state.datePickers.dateFrom);
   const dateTo = useSelector((state) => state.datePickers.dateTo);
   const indexes = useSelector((state) => state.sideBarToggle.indexes);
