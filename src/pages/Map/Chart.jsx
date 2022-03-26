@@ -17,20 +17,21 @@ const Chart = ({ selectedIndex }) => {
   const [selectedChartTypes, setSelectedChartTypes] = useState([]);
   const dateFrom = useSelector((state) => state.datePickers.dateFrom);
   const dateTo = useSelector((state) => state.datePickers.dateTo);
+  const indexes = useSelector((state) => state.sideBarToggle.indexes);
 
   const getChartDetails = async () => {
     const { data } = await api.getChartsData(
       selectedIndex,
       moment(dateFrom).format("YYYY-MM-DD"),
       moment(dateTo).format("YYYY-MM-DD"),
-      ["ndvi"]
+      selectedChartTypes.length > 0 ? selectedChartTypes : indexes
     );
     setChartData(data);
   };
 
   useEffect(() => {
     getChartDetails();
-  }, [selectedIndex]);
+  }, [selectedIndex, selectedChartTypes, dateFrom, dateTo]);
 
   return (
     <Grow in={chart} timeout={1500}>
@@ -51,6 +52,8 @@ const Chart = ({ selectedIndex }) => {
           <>
             <div
               style={{
+                width: "90%",
+                overflow: "hidden",
                 margin: "5px 0px 0px 5px",
                 display: "flex",
                 flexDirection: "row",
@@ -66,39 +69,48 @@ const Chart = ({ selectedIndex }) => {
               >
                 <ArrowDownward />
               </Button>
-
-              <Button
-                sx={{
-                  ":hover": {
-                    color: "white",
-                    border: "2px solid #333333 !important",
-                  },
-                }}
-                style={{
-                  margin: "0px 0px 0px 5px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  color: "black",
-                  border: "2px solid #7f7f7d",
-                }}
-                // color="primary"
-                variant="outlined"
-              >
-                <img
-                  style={{ marginRight: 5 }}
-                  src={Satellite}
-                  alt="satellite"
-                />
-                {chartData?.[0]?.analysis?.map((d) => d.day)}
-              </Button>
+              {chartData?.[0]?.analysis && (
+                <>
+                  {chartData?.[0]?.analysis?.map((d, index) => (
+                    <Button
+                      sx={{
+                        ":hover": {
+                          color: "white",
+                          border: "2px solid #333333 !important",
+                        },
+                      }}
+                      style={{
+                        margin: "0px 0px 0px 5px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color: "black",
+                        border: "2px solid #7f7f7d",
+                      }}
+                      // color="primary"
+                      variant="outlined"
+                    >
+                      <img
+                        style={{ marginRight: 5 }}
+                        src={Satellite}
+                        alt="satellite"
+                      />
+                      {d.day}
+                    </Button>
+                  ))}
+                </>
+              )}
             </div>
             <Grid container px={1}>
               <Grid item xs={1.2}>
-                {/* <MultipleSelect
-                  setSelectedChartTypes={setSelectedChartTypes}
-                  selectedChartTypes={selectedChartTypes}
-                /> */}
+                {indexes.length > 0 && (
+                  <MultipleSelect
+                    setSelectedChartTypes={setSelectedChartTypes}
+                    selectedChartTypes={selectedChartTypes}
+                    indexes={indexes}
+                  />
+                )}
+
                 <PickerDate />
               </Grid>
               <Grid item xs={10.8}>
@@ -113,6 +125,8 @@ const Chart = ({ selectedIndex }) => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              width: "90%",
+              overflow: "hidden",
             }}
           >
             <Button
@@ -124,28 +138,38 @@ const Chart = ({ selectedIndex }) => {
             >
               <ArrowUpward />
             </Button>
-
-            <Button
-              sx={{
-                ":hover": {
-                  color: "white",
-                  border: "2px solid #333333 !important",
-                },
-              }}
-              style={{
-                margin: "0px 0px 0px 5px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "black",
-                border: "2px solid #7f7f7d",
-              }}
-              // color="primary"
-              variant="outlined"
-            >
-              <img style={{ marginRight: 5 }} src={Satellite} alt="satellite" />
-              {chartData?.[0]?.analysis?.map((d) => d.day)}
-            </Button>
+            {chartData?.[0]?.analysis && (
+              <>
+                {chartData?.[0]?.analysis?.map((d, index) => (
+                  <Button
+                    sx={{
+                      ":hover": {
+                        color: "white",
+                        border: "2px solid #333333 !important",
+                      },
+                    }}
+                    style={{
+                      margin: "0px 0px 0px 5px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "black",
+                      border: "2px solid #7f7f7d",
+                      width: "200px",
+                    }}
+                    // color="primary"
+                    variant="outlined"
+                  >
+                    <img
+                      style={{ marginRight: 5 }}
+                      src={Satellite}
+                      alt="satellite"
+                    />
+                    {d.day}
+                  </Button>
+                ))}
+              </>
+            )}
           </div>
         )}
       </Box>
