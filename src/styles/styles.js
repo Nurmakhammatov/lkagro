@@ -3,7 +3,6 @@ import { styled, alpha } from "@mui/system";
 import InputBase from "@mui/material/InputBase";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
-import { hover } from "@testing-library/user-event/dist/hover";
 
 const theme = createTheme({
   typography: {
@@ -15,6 +14,7 @@ const theme = createTheme({
   },
   palette: {
     primary: { main: "#A9CC52" },
+    secondary: { main: "#FFED50" },
   },
   components: {
     MuiDrawer: {
