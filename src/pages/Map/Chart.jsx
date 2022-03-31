@@ -1,30 +1,70 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Grow, Box, Button, Grid, IconButton } from "@mui/material";
-import moment from "moment";
+import { Grow, Box, Button, Grid } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import Satellite from "../../assets/satellite.png";
 import FieldChart from "../charts";
 import api from "./api/index";
-import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PickerDate from "./../components/DatePicker/index";
+import {
+  ArrowBack,
+  ArrowDownward,
+  ArrowForward,
+  ArrowUpward,
+} from "@mui/icons-material";
 import MultipleSelect from "./../components/MultiSelect/index";
 import AliceCarousel from "react-alice-carousel";
-import Satellite from "../../assets/satellite.png";
+import {
+  handleGetAreaMap,
+  handleGetIndexes,
+  handleOpenBottomBar,
+} from "../../redux/features/sideBar/sideBarSlice";
+import moment from "moment";
 
 const Chart = ({ selectedIndex }) => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
   const chart = useSelector((state) => state.sideBarToggle.chart);
   const [chartData, setChartData] = useState([]);
   const [extraSidebar, setExtraSidebar] = useState(true);
-  const [selectedChartTypes, setSelectedChartTypes] = useState(["NDVI"]);
+  const [nextSlide, setNextSlide] = useState(0);
+  const [timer, setTimer] = useState(null);
   const dateFrom = useSelector((state) => state.datePickers.dateFrom);
   const dateTo = useSelector((state) => state.datePickers.dateTo);
   const indexes = useSelector((state) => state.sideBarToggle.indexes);
 
+  const dispatch = useDispatch();
+
+  const getChartDetails = async () => {
+    const { data } = await api.getChartsData(
+      selectedIndex,
+      moment(dateFrom).format("YYYY-MM-DD"),
+      moment(dateTo).format("YYYY-MM-DD"),
+      indexes
+    );
+    if (
+      Number(localStorage.getItem("chartLength")) !==
+      data?.[0]?.analysis?.length
+    ) {
+      localStorage.setItem("chartLength", data?.[0]?.analysis?.length);
+      setChartData(data);
+      const theLast = data?.[0]?.analysis[data?.[0]?.analysis.length - 1];
+
+      const result = await api.getFieldById(
+        selectedIndex,
+        [String(theLast.index)],
+        moment(theLast.the_date).format("DD.MM.YYYY"),
+        [theLast.id]
+      );
+      dispatch(handleGetAreaMap(result.data));
+
+      // dispatch(handleGetIndexes([data?.[0]?.index.toUpperCase()]));
+    }
+    // clearInterval(timer)
+  };
+
   const items = chartData?.[0]?.analysis?.map((d, index) => [
     <div className="item">
       <Button
+        onClick={() => getChartDetailByPoints(d.the_date, d.index, d.id)}
         sx={{
           ":hover": {
             color: "white",
@@ -39,9 +79,7 @@ const Chart = ({ selectedIndex }) => {
           color: "black",
           border: "2px solid #7f7f7d",
           fontSize: 10,
-          padding: "2px 2px",
-          // minWidth: 125,
-          maxWidth: 125,
+          minWidth: 130,
         }}
         // color="primary"
         variant="outlined"
@@ -56,24 +94,42 @@ const Chart = ({ selectedIndex }) => {
     </div>,
   ]);
 
-  const getChartDetails = async () => {
-    const { data } = await api.getChartsData(
+  const getChartDetailByPoints = async (the_date, indexes, analysisIds) => {
+    const { data } = await api.getFieldById(
       selectedIndex,
-      moment(dateFrom).format("YYYY-MM-DD"),
-      moment(dateTo).format("YYYY-MM-DD"),
-      selectedChartTypes.length > 0 ? selectedChartTypes : indexes
+      [String(indexes)],
+      moment(the_date).format("DD.MM.YYYY"),
+      [analysisIds]
     );
-    setChartData(data);
+    dispatch(handleGetAreaMap(data));
   };
 
   useEffect(() => {
     getChartDetails();
-  }, [selectedIndex, selectedChartTypes, dateFrom, dateTo]);
+  }, [selectedIndex, indexes, dateFrom, dateTo]);
+
+  useEffect(() => {
+    if (!extraSidebar) {
+      const interval = setInterval(() => {
+        getChartDetails();
+      }, 2000);
+      setTimer(interval);
+    }
+    return () => clearInterval(timer);
+  }, [extraSidebar]);
+
+  useEffect(async () => {
+    const { data } = await api.getFieldById(selectedIndex, [String(indexes)]);
+    dispatch(handleGetAreaMap(data));
+  }, [indexes]);
 
   const responsive = {
     0: { items: 1 },
     568: { items: 2 },
-    1024: { items: 8 },
+    1024: { items: 6 },
+    1400: { items: 10 },
+    3000: { items: 15 },
+    4000: { items: 18 },
   };
 
   return (
@@ -93,108 +149,170 @@ const Chart = ({ selectedIndex }) => {
       >
         {!extraSidebar ? (
           <>
-            <Grid container pt={0.5} px={1}>
-              <Grid item xs={0.5} alignItems={"center"}>
-                <Button
-                  style={{
-                    backgroundColor: "#a9cc52",
-                  }}
-                  onClick={() => setExtraSidebar(true)}
-                  variant="contained"
-                >
-                  <ArrowDownward />
-                </Button>
-              </Grid>{" "}
-              <Grid item xs={0.25}>
-                <IconButton>
-                  <ChevronLeftIcon />
-                </IconButton>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                margin: "5px 0px 0px 5px",
+              }}
+            >
+              <Button
+                style={{
+                  backgroundColor: "#a9cc52",
+                }}
+                onClick={() => {
+                  dispatch(handleOpenBottomBar(false));
+                  setExtraSidebar(true);
+                  clearInterval(timer);
+                }}
+                variant="contained"
+              >
+                <ArrowDownward />
+              </Button>
+              <Button
+                variant="outlined"
+                style={{
+                  color: "black",
+                  margin: "0px 5px",
+                  border: "2px solid #a9cc52",
+                }}
+                onClick={() =>
+                  setNextSlide((prev) => (prev > 0 ? prev - 1 : 0))
+                }
+              >
+                <ArrowBack />
+              </Button>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "90%",
+                  overflow: "hidden",
+                }}
+              >
+                {chartData?.[0]?.analysis && (
+                  <>
+                    <AliceCarousel
+                      keyboardNavigation={true}
+                      activeIndex={nextSlide}
+                      mouseTracking
+                      items={items}
+                      responsive={responsive}
+                      controlsStrategy="alternate"
+                      disableButtonsControls={true}
+                      disableDotsControls={true}
+                    />
+                  </>
+                )}
+              </div>
+              <Button
+                variant="outlined"
+                style={{
+                  color: "black",
+                  margin: "0px 5px",
+                  border: "2px solid #a9cc52",
+                }}
+                onClick={() =>
+                  setNextSlide((prev) =>
+                    chartData?.[0]?.analysis.length - 11 > prev
+                      ? prev + 1
+                      : chartData?.[0]?.analysis.length - 11
+                  )
+                }
+              >
+                <ArrowForward />
+              </Button>
+            </div>
+            <Grid container px={1}>
+              <Grid item xs={1.2}>
+                {indexes.length > 0 && (
+                  <MultipleSelect indexesSelect={indexes} />
+                )}
+
+                <PickerDate />
               </Grid>
+              <Grid item xs={10.8}>
+                <FieldChart
+                  chartData={chartData}
+                  getChartDetailByPoints={getChartDetailByPoints}
+                />
+              </Grid>
+            </Grid>
+          </>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              margin: "5px 0px 0px 5px",
+            }}
+          >
+            <Button
+              style={{
+                backgroundColor: "#a9cc52",
+              }}
+              onClick={() => {
+                dispatch(handleOpenBottomBar(true));
+                setExtraSidebar(false);
+              }}
+              variant="contained"
+            >
+              <ArrowUpward />
+            </Button>
+            <Button
+              variant="outlined"
+              style={{
+                color: "black",
+                margin: "0px 5px",
+                border: "2px solid #a9cc52",
+              }}
+              onClick={() => setNextSlide((prev) => (prev > 0 ? prev - 1 : 0))}
+            >
+              <ArrowBack />
+            </Button>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "90%",
+                overflow: "hidden",
+              }}
+            >
               {chartData?.[0]?.analysis && (
-                <Grid item xs={11} pt={1}>
+                <>
                   <AliceCarousel
+                    keyboardNavigation={true}
+                    activeIndex={nextSlide}
                     mouseTracking
                     items={items}
                     responsive={responsive}
                     controlsStrategy="alternate"
                     disableButtonsControls={true}
                     disableDotsControls={true}
-                    paddingLeft="50"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
                   />
-                </Grid>
+                </>
               )}
-              <Grid item xs={0.25}>
-                <IconButton
-                //  onClick={() => slideNext}
-                >
-                  <ChevronRightIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-            <Grid container px={1}>
-              <Grid item xs={1.2}>
-                {indexes.length > 0 && (
-                  <MultipleSelect
-                    setSelectedChartTypes={setSelectedChartTypes}
-                    selectedChartTypes={selectedChartTypes}
-                    indexes={indexes}
-                  />
-                )}
-
-                <PickerDate />
-              </Grid>
-              <Grid item xs={10.8}>
-                <FieldChart chartData={chartData} />
-              </Grid>
-            </Grid>
-          </>
-        ) : (
-          <Grid container pt={0.5} px={1}>
-            <Grid item xs={0.5} alignItems={"center"}>
-              <Button
-                style={{
-                  backgroundColor: "#a9cc52",
-                }}
-                onClick={() => setExtraSidebar(false)}
-                variant="contained"
-              >
-                <ArrowUpward />
-              </Button>
-            </Grid>
-            <Grid item xs={0.25}>
-              <IconButton>
-                <ChevronLeftIcon />
-              </IconButton>
-            </Grid>
-            {chartData?.[0]?.analysis && (
-              <Grid item xs={11} pt={0.4} container>
-                <AliceCarousel
-                  mouseTracking
-                  items={items}
-                  responsive={responsive}
-                  controlsStrategy="alternate"
-                  disableButtonsControls={true}
-                  disableDotsControls={true}
-                  paddingLeft="50"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                />
-              </Grid>
-            )}
-            <Grid item xs={0.25}>
-              <IconButton>
-                <ChevronRightIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
+            </div>
+            <Button
+              variant="outlined"
+              style={{
+                color: "black",
+                margin: "0px 5px",
+                border: "2px solid #a9cc52",
+              }}
+              onClick={() =>
+                setNextSlide((prev) =>
+                  chartData?.[0]?.analysis.length - 11 > prev
+                    ? prev + 1
+                    : chartData?.[0]?.analysis.length - 11
+                )
+              }
+            >
+              <ArrowForward />
+            </Button>
+          </div>
         )}
       </Box>
     </Grow>

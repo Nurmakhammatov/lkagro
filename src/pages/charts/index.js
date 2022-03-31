@@ -1,12 +1,14 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 
-const FieldChart = ({ chartData }) => {
+const FieldChart = ({ chartData, getChartDetailByPoints }) => {
   const [time, setTime] = useState([]);
   const [chiqishArr, setChiqishArr] = useState([]);
   const [kirishArr, setKirishArr] = useState([]);
   const [chiqish, setChiqish] = useState([]);
   const [kirish, setKirish] = useState([]);
+
+  localStorage.setItem("chartLength", chartData?.[0]?.analysis.length);
 
   const options = {
     title: {
@@ -17,7 +19,7 @@ const FieldChart = ({ chartData }) => {
       },
     },
 
-    color: ["#a9cc52"],
+    color: ["#45a746"],
     tooltip: {
       formatter: (params) => {
         let tooltip;
@@ -97,7 +99,7 @@ const FieldChart = ({ chartData }) => {
           position: "bottom",
         },
 
-        lineStyle: { color: "#a9cc52" },
+        lineStyle: { color: "#45a746" },
         areaStyle: {
           opacity: 0,
           color: "black",
@@ -169,11 +171,13 @@ const FieldChart = ({ chartData }) => {
   //     }
   //   }, [active, sendDate, pending]);
 
-  // const onChartLegendselectchanged = (param) => {
-  //   const keys = Object.keys(param.selected)
-  //   setKirishCond(param.selected[keys[0]])
-  //   setChiqishCond(param.selected[keys[1]])
-  // }
+  const onChartLegendselectchanged = (param) => {
+    chartData?.[0]?.analysis.map((d, index) => {
+      if (index === param.fromActionPayload.dataIndexInside) {
+        getChartDetailByPoints(d.the_date, index, d.id);
+      }
+    });
+  };
 
   return (
     <>
@@ -188,6 +192,7 @@ const FieldChart = ({ chartData }) => {
           theme="dark_theme"
           option={options}
           style={{ height: "100%" }}
+          onEvents={{ selectChanged: onChartLegendselectchanged }}
           //   theme={"theme_name"}
         />
       </div>

@@ -20,10 +20,10 @@ function removeDraw(cond) {
   geomObj.removeDraw(cond)
 }
 
-const connectToMap = (map, onListForma1, intl) => {
-  geomObj = F.geoms({ onListForma1, intl }).addTo(map)
-  return { drawLine, getShapes, drawPolygon, drawCircle, removeDraw }
-}
+const connectToMap = (map, onListForma1, intl, dispatch) => {
+  geomObj = F.geoms({ onListForma1, intl, dispatch }).addTo(map);
+  return { drawLine, getShapes, drawPolygon, drawCircle, removeDraw };
+};
 
 const geomConnections = { connectToMap, drawLine, getShapes, drawPolygon, drawCircle, removeDraw }
 

@@ -21,6 +21,7 @@ export async function login(login, password) {
     password,
   });
   localStorage.setItem(tokenKey, data.data.access_token);
+  localStorage.setItem("user", JSON.stringify(data.data.user));
 }
 export async function register(
   firstName,
@@ -53,6 +54,7 @@ export async function register(
     passwordConfirm,
   });
   localStorage.setItem(tokenKey, data.access_token);
+  localStorage.setItem("user", JSON.stringify(data));
 }
 
 export function logout() {

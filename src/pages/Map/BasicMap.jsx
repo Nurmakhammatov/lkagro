@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { MapContainer } from "react-leaflet";
 import initMap from "./pure/map";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export let mapInstance;
 export let lfMapInstance;
@@ -10,6 +11,7 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
   const [map, setMap] = useState(null);
   const [lfMap, setLFMap] = useState(null);
   const centerMap = useSelector((state) => state.sideBarToggle.centerMap);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!map) return;
@@ -20,7 +22,7 @@ const BasicMap = ({ isSmallVertical, isSmallHorizontal }) => {
 
   useEffect(() => {
     if (map && !lfMap) {
-      setLFMap(initMap(map, centerMap));
+      setLFMap(initMap(map, centerMap, false, dispatch));
     }
   }, [map, lfMap]);
 

@@ -7,4 +7,8 @@ export default configureStore({
     sideBarToggle: sideBarContursSlice,
     datePickers: datePickerSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

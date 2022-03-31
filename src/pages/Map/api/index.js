@@ -6,8 +6,12 @@ const getFields = () => {
   return http.get(`${url}/main/fields/1`);
 };
 
-const getFieldById = (id) => {
-  return http.post(`${url}/main/fields/analysis/image/${id}`);
+const getFieldById = (id, indexes, the_date, analysisIds) => {
+  return http.post(`${url}/main/fields/analysis/image/${id}`, {
+    the_date,
+    indexes,
+    analysisIds,
+  });
 };
 
 const getChartsData = (fieldId, from, to, indexes) => {

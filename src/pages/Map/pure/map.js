@@ -36,7 +36,7 @@ import "./styles/leaflet/leaflet.loader.css";
 import "./styles/leaflet/leaflet.markercluster.css";
 import "./styles/leaflet/leaflet.markercluster.default.css";
 
-const initMap = (map, center, intl) => {
+const initMap = (map, center, intl, dispatch) => {
   const attr = {
     maxZoom: 18,
     attribution: `&copy; ABL-Soft&SS 2014-${new Date().getFullYear()}`,
@@ -108,7 +108,9 @@ const initMap = (map, center, intl) => {
   const geomFuncs = geomConnections.connectToMap(
     map,
     // callbacks.handlePassport,
-    intl
+    false,
+    intl,
+    dispatch
   );
 
   // contextConnections.initMapContext(map);
