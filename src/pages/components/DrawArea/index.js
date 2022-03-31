@@ -32,7 +32,7 @@ const DrawArea = ({ setOpen }) => {
 
         <ButtonPrimary
           onClick={handleDrawPolygon}
-          title={"Maydon chizish"}
+          title={"Майдон чизиш"}
           width={"100%"}
           minWidth={"100%"}
         />

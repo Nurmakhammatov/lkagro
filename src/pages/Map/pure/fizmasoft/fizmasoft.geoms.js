@@ -7,19 +7,26 @@ import "../leaflet/leaflet.reactwindow";
 import "./fizmasoft.ordinaryPeople";
 // import CustomInput from "reactstrap/lib/CustomInput"
 import axios from "axios";
-import { TextField } from "@mui/material";
+import { Input, OutlinedInput, TextField } from "@mui/material";
 // import useJwt from "@src/auth/jwt/useJwt";
 // const config = useJwt.jwtConfig;
 // import onListConnections from "../connections/onlistConnections"
 // import Input from "reactstrap/lib/Input"
 import url from "../../../../config";
+import {
+  handleGetAreaMap,
+  handleGetFields,
+  handleGetFirstData,
+  handleSelectedIndex,
+} from "../../../../redux/features/sideBar/sideBarSlice";
+import api from "../../api";
 
 /* eslint-disable */
 F.Geoms = F.Class.extend({
   options: {
     selectedTypes: [],
     cropTypeInput: "",
-    cropTypeInput: "",
+    counterNumber: "",
     area: 0,
     onListForma1: () => {},
     left: 50,
@@ -107,33 +114,65 @@ F.Geoms = F.Class.extend({
   _cropTypeInput: function (name) {
     this.options.cropTypeInput = name;
   },
+  _counterNumberInput: function (name) {
+    this.options.counterNumber = name;
+  },
   _leftRightLine: function (e, left, right) {
     if (left) this.options.left = e.target.value;
     if (right) this.options.right = e.target.value;
   },
-  _getSelectedData: async function (list, layer, isLine, radius, leftRight) {
+  _getSelectedData: async function (counterNumber, cropTypeInput, layer) {
     const geojson = layer.toGeoJSON();
     // this.options.selectedTypes = [];
     // this._map.spin(true);
-    const { data, l } = isLine;
+    // const { data, l } = isLine;
     // ? await this._fetchLineData(list, geojson, leftRight)
-    await this._fetchPolygonData(layer, list, geojson, radius);
+    await this._fetchPolygonData(layer, geojson, cropTypeInput, counterNumber);
     // this._onListfuncs.addOnListMarkers(
     //   data.data,
     //   this._types,
     //   this.options.onListForma1
     // );
     // if (list.includes(-1))
-    //   this._ordinaryPeople.addPopup(l, isLine, radius, leftRight);
+    //   this._ordinaryPeople.addPopup(l, isLine, leftRight);
     // this._map.spin(false);
   },
-  _fetchPolygonData: async function (l, list, geojson, radius) {
-    const { data } = await axios.post(`${url}/main/fields/add/${1}`, {
-      counterNumber: 100,
-      cropType: "bug'doy",
-      polygon: geojson.geometry,
-    });
-    console.log(data);
+  _fetchPolygonData: async function (l, geojson, cropType, counterNumber) {
+    if (cropType === "" || counterNumber === "") return;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { data } = await axios.post(
+      `${url}/main/fields/add/${Number(user.id)}`,
+      {
+        counterNumber: Number(counterNumber),
+        cropType,
+        polygon: geojson.geometry,
+      }
+    );
+
+    if (data) {
+      const g = L.geoJSON(data.field.polygon, {
+        style: {
+          opacity: 0.75,
+          fillOpacity: 0.3,
+          fillColor: "#a9cc52",
+          color: "green",
+        },
+      }).addTo(this._fg);
+      setTimeout(async () => {
+        const result = await api.getFields();
+        const mapResult = await api.getFieldById(Number(data.field.id));
+        if (result.data) {
+          this.options.dispatch(handleSelectedIndex(Number(data.field.id)));
+          this.options.dispatch(handleGetFirstData(result.data?.[0]?.fields));
+          this.options.dispatch(handleGetFields(result.data?.[0]?.fields));
+          this.options.dispatch(handleGetAreaMap(mapResult.data));
+        }
+      }, 3000);
+
+      this._map.scrollWheelZoom.disable();
+      this._map.flyTo(g.getBounds().getCenter(), 16.5);
+      this._fg.removeLayer(l);
+    }
     return { data, l };
   },
   _fetchLineData: async function (list, geojson, leftRight) {
@@ -154,11 +193,9 @@ F.Geoms = F.Class.extend({
       modalCls: "modal-dialog-centered modal-xs",
       okCb: () =>
         this._getSelectedData(
-          this.options.selectedTypes,
-          layer,
-          isLine,
-          radius,
-          [this.options.left, this.options.right]
+          this.options.counterNumber,
+          this.options.cropTypeInput,
+          layer
         ),
       cancelCb: () => this._fg.removeLayer(layer),
       title: "Маълумотлар",
@@ -170,15 +207,14 @@ F.Geoms = F.Class.extend({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                width: "100%",
               }}
             >
               <h3>Экин тури:</h3>
-              <TextField
-                onChange={(e) => {
-                  console.log(e.target.value);
-                }}
+              <OutlinedInput
+                onChange={(e) => this._cropTypeInput(e.target.value)}
                 id="outlined-basic"
-                label="Outlined"
+                // label="Outlined"
                 variant="outlined"
               />
             </div>
@@ -187,13 +223,15 @@ F.Geoms = F.Class.extend({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                width: "100%",
               }}
             >
               <h3>Майдон рақами:</h3>
-              <TextField
-                onChange={(e) => console.log(e.target.value)}
+              <OutlinedInput
+                type="number"
+                onChange={(e) => this._counterNumberInput(e.target.value)}
                 id="outlined-basic"
-                label="Outlined"
+                // label="Outlined"
                 variant="outlined"
               />
             </div>

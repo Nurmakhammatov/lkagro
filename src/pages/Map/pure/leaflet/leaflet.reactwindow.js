@@ -11,7 +11,7 @@ const LModal = ({ options }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "30%",
+    width: "25%",
     bgcolor: "background.paper",
     borderRadius: "8px",
     boxShadow: 24,
@@ -67,17 +67,20 @@ const LModal = ({ options }) => {
                       options.cancelCb && options.cancelCb();
                       setOpen(false);
                     }}
-                    style={{ margin: "0px 5px" }}
+                    style={{ margin: "0px 5px", backgroundColor: "#fad652" }}
                     variant="contained"
-                    color="error"
                   >
                     Бекор қилиш
                   </Button>
                   <Button
-                    onClick={() => options.okCb && options.okCb()}
-                    style={{ margin: "0px 5px" }}
+                    onClick={() => {
+                      if (options.okCb) {
+                        options.okCb();
+                        setOpen(false);
+                      }
+                    }}
+                    style={{ margin: "0px 5px", backgroundColor: "#a9cc52" }}
                     variant="contained"
-                    color="success"
                   >
                     Сақлаш
                   </Button>

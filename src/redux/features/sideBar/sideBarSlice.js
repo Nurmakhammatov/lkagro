@@ -8,6 +8,10 @@ export const sideBarContursSlice = createSlice({
     selectedIndex: false,
     centerMap: null,
     indexes: ["NDVI"],
+    areaMap: null,
+    openBottomBar: false,
+    fields: [],
+    result: [],
   },
   reducers: {
     handleSelectedIndex: (state, action) => {
@@ -28,6 +32,18 @@ export const sideBarContursSlice = createSlice({
     handleGetIndexes: (state, action) => {
       state.indexes = action.payload;
     },
+    handleGetAreaMap: (state, action) => {
+      state.areaMap = action.payload;
+    },
+    handleOpenBottomBar: (state, action) => {
+      state.openBottomBar = action.payload;
+    },
+    handleGetFields: (state, action) => {
+      state.fields = action.payload;
+    },
+    handleGetFirstData: (state, action) => {
+      state.result = action.payload;
+    },
   },
 });
 
@@ -38,6 +54,10 @@ export const {
   handleSelectedIndex,
   handleCenterMap,
   handleGetIndexes,
+  handleGetAreaMap,
+  handleOpenBottomBar,
+  handleGetFields,
+  handleGetFirstData,
 } = sideBarContursSlice.actions;
 
 export default sideBarContursSlice.reducer;

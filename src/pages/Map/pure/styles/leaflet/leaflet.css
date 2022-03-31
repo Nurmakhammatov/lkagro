@@ -2,7 +2,7 @@
   background-color: white;
 }
 .leaflet-popup-content-wrapper {
-  background: rgba(0, 0, 0, 0.527);
+  background: rgba(169, 204, 82, 0.5);
   backdrop-filter: blur(5px);
 }
 .leaflet-popup-content {
