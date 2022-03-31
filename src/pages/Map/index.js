@@ -18,7 +18,6 @@ const Map = () => {
   const selectedIndex = useSelector(
     (state) => state.sideBarToggle.selectedIndex
   );
-  const centerMap = useSelector((state) => state.sideBarToggle.centerMap);
 
   const containerRef = useRef(null);
   const changeKontur = () => {

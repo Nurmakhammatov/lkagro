@@ -8,3 +8,23 @@
     background-position-x: 50%;
     background-position-y: 20%;
 }
+.alice-carousel__next-btn-item {
+    position: absolute !important;
+    right: 0;
+    top: 0;
+}
+.alice-carousel__prev-btn-item {
+    position: absolute !important;
+    left: 0;
+    top: 0;
+}
+.alice-carousel__next-btn-item.__inactive {
+    position: absolute !important;
+    right: 0;
+    top: 0;
+}
+.alice-carousel__prev-btn-item.__inactive {
+    position: absolute !important;
+    left: 0;
+    top: 0;
+}

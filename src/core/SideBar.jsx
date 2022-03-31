@@ -18,15 +18,15 @@ import Settings from "@mui/icons-material/Settings";
 
 const menuItems = [
   {
-    text: "My maps",
+    text: "Майдонлар",
     icon: <MapIcon color="black" />,
     path: "/map",
   },
-  {
-    text: "Add map",
-    icon: <AddCircleOutlined color="black" />,
-    path: "/add",
-  },
+  // {
+  //   text: "Add map",
+  //   icon: <AddCircleOutlined color="black" />,
+  //   path: "/add",
+  // },
 ];
 
 export default function SideBar() {
@@ -124,17 +124,21 @@ export default function SideBar() {
                   <ListItem button selected={location.pathname === item.path}>
                     <ListItemIcon>
                       {location.pathname === item.path ? (
-                        <Paper
-                          square={true}
-                          elevation={0}
-                          sx={{
-                            minWidth: "5px",
-                            minHeight: "100%",
-                            bgcolor: "#FAD652",
-                            ml: -1.9,
-                            mr: 1.3,
-                          }}
-                        ></Paper>
+                        <>
+                          {konturs && (
+                            <Paper
+                              square={true}
+                              elevation={0}
+                              sx={{
+                                minWidth: "5px",
+                                minHeight: "100%",
+                                bgcolor: "#FAD652",
+                                ml: -1.9,
+                                mr: 1.3,
+                              }}
+                            ></Paper>
+                          )}
+                        </>
                       ) : null}
                       {item.icon}
                     </ListItemIcon>

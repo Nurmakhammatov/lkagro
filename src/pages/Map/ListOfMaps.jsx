@@ -37,13 +37,21 @@ import {
   handleSelectedIndex,
   handleCenterMap,
   handleGetIndexes,
+  handleGetAreaMap,
+  handleOpenBottomBar,
+  handleGetFields,
+  handleGetFirstData,
 } from "../../redux/features/sideBar/sideBarSlice";
+import {
+  handleSelectDateFrom,
+  handleSelectDateTo,
+} from "../../redux/features/dates/datesSlice";
 
 const menuOptions = [
   { name: "Ўзгартириш", icon: <EditIcon /> },
   { name: "Ўчириш", icon: <DeleteIcon /> },
 ];
-const ListOfMaps = ({ open }) => {
+const ListOfMaps = ({ open, setSelectedChartTypes }) => {
   const dispatch = useDispatch();
   const [onMapView, setOnMapView] = React.useState(null);
   // const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -52,29 +60,47 @@ const ListOfMaps = ({ open }) => {
   );
   // const [sidebar, setSidebar] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
-  const [result, setResult] = React.useState([]);
-  const [fields, setFields] = React.useState([]);
-  const [mapData, setMapData] = React.useState([]);
+  // const [mapData, setMapData] = React.useState([]);
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
   const centerMap = useSelector((state) => state.sideBarToggle.centerMap);
+  const areaMap = useSelector((state) => state.sideBarToggle.areaMap);
+  const indexes = useSelector((state) => state.sideBarToggle.indexes);
+  const fields = useSelector((state) => state.sideBarToggle.fields);
+  const result = useSelector((state) => state.sideBarToggle.result);
+  const openBottomBar = useSelector(
+    (state) => state.sideBarToggle.openBottomBar
+  );
 
   const handleOpen = () => setOpenModal(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
 
   const handleListItemClick = async (id) => {
+    if (openMenu) return;
     if (selectedIndex !== id) {
+      dispatch(
+        handleSelectDateFrom(
+          "Fri Jan 01 2021 03:37:55 GMT+0500 (Узбекистан, стандартное время)"
+        )
+      );
+      dispatch(
+        handleSelectDateTo(
+          "Sat Jan 01 2022 03:37:55 GMT+0500 (Узбекистан, стандартное время)"
+        )
+      );
       dispatch(handleSelectedIndex(id));
       mapInstance.map.scrollWheelZoom.disable();
 
       const { data } = await api.getFieldById(id);
-      setMapData(data);
-      dispatch(handleGetIndexes([data?.[0]?.index]));
+      dispatch(handleGetAreaMap(data));
+
+      dispatch(handleGetIndexes([data?.[0]?.index.toUpperCase()]));
     } else {
+      dispatch(handleOpenBottomBar(false));
       mapInstance.map.scrollWheelZoom.enable();
       dispatch(handleSelectedIndex(null));
       mapInstance.map.flyTo(centerMap, 14);
-      setMapData(result);
+      dispatch(handleGetAreaMap(result));
     }
   };
 
@@ -91,9 +117,10 @@ const ListOfMaps = ({ open }) => {
 
   const getFields = async () => {
     const { data } = await api.getFields();
-    setResult(data?.[0]?.fields);
-    setFields(data?.[0]?.fields);
-    setMapData(data?.[0]?.fields);
+    dispatch(handleGetFirstData(data?.[0]?.fields));
+    dispatch(handleGetFields(data?.[0]?.fields));
+    dispatch(handleGetAreaMap(data?.[0]?.fields));
+    // setMapData(data?.[0]?.fields);
     dispatch(handleCenterMap(data?.[0]?.centeroid));
     localStorage.setItem("center", data?.[0]?.centeroid);
   };
@@ -104,13 +131,31 @@ const ListOfMaps = ({ open }) => {
     } else {
       mapInstance.map.scrollWheelZoom.enable();
       mapInstance.map.flyTo(centerMap, 14);
-      setResult([]);
-      setMapData([]);
-      setFields([]);
+      dispatch(handleGetFirstData([]));
+      // setMapData([]);
+      dispatch(handleGetAreaMap());
+      dispatch(handleGetFields([]));
       dispatch(handleSelectedIndex(null));
       if (onMapView) onMapView.removeLayers();
     }
   }, [open]);
+
+  const handleEscBtn = (e, center) => {
+    if (e.keyCode !== 27) return;
+    else {
+      dispatch(handleOpenBottomBar(false));
+      mapInstance.map.scrollWheelZoom.enable();
+      dispatch(handleSelectedIndex(null));
+      if (center) mapInstance.map.flyTo(center, 14);
+      dispatch(handleGetAreaMap(result));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keyup", (e) => handleEscBtn(e, centerMap));
+    return () =>
+      document.removeEventListener("keyup", (e) => handleEscBtn(e, centerMap));
+  }, [centerMap]);
 
   useEffect(() => {
     if (!mapInstance) return;
@@ -123,18 +168,23 @@ const ListOfMaps = ({ open }) => {
   }, [centerMap]);
 
   useEffect(() => {
-    if (!onMapView || !mapData) return;
-    onMapView.addLayers(mapData, selectedIndex && true);
-  }, [onMapView, mapData, selectedIndex]);
+    if (!onMapView || !areaMap) return;
+    onMapView.addLayers(
+      areaMap,
+      selectedIndex && true,
+      handleListItemClick,
+      openBottomBar
+    );
+  }, [onMapView, areaMap, selectedIndex, indexes, openBottomBar]);
 
   const handleSearch = (e) => {
     if (e.target.value !== "") {
       const filtered = result.filter(
         (f) => f.counter_number === e.target.value
       );
-      setFields(filtered);
+      dispatch(handleGetFields(filtered));
     } else {
-      setFields(result);
+      dispatch(handleGetFields(result));
     }
   };
 

@@ -6,11 +6,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import authApi from "../../../services/authService";
+import { handleGetIndexes } from "../../../redux/features/sideBar/sideBarSlice";
+import { useDispatch } from "react-redux";
 
 export default function MultipleSelect({
-  setSelectedChartTypes,
-  selectedChartTypes,
-  // indexes,
+  // setSelectedChartTypes,
+  // selectedChartTypes,
+  indexesSelect,
 }) {
   const [indexes, setIndexes] = useState([]);
   useEffect(async () => {
@@ -18,11 +20,19 @@ export default function MultipleSelect({
     setIndexes(data.data.indexes);
   }, []);
 
+  const dispatch = useDispatch();
+
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setSelectedChartTypes(typeof value === "string" ? value.split(",") : value);
+    dispatch(
+      handleGetIndexes(typeof value === "string" ? value.split(",") : value)
+    );
+    // setSelectedChartTypes(typeof value === "string" ? value.split(",") : value);
+    // dispatch(
+    //   handleGetIndexes(typeof value === "string" ? value.split(",") : value)
+    // );
   };
 
   return (
@@ -32,7 +42,7 @@ export default function MultipleSelect({
         labelId="demo-multiple-name-label"
         id="demo-multiple-name"
         // multiple
-        value={selectedChartTypes}
+        value={indexesSelect}
         onChange={handleChange}
         input={<OutlinedInput label="Индекс" sx={{ width: "100%" }} />}
         // MenuProps={MenuProps}
@@ -41,7 +51,7 @@ export default function MultipleSelect({
           <MenuItem
             style={{
               backgroundColor:
-                selectedChartTypes.includes(name.index_name) && "#fad652",
+                indexesSelect.includes(name.index_name) && "#fad652",
             }}
             key={name.index_name}
             value={name.index_name}
