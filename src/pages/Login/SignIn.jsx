@@ -13,15 +13,22 @@ import {
   Paper,
   Grid,
   Typography,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const validationSchema = yup.object({
-  login: yup.string("Login kiriting").required("Login kiriting"),
-  password: yup.string("Parol kiriting").required("Parol kiriting"),
+  login: yup.string().required("Логин киритинг"),
+  password: yup.string().required("Парол киритинг"),
 });
 
 export default function SignIn() {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
   const formik = useFormik({
     initialValues: {
       login: "",
@@ -32,7 +39,7 @@ export default function SignIn() {
       try {
         await authApi.login(values.login, values.password);
       } catch (ex) {
-        console.log(ex);
+        toast.error(ex.response.statusText);
       }
     },
   });
@@ -41,19 +48,17 @@ export default function SignIn() {
   return (
     <>
       <Grid container>
-        <LeftSide size={6}>
-          <Typography align="center">Akkauntingiz yo`qmi?</Typography>
-          <Link to="/signup" style={{ textDecoration: "none" }}>
-            <Typography
-              align="center"
-              color={"#FFED50"}
-              sx={{ cursor: "pointer", mt: 1 }}
-            >
-              Ro`yxatdan o`ting
-            </Typography>
-          </Link>
+        <LeftSide size={4}>
+          <Typography align="center">Аккаунтингиз йўқми?</Typography>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Link to="/signup" style={{ textDecoration: "none" }}>
+              <Button variant="outlined" color="secondary">
+                Рўйхатдан ўтиш
+              </Button>
+            </Link>
+          </div>
         </LeftSide>
-        <Grid item xs={12} sm={12} md={6} component={Paper} elevation={0}>
+        <Grid item xs={12} sm={12} md={8} component={Paper} elevation={0}>
           <div
             style={{
               display: "flex",
@@ -66,7 +71,7 @@ export default function SignIn() {
             <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography variant="h5">Kirish</Typography>
+            <Typography variant="h5">Кириш</Typography>
 
             <form
               onSubmit={formik.handleSubmit}
@@ -79,7 +84,7 @@ export default function SignIn() {
               <TextField
                 id="login"
                 name="login"
-                label="Login"
+                label="Логин"
                 margin="normal"
                 value={formik.values.login}
                 onChange={formik.handleChange}
@@ -90,11 +95,24 @@ export default function SignIn() {
                 fullWidth
                 id="password"
                 name="password"
-                label="Parol"
-                type="password"
+                label="Парол"
+                type={showPassword ? "text" : "password"}
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 margin="normal"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
@@ -107,7 +125,7 @@ export default function SignIn() {
                 fullWidth
                 sx={{ mt: 2 }}
               >
-                Kirish
+                Кириш
               </Button>
             </form>
           </div>

@@ -6,7 +6,6 @@ const signInEndpoint = url + "/auth/login";
 const signUpEndpoint = url + "/auth/register";
 const signUpEndpointGetStats = url + "/stats";
 const tokenKey = "token";
-const user = "user";
 
 //TODO :delete
 // const token =
