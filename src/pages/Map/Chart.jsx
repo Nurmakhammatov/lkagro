@@ -12,13 +12,13 @@ import {
   ArrowUpward,
 } from "@mui/icons-material";
 import MultipleSelect from "./../components/MultiSelect/index";
-import moment from "moment";
 import AliceCarousel from "react-alice-carousel";
 import {
   handleGetAreaMap,
   handleGetIndexes,
   handleOpenBottomBar,
 } from "../../redux/features/sideBar/sideBarSlice";
+import moment from "moment";
 
 const Chart = ({ selectedIndex }) => {
   const sidebar = useSelector((state) => state.sideBarToggle.sidebar);
