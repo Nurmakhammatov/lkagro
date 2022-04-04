@@ -10,13 +10,17 @@ import {
   TextField,
   Grid,
   Typography,
-  Paper,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   InputAdornment,
   IconButton,
+  Backdrop,
+  CircularProgress,
+  Collapse,
+  Stack,
+  Box,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -29,24 +33,22 @@ const validationSchema = yup.object({
   firstName: yup
     .string()
     .min(3, "3 та белгидан кам бўлмасин")
-    .matches(onlyLetters, "Лотин ва кирил алифбоси харфларини киритинг")
-    .required("Исмингизни киритинг"),
+    .matches(onlyLetters, "Фақат харф киритинг")
+    .required("Исм киритинг"),
   lastName: yup
     .string()
     .min(3, "3 та белгидан кам бўлмасин")
-    .matches(onlyLetters, "Лотин ва кирил алифбоси харфларини киритинг")
-    .required("Фамилиянгизни киритинг"),
-  secondName: yup
-    .string()
-    .matches(onlyLetters, "Лотин ва кирил алифбоси харфларини киритинг"),
+    .matches(onlyLetters, "Фақат харф киритинг")
+    .required("Фамилия киритинг"),
+  secondName: yup.string().matches(onlyLetters, "Фақат харф киритинг"),
   agroName: yup
     .string()
     .min(4, "4 та белгидан кам бўлмасин")
     .required("Хўжалик номини киритинг"),
   phoneNumber: yup
     .string()
-    .max(13, "Киритилган бегилар сони 13 тадан кўп бўлмасин")
-    .min(13, "Киритилган бегилар сони 13 тадан кам бўлмасин")
+    .max(13, "Киритилган бегилар 13 тадан кўп бўлмасин")
+    .min(13, "Киритилган бегилар 13 тадан кам бўлмасин")
     .matches(phoneRegExp, `Рақам "+998123456789" форматда бўлсин`)
     .matches(numbers, `Фақат рақам киритинг`)
     .required("Телефон рақмингизни киритинг"),
@@ -78,6 +80,7 @@ const validationSchema = yup.object({
 
 export default function SignUp() {
   const [stats, setStats] = useState();
+  const [loading, setLoading] = React.useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -90,10 +93,13 @@ export default function SignUp() {
     setShowPasswordConfirm(!showPasswordConfirm);
 
   const getStats = async () => {
+    setLoading(true);
     try {
       const { data } = await authApi.getStats();
       setStats(data.data);
+      setLoading(false);
     } catch (ex) {
+      setLoading(false);
       toast.toast.error(ex.response.statusText);
     }
   };
@@ -108,11 +114,11 @@ export default function SignUp() {
       lastName: "",
       secondName: "",
       agroName: "",
-      phoneNumber: "+998",
+      phoneNumber: "",
       frankId: "",
       regionId: "",
       districtId: "",
-      clusterId: 1,
+      clusterId: "",
       address: "",
       login: "",
       password: "",
@@ -120,6 +126,7 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       try {
         await authApi.register(
           values.firstName,
@@ -136,8 +143,10 @@ export default function SignUp() {
           values.password,
           values.passwordConfirm
         );
+        setLoading(false);
       } catch (ex) {
-        toast.error(ex.response.statusText);
+        setLoading(false);
+        toast.error(ex.response.data.message.en);
       }
     },
   });
@@ -151,10 +160,16 @@ export default function SignUp() {
 
   return (
     <>
-      <Grid container>
-        <LeftSide size={4}>
-          <Typography align="center">Akkauntingiz bormi?</Typography>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+      <Grid container spacing={0}>
+        <LeftSide size={5}>
+          <Typography align="center">Аккаунтингиз борми?</Typography>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
+          >
             <Link to="/login" style={{ textDecoration: "none" }}>
               <Button variant="outlined" color="secondary">
                 Кириш
@@ -163,29 +178,37 @@ export default function SignUp() {
           </div>
         </LeftSide>
 
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={8}
-          component={Paper}
-          elevation={0}
-          sx={{ px: 2, height: "100vh", display: "flex", alignItems: "center" }}
-        >
-          <form onSubmit={formik.handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography align="center" variant="h6">
-                  Рўйхатдан ўтиш
-                </Typography>
-              </Grid>
-              <Grid item xs={4}>
+        <Grid item xs={12} md={7}>
+          <Box
+            p={2}
+            sx={{
+              minHeight: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              p: 2,
+            }}
+          >
+            <form onSubmit={formik.handleSubmit}>
+              <Typography align="center" variant="h6" mb={2}>
+                Рўйхатдан ўтиш
+                <Stack>
+                  <Typography
+                    align="end"
+                    variant="caption"
+                    pt={2}
+                    sx={{ fontWeight: 600, color: "warning.main" }}
+                  >
+                    * - тўлдириш шарт
+                  </Typography>
+                </Stack>
+              </Typography>
+              <Stack direction="row" spacing={1} pb={2}>
                 <TextField
                   fullWidth
                   id="firstName"
                   name="firstName"
                   label="*Исм"
-                  margin="dense"
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
                   error={
@@ -195,14 +218,11 @@ export default function SignUp() {
                     formik.touched.firstName && formik.errors.firstName
                   }
                 />
-              </Grid>
-              <Grid item xs={4}>
                 <TextField
                   fullWidth
                   id="lastName"
                   name="lastName"
                   label="*Фамилия"
-                  margin="dense"
                   value={formik.values.lastName}
                   onChange={formik.handleChange}
                   error={
@@ -210,14 +230,12 @@ export default function SignUp() {
                   }
                   helperText={formik.touched.lastName && formik.errors.lastName}
                 />
-              </Grid>
-              <Grid item xs={4}>
+
                 <TextField
                   fullWidth
                   id="secondName"
                   name="secondName"
                   label="*Отасининг исми"
-                  margin="dense"
                   value={formik.values.secondName}
                   onChange={formik.handleChange}
                   error={
@@ -228,16 +246,27 @@ export default function SignUp() {
                     formik.touched.secondName && formik.errors.secondName
                   }
                 />
-              </Grid>
-              <Grid item xs={4}>
+              </Stack>
+              <Stack direction="row" spacing={1} pb={2}>
                 <FormControl fullWidth>
-                  <InputLabel>*Хужалик тури</InputLabel>
+                  <InputLabel
+                    error={
+                      formik.touched.frankId && Boolean(formik.errors.frankId)
+                    }
+                    helperText={formik.touched.frankId && formik.errors.frankId}
+                  >
+                    *Хўжалик тури
+                  </InputLabel>
                   <Select
                     id="frankId"
                     name="frankId"
                     value={formik.values.frankId}
-                    label="*Хужалик тури"
+                    label="*Хўжалик тури"
                     onChange={formik.handleChange}
+                    error={
+                      formik.touched.frankId && Boolean(formik.errors.frankId)
+                    }
+                    helperText={formik.touched.frankId && formik.errors.frankId}
                   >
                     {stats?.franks?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
@@ -246,16 +275,68 @@ export default function SignUp() {
                     ))}
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={4}>
+
+                <Collapse in={formik.values.frankId === 4 ? true : false}>
+                  {formik.values.frankId === 4 ? (
+                    <FormControl sx={{ width: 150 }}>
+                      <InputLabel
+                        error={
+                          formik.touched.clusterId &&
+                          Boolean(formik.errors.clusterId)
+                        }
+                        helperText={
+                          formik.touched.clusterId && formik.errors.clusterId
+                        }
+                      >
+                        Кластер*
+                      </InputLabel>
+                      <Select
+                        id="clusterId"
+                        name="clusterId"
+                        value={formik.values.clusterId}
+                        label="Кластер"
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.clusterId &&
+                          Boolean(formik.errors.clusterId)
+                        }
+                        helperText={
+                          formik.touched.clusterId && formik.errors.clusterId
+                        }
+                      >
+                        {stats?.franks?.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.user_type_cr}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  ) : null}
+                </Collapse>
+
                 <FormControl fullWidth>
-                  <InputLabel>*Вилоят, шаҳар</InputLabel>
+                  <InputLabel
+                    error={
+                      formik.touched.regionId && Boolean(formik.errors.regionId)
+                    }
+                    helperText={
+                      formik.touched.regionId && formik.errors.regionId
+                    }
+                  >
+                    *Вилоят, шаҳар
+                  </InputLabel>
                   <Select
                     id="regionId"
                     name="regionId"
                     value={formik.values.regionId}
                     label="*Вилоят, шаҳар"
                     onChange={formik.handleChange}
+                    error={
+                      formik.touched.regionId && Boolean(formik.errors.regionId)
+                    }
+                    helperText={
+                      formik.touched.regionId && formik.errors.regionId
+                    }
                   >
                     {stats?.regions?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
@@ -264,37 +345,31 @@ export default function SignUp() {
                     ))}
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={4}>
+
                 <FormControl fullWidth>
                   <InputLabel>Туман</InputLabel>
                   <Select
-                    disabled={formik.values.regionId === "" ? true : false}
+                    disabled={tumanlar?.length === 0 ? true : false}
                     id="districtId"
                     name="districtId"
                     value={formik.values.districtId}
                     label="Туман"
                     onChange={formik.handleChange}
                   >
-                    {tumanlar?.map(
-                      (item) => (
-                        // formik.values.regionId === item.region_id ? (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.district_name_cr}
-                        </MenuItem>
-                      )
-                      // ) : null
-                    )}
+                    {tumanlar?.map((item) => (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.district_name_cr}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={6}>
+              </Stack>
+              <Stack direction="row" spacing={1} pb={2}>
                 <TextField
                   fullWidth
                   id="agroName"
                   name="agroName"
                   label="*Хўжалик номи"
-                  margin="dense"
                   value={formik.values.agroName}
                   onChange={formik.handleChange}
                   error={
@@ -302,15 +377,13 @@ export default function SignUp() {
                   }
                   helperText={formik.touched.agroName && formik.errors.agroName}
                 />
-              </Grid>
-              <Grid item xs={6}>
+
                 <TextField
                   fullWidth
                   id="phoneNumber"
                   type="tel"
                   name="phoneNumber"
                   label="*Телефон рақам"
-                  margin="dense"
                   value={formik.values.phoneNumber}
                   onChange={formik.handleChange}
                   error={
@@ -321,15 +394,13 @@ export default function SignUp() {
                     formik.touched.phoneNumber && formik.errors.phoneNumber
                   }
                 />
-              </Grid>
-
-              <Grid item xs={12}>
+              </Stack>
+              <Stack direction="row" spacing={1} pb={2}>
                 <TextField
                   fullWidth
                   id="address"
                   name="address"
                   label="Манзил"
-                  margin="dense"
                   value={formik.values.address}
                   onChange={formik.handleChange}
                   error={
@@ -337,28 +408,25 @@ export default function SignUp() {
                   }
                   helperText={formik.touched.address && formik.errors.address}
                 />
-              </Grid>
-              <Grid item xs={4}>
+              </Stack>
+              <Stack direction="row" spacing={1}>
                 <TextField
                   fullWidth
                   id="login"
                   name="login"
                   label="*Логин"
-                  margin="dense"
                   value={formik.values.login}
                   onChange={formik.handleChange}
                   error={formik.touched.login && Boolean(formik.errors.login)}
                   helperText={formik.touched.login && formik.errors.login}
                 />
-              </Grid>
-              <Grid item xs={4}>
+
                 <TextField
                   fullWidth
                   id="password"
                   name="password"
                   label="*Парол"
                   type={showPassword ? "text" : "password"}
-                  margin="dense"
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   InputProps={{
@@ -379,8 +447,7 @@ export default function SignUp() {
                   }
                   helperText={formik.touched.password && formik.errors.password}
                 />
-              </Grid>
-              <Grid item xs={4}>
+
                 <TextField
                   disabled={formik.values.password === "" ? true : false}
                   fullWidth
@@ -388,8 +455,11 @@ export default function SignUp() {
                   name="passwordConfirm"
                   label="*Паролни тасдиқлаш"
                   type={showPasswordConfirm ? "text" : "password"}
-                  margin="dense"
-                  value={formik.values.passwordConfirm}
+                  value={
+                    formik.values.password === ""
+                      ? (formik.values.passwordConfirm = "")
+                      : formik.values.passwordConfirm
+                  }
                   onChange={formik.handleChange}
                   InputProps={{
                     endAdornment: (
@@ -417,12 +487,9 @@ export default function SignUp() {
                     formik.errors.passwordConfirm
                   }
                 />
-              </Grid>
+              </Stack>
 
-              <Grid item xs={12}>
-                <Typography variant="caption" pt={2} sx={{ fontWeight: 700 }}>
-                  * - тўлдирилиши шарт
-                </Typography>
+              <Stack direction="row" spacing={1} pb={2}>
                 <Button
                   fullWidth
                   color="primary"
@@ -432,11 +499,18 @@ export default function SignUp() {
                 >
                   Тасдиқлаш
                 </Button>
-              </Grid>
-            </Grid>
-          </form>
+              </Stack>
+            </form>
+          </Box>
         </Grid>
       </Grid>
+
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }
