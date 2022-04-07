@@ -1,30 +1,47 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap");
 .uppy-DragDrop-inner svg {
-    display: none;
-    
+  display: none;
 }
 .uppy-DragDrop-inner {
-    background: url(../assets/upload.png) no-repeat;
-    background-position-x: 50%;
-    background-position-y: 20%;
+  background: url(../assets/upload.png) no-repeat;
+  background-position-x: 50%;
+  background-position-y: 20%;
+}
+.alice-carousel__prev-btn {
+    padding: 0 !important;
+}
+.alice-carousel__next-btn {
+    padding: 0 !important;
 }
 .alice-carousel__next-btn-item {
-    position: absolute !important;
-    right: 0;
-    top: 0;
+  color: black;
+  margin: 0px 5px;
+  border: 2px solid #a9cc52;
+  position: absolute !important;
+  right: -30px;
+  top: 0;
 }
 .alice-carousel__prev-btn-item {
-    position: absolute !important;
-    left: 0;
-    top: 0;
+  color: black;
+  margin: 0px 5px;
+  border: 2px solid #a9cc52;
+  position: absolute !important;
+  left: -30px;
+  top: 0;
 }
 .alice-carousel__next-btn-item.__inactive {
-    position: absolute !important;
-    right: 0;
-    top: 0;
+  color: black;
+  margin: 0px 5px;
+  border: 2px solid #a9cc52;
+  position: absolute !important;
+  right: -30px;
+  top: 0;
 }
 .alice-carousel__prev-btn-item.__inactive {
-    position: absolute !important;
-    left: 0;
-    top: 0;
+  color: black;
+  margin: 0px 5px;
+  border: 2px solid #a9cc52;
+  position: absolute !important;
+  left: -30px;
+  top: 0;
 }

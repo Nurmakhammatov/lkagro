@@ -34,7 +34,7 @@ const menuOptions = [
   { name: "Ўзгартириш", icon: <EditIcon /> },
   { name: "Ўчириш", icon: <DeleteIcon /> }
 ]
-const ListOfMaps = ({ open, setSelectedChartTypes }) => {
+const ListOfMaps = ({ open }) => {
   const dispatch = useDispatch()
   const [onMapView, setOnMapView] = React.useState(null)
   // const [selectedIndex, setSelectedIndex] = React.useState(null);
@@ -62,10 +62,10 @@ const ListOfMaps = ({ open, setSelectedChartTypes }) => {
       dispatch(handleSelectedIndex(id))
       mapInstance.map.scrollWheelZoom.disable()
 
-      const { data } = await api.getFieldById(id)
-      dispatch(handleGetAreaMap(data))
+      // const { data } = await api.getFieldById(id)
+      // dispatch(handleGetAreaMap(data))
 
-      dispatch(handleGetIndexes([data?.[0]?.index.toUpperCase()]))
+      // dispatch(handleGetIndexes([data?.[0]?.index.toUpperCase()]))
     } else {
       dispatch(handleOpenBottomBar(false))
       mapInstance.map.scrollWheelZoom.enable()
@@ -165,12 +165,7 @@ const ListOfMaps = ({ open, setSelectedChartTypes }) => {
             backdropFilter: "blur(5px)"
           }}
         >
-          {/* <Chart sidebar={sidebar} /> */}
-          <Grid
-            // style={{ backgroundColor: "rgba(250, 214, 82, 0.7)" }}
-            container
-            sx={{ pt: 2 }}
-          >
+          <Grid container sx={{ pt: 2 }}>
             {sidebar && (
               <>
                 <Grid
