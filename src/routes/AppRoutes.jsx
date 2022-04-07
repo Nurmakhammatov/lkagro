@@ -1,8 +1,8 @@
-import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
-import RequireAuth from "../hoc/RequireAuth";
-import routes from "./routes";
-import Layout from "./../core/Layout";
+import React from "react"
+import { Route, Routes, Navigate } from "react-router-dom"
+import RequireAuth from "../hoc/RequireAuth"
+import routes from "./routes"
+import Layout from "./../core/Layout"
 
 function AppRoutes() {
   return (
@@ -25,7 +25,7 @@ function AppRoutes() {
         <Route path="/*" element={<Navigate replace to="/map" />} />
       </Route>
     </Routes>
-  );
+  )
 }
 
-export default AppRoutes;
+export default AppRoutes

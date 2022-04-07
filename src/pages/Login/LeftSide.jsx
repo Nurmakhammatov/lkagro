@@ -1,5 +1,5 @@
-import { Box, Grid, Typography } from "@mui/material";
-import React from "react";
+import { Box, Grid, Typography } from "@mui/material"
+import React from "react"
 
 const LeftSide = ({ children, size }) => {
   return (
@@ -12,7 +12,7 @@ const LeftSide = ({ children, size }) => {
           alignItems: "center",
           justifyContent: "space-evenly",
           backgroundColor: "#a9cc52",
-          p: 2,
+          p: 2
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: "bold" }}>
@@ -20,15 +20,13 @@ const LeftSide = ({ children, size }) => {
         </Typography>
 
         <Typography textAlign="center" mx={10}>
-          Благодаря возможностям вы теперь можете сосредоточиться только на
-          функционерах ваших цифровых продуктов, оставив дизайн
-          пользовательского интерфейса нам!
+          Благодаря возможностям вы теперь можете сосредоточиться только на функционерах ваших цифровых продуктов, оставив дизайн пользовательского интерфейса нам!
         </Typography>
 
         <div>{children}</div>
       </Box>
     </Grid>
-  );
-};
+  )
+}
 
-export default LeftSide;
+export default LeftSide

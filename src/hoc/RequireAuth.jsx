@@ -1,13 +1,13 @@
-import { useLocation, Navigate } from "react-router-dom";
-import authApi from "./../services/authService";
+import { useLocation, Navigate } from "react-router-dom"
+import authApi from "./../services/authService"
 
 function RequireAuth({ children }) {
-  const location = useLocation();
-  const auth = authApi.getCurrentUser();
+  const location = useLocation()
+  const auth = authApi.getCurrentUser()
   if (!auth) {
-    return <Navigate to="/login" state={{ from: location }} />;
+    return <Navigate to="/login" state={{ from: location }} />
   }
-  return children;
+  return children
 }
 
-export default RequireAuth;
+export default RequireAuth

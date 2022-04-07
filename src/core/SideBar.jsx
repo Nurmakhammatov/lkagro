@@ -1,71 +1,66 @@
-import React, { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { Avatar, List, Typography, MenuItem, Menu, Paper } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { AddCircleOutlined } from "@mui/icons-material";
-import MapIcon from "@mui/icons-material/Map";
-import { ListItem } from "@mui/material";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { useDispatch, useSelector } from "react-redux";
-import { handleChangeKontur } from "../redux/features/sideBar/sideBarSlice";
-import authApi from "./../services/authService";
-import { Drawer, DrawerHeader } from "./../styles/styles";
-import Logout from "@mui/icons-material/Logout";
-import Settings from "@mui/icons-material/Settings";
+import React, { useEffect, useState } from "react"
+import { NavLink, useLocation } from "react-router-dom"
+import { Avatar, List, Typography, MenuItem, Menu, Paper, ListItem } from "@mui/material"
+import IconButton from "@mui/material/IconButton"
+import MenuIcon from "@mui/icons-material/Menu"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import ListItemText from "@mui/material/ListItemText"
+import MapIcon from "@mui/icons-material/Map"
+import MenuOpenIcon from "@mui/icons-material/MenuOpen"
+import { useDispatch, useSelector } from "react-redux"
+import { handleChangeKontur } from "../redux/features/sideBar/sideBarSlice"
+import authApi from "./../services/authService"
+import { Drawer, DrawerHeader } from "./../styles/styles"
+import Logout from "@mui/icons-material/Logout"
+import Settings from "@mui/icons-material/Settings"
 
 const menuItems = [
   {
     text: "Майдонлар",
     icon: <MapIcon color="black" />,
-    path: "/map",
-  },
+    path: "/map"
+  }
   // {
   //   text: "Add map",
   //   icon: <AddCircleOutlined color="black" />,
   //   path: "/add",
   // },
-];
+]
 
 export default function SideBar() {
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openMenu = Boolean(anchorEl);
+  const [open, setOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const openMenu = Boolean(anchorEl)
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const [user, setUser] = useState({});
-  const dispatch = useDispatch();
-  const konturs = useSelector((state) => state.sideBarToggle.maps);
+    setAnchorEl(null)
+  }
+  const [user, setUser] = useState({})
+  const dispatch = useDispatch()
+  const konturs = useSelector((state) => state.sideBarToggle.maps)
 
   useEffect(() => {
-    const { user } = authApi.getCurrentUser();
-    setUser(user);
-  }, []);
+    const { user } = authApi.getCurrentUser()
+    setUser(user)
+  }, [])
 
-  const fullName = user?.full_name?.split(" ");
+  const fullName = user?.full_name?.split(" ")
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const location = useLocation();
+    setOpen(false)
+  }
+  const location = useLocation()
 
   return (
     <>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader
-          style={{ display: "flex", justifyContent: "space-between" }}
-          sx={{ py: 0, my: 0 }}
-        >
+        <DrawerHeader style={{ display: "flex", justifyContent: "space-between" }} sx={{ py: 0, my: 0 }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -73,7 +68,7 @@ export default function SideBar() {
             edge="end"
             sx={{
               marginRight: 3,
-              ...(open && { display: "none" }),
+              ...(open && { display: "none" })
             }}
           >
             <MenuIcon />
@@ -81,7 +76,7 @@ export default function SideBar() {
           <Typography
             sx={{
               marginRight: 1,
-              ...(!open && { display: "none" }),
+              ...(!open && { display: "none" })
             }}
             variant="subtitle2"
           >
@@ -94,7 +89,7 @@ export default function SideBar() {
             edge="end"
             sx={{
               marginRight: 3,
-              ...(!open && { display: "none" }),
+              ...(!open && { display: "none" })
             }}
           >
             <MenuOpenIcon />
@@ -106,21 +101,12 @@ export default function SideBar() {
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              height: "calc(100vh - 70px)",
+              height: "calc(100vh - 70px)"
             }}
           >
             <div>
               {menuItems.map((item) => (
-                <NavLink
-                  onClick={
-                    item.path === "/map"
-                      ? () => dispatch(handleChangeKontur(!konturs))
-                      : null
-                  }
-                  key={item.text}
-                  to={item.path}
-                  style={{ textDecoration: "none", color: "black" }}
-                >
+                <NavLink onClick={item.path === "/map" ? () => dispatch(handleChangeKontur(!konturs)) : null} key={item.text} to={item.path} style={{ textDecoration: "none", color: "black" }}>
                   <ListItem button selected={location.pathname === item.path}>
                     <ListItemIcon>
                       {location.pathname === item.path ? (
@@ -134,7 +120,7 @@ export default function SideBar() {
                                 minHeight: "100%",
                                 bgcolor: "#FAD652",
                                 ml: -1.9,
-                                mr: 1.3,
+                                mr: 1.3
                               }}
                             ></Paper>
                           )}
@@ -170,18 +156,14 @@ export default function SideBar() {
                 onClose={handleClose}
                 onClick={handleClose}
                 PaperProps={{
-                  elevation: 0,
+                  elevation: 0
                 }}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
                 <MenuItem>
                   <ListItemIcon>
-                    <Avatar
-                      src={user?.avatar || "./"}
-                      alt={user?.full_name}
-                      sx={{ width: 20, height: 20 }}
-                    />
+                    <Avatar src={user?.avatar || "./"} alt={user?.full_name} sx={{ width: 20, height: 20 }} />
                   </ListItemIcon>{" "}
                   Профиль
                 </MenuItem>
@@ -203,5 +185,5 @@ export default function SideBar() {
         </List>
       </Drawer>
     </>
-  );
+  )
 }

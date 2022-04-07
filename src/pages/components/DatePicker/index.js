@@ -1,20 +1,17 @@
-import * as React from "react";
-import uzLocale from "date-fns/locale/uz";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
-import { Box } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  handleSelectDateFrom,
-  handleSelectDateTo,
-} from "../../../redux/features/dates/datesSlice";
+import * as React from "react"
+import uzLocale from "date-fns/locale/uz"
+import TextField from "@mui/material/TextField"
+import AdapterDateFns from "@mui/lab/AdapterDateFns"
+import LocalizationProvider from "@mui/lab/LocalizationProvider"
+import DatePicker from "@mui/lab/DatePicker"
+import { Box } from "@mui/material"
+import { useDispatch, useSelector } from "react-redux"
+import { handleSelectDateFrom, handleSelectDateTo } from "../../../redux/features/dates/datesSlice"
 
 export default function BasicDatePicker({ label, value }) {
-  const dispatch = useDispatch();
-  const dateFrom = useSelector((state) => state.datePickers.dateFrom);
-  const dateTo = useSelector((state) => state.datePickers.dateTo);
+  const dispatch = useDispatch()
+  const dateFrom = useSelector((state) => state.datePickers.dateFrom)
+  const dateTo = useSelector((state) => state.datePickers.dateTo)
 
   return (
     <>
@@ -24,7 +21,7 @@ export default function BasicDatePicker({ label, value }) {
             label="Сана (дан)"
             value={dateFrom}
             onChange={(newValue) => {
-              dispatch(handleSelectDateFrom(newValue));
+              dispatch(handleSelectDateFrom(newValue))
             }}
             renderInput={(params) => <TextField {...params} />}
           />
@@ -36,7 +33,7 @@ export default function BasicDatePicker({ label, value }) {
             label="Сана (гача)"
             value={dateTo}
             onChange={(newValue) => {
-              dispatch(handleSelectDateTo(newValue));
+              dispatch(handleSelectDateTo(newValue))
             }}
             renderInput={(params) => <TextField {...params} />}
             disabled={!dateFrom}
@@ -44,5 +41,5 @@ export default function BasicDatePicker({ label, value }) {
         </LocalizationProvider>
       </Box>
     </>
-  );
+  )
 }

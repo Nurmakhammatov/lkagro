@@ -1,27 +1,27 @@
-import SignIn from "../pages/Login/SignIn";
-import SignUp from "../pages/Login/SignUp";
-import Map from "../pages/Map";
+import SignIn from "../pages/Login/SignIn"
+import SignUp from "../pages/Login/SignUp"
+import Map from "../pages/Map"
 
 const routes = {
   public: [
     {
       name: "Login",
       path: "/login",
-      component: <SignIn />,
+      component: <SignIn />
     },
     {
       name: "SignUp",
       path: "/signup",
-      component: <SignUp />,
-    },
+      component: <SignUp />
+    }
   ],
   private: [
     {
       name: "Map",
       path: "/map",
-      component: <Map />,
-    },
-  ],
-};
+      component: <Map />
+    }
+  ]
+}
 
-export default routes;
+export default routes
