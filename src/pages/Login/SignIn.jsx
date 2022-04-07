@@ -106,7 +106,7 @@ export default function SignIn() {
                   value={formik.values.login}
                   onChange={formik.handleChange}
                   error={formik.touched.login && Boolean(formik.errors.login)}
-                  helperText={formik.touched.login && formik.errors.login}
+                  helpertext={formik.touched.login && formik.errors.login}
                 />
                 <TextField
                   fullWidth
@@ -132,7 +132,7 @@ export default function SignIn() {
                   error={
                     formik.touched.password && Boolean(formik.errors.password)
                   }
-                  helperText={formik.touched.password && formik.errors.password}
+                  helpertext={formik.touched.password && formik.errors.password}
                 />
                 <Button
                   fullWidth
