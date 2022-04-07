@@ -32,7 +32,7 @@ const Chart = ({ selectedIndex }) => {
     const theLast = data?.[0]?.analysis[data?.[0]?.analysis.length - 1]
     const result = await api.getFieldById(selectedIndex, [String(theLast.index)], moment(theLast.the_date).format("DD.MM.YYYY"), [theLast.id])
     dispatch(handleGetAreaMap(result.data))
-    dispatch(handleGetIndexes([result.data?.[0]?.index.toUpperCase()]))
+    dispatch(handleGetIndexes([result.data?.[0]?.index?.toUpperCase()]))
     // !! }
   }
 

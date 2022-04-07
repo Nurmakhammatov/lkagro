@@ -5,34 +5,33 @@ export default function FIELDS(map) {
   this._map = map;
   this._fg = L.featureGroup().addTo(this._map);
 
-  this.addLayers = function (data, cond, cb, openBottomBar) {
-    this.removeLayers();
+  this.addLayers = function (data, cond, cb, openBottomBar, selectedIndex) {
+    this.removeLayers()
     data.forEach((d) => {
       const g = L.geoJSON(d.polygon, {
         style: {
           opacity: 0.75,
           fillOpacity: 0.3,
           fillColor: "#a9cc52",
-          color: d.field_img ? "white" : "green",
-        },
-      }).addTo(this._fg);
-      if (d.counter_number) g.bindPopup(() => this.popupContent(d));
+          color: d.field_img ? "white" : "green"
+        }
+      }).addTo(this._fg)
+      if (d.counter_number) g.bindPopup(() => this.popupContent(d))
 
-      if (d.id) L.DomEvent.on(g, "dblclick", () => cb(d.id));
-      if (cond && !openBottomBar)
-        this._map.flyTo(g.getBounds().getCenter(), 16.5);
-      if (openBottomBar) this._map.flyTo(g.getBounds().getCenter(), 15.5);
-      if (d.field_img) {
-        L.imageOverlay(
-          `data:image/png;base64,${d.field_img}`,
-          g.getBounds(),
-          {}
-        )
-          .bringToFront()
-          .addTo(this._fg);
+      if (d.id) L.DomEvent.on(g, "dblclick", () => cb(d.id))
+      if (cond && !openBottomBar) {
+        // if (selectedIndex === d.id)
+        this._map.flyTo(g.getBounds().getCenter(), 16.5)
       }
-    });
-  };
+      if (openBottomBar) {
+        // if (selectedIndex === d.id)
+        this._map.flyTo(g.getBounds().getCenter(), 15.5)
+      }
+      if (d.field_img) {
+        L.imageOverlay(`data:image/png;base64,${d.field_img}`, g.getBounds(), {}).bringToFront().addTo(this._fg)
+      }
+    })
+  }
 
   this.popupContent = function (d) {
     let tr;
