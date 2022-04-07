@@ -18,16 +18,27 @@ const FieldChart = ({ chartData, getChartDetailByPoints }) => {
         let tooltip
         chartData?.[0]?.analysis.map((d, index) => {
           if (index === params.dataIndex) {
-            tooltip = `<div style="display: flex; justify-content: space-between; flex-direction: column" class='tooltip-key'><div style="display: flex; justify-content: space-between"> ${"Мин"}
-            <span style="margin: 0px 20px 0px 0px"> ${" - "}${d.min}</div>
-            <div style="display: flex; justify-content: space-between"> ${"Ўрта "}
-            <span style="margin: 0px 20px 0px 0px"> ${" - "}${d.mean}</div>
-            <div style="display: flex; justify-content: space-between"> ${"Макс "}
-            <span style="margin: 0px 20px 0px 0px"> ${"  - "}${d.max}</div>
+            tooltip = `<div style="display: flex; justify-content: space-between; flex-direction: column; width: 110%; padding: 0px 10px 0px 0px" class='tooltip-key'>
+            <div style="display: flex; justify-content: space-between"> 
+            <span>Паст:</span>
+            <span"> ${d.min}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+            <span>Ўрта:</span>
+            <span"> ${d.mean}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+            <span>Юқори:</span>
+            <span"> ${d.max}</span>
+            </div>
             </div>`
           }
         })
         return tooltip
+      },
+      backgroundColor: "rgba(255, 255, 255, 0.7)",
+      textStyle: {
+        color: "#000"
       },
       trigger: "item",
       axisPointer: {
