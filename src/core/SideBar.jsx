@@ -67,7 +67,7 @@ export default function SideBar() {
             onClick={handleDrawerOpen}
             edge="end"
             sx={{
-              marginRight: 3,
+              px: 1.5,
               ...(open && { display: "none" })
             }}
           >
@@ -95,37 +95,23 @@ export default function SideBar() {
             <MenuOpenIcon />
           </IconButton>
         </DrawerHeader>
+        <hr style={{ width: "100%", margin: 0, border: "1px solid #000" }} />
         <List sx={{ py: 0, my: 0 }}>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              height: "calc(100vh - 70px)"
+              height: "calc(100vh - 67px)"
             }}
           >
             <div>
               {menuItems.map((item) => (
                 <NavLink onClick={item.path === "/map" ? () => dispatch(handleChangeKontur(!konturs)) : null} key={item.text} to={item.path} style={{ textDecoration: "none", color: "black" }}>
-                  <ListItem button selected={location.pathname === item.path}>
+                  <ListItem className="leftSide-menu-hover-items" style={{ position: "relative" }} button selected={location.pathname === item.path}>
+                    <div style={{ minWidth: "8px", minHeight: "100%", backgroundColor: "#FAD652", position: "absolute", left: 0 }}></div>
                     <ListItemIcon>
-                      {location.pathname === item.path ? (
-                        <>
-                          {konturs && (
-                            <Paper
-                              square={true}
-                              elevation={0}
-                              sx={{
-                                minWidth: "5px",
-                                minHeight: "100%",
-                                bgcolor: "#FAD652",
-                                ml: -1.9,
-                                mr: 1.3
-                              }}
-                            ></Paper>
-                          )}
-                        </>
-                      ) : null}
+                      {location.pathname === item.path ? <>{konturs && <Paper square={true} elevation={0}></Paper>}</> : null}
                       {item.icon}
                     </ListItemIcon>
 
@@ -137,7 +123,7 @@ export default function SideBar() {
             <div>
               <ListItem
                 button
-                sx={{ mx: -0.5 }}
+                sx={{ px: 1.5 }}
                 onClick={handleClick}
                 size="small"
                 aria-controls={openMenu ? "account-menu" : undefined}

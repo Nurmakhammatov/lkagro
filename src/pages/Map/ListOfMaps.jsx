@@ -195,7 +195,7 @@ const ListOfMaps = ({ open }) => {
                 marginBottom: !sidebar && "10px"
               }}
             >
-              <IconButton onClick={handleChange}>{sidebar ? <ArrowBackIosNewIcon /> : <ArrowForwardIos />}</IconButton>
+              {/* <IconButton onClick={handleChange}>{sidebar ? <ArrowBackIosNewIcon /> : <ArrowForwardIos />}</IconButton> */}
             </Grid>
           </Grid>
           {sidebar && (

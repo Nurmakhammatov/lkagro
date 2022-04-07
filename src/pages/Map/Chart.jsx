@@ -16,8 +16,8 @@ const Chart = ({ selectedIndex }) => {
   const chart = useSelector((state) => state.sideBarToggle.chart)
   const [chartData, setChartData] = useState([])
   const [extraSidebar, setExtraSidebar] = useState(true)
-  const [nextSlide, setNextSlide] = useState(0)
   const [timer, setTimer] = useState(null)
+  const [getSlideCount, setGetSlideCount] = useState(null)
   const dateFrom = useSelector((state) => state.datePickers.dateFrom)
   const dateTo = useSelector((state) => state.datePickers.dateTo)
   const indexes = useSelector((state) => state.sideBarToggle.indexes)
@@ -96,7 +96,7 @@ const Chart = ({ selectedIndex }) => {
     3000: { items: 15 },
     4000: { items: 18 }
   }
-  console.log(chartData)
+
   return (
     <Grow in={chart} timeout={1500}>
       <Box
@@ -105,6 +105,7 @@ const Chart = ({ selectedIndex }) => {
           width: !chart ? 0 : sidebar ? "85%" : "95%",
           // height: extraSidebar ? "calc(100vh - 98vh)" : "calc(100vh - 70vh)",
           position: "absolute",
+          padding: "0px 0px 5px 0px",
           bottom: 0,
           left: !chart ? 0 : sidebar ? "15%" : "5%",
           zIndex: 1200,
@@ -152,7 +153,7 @@ const Chart = ({ selectedIndex }) => {
                   <>
                     <AliceCarousel
                       keyboardNavigation={true}
-                      activeIndex={nextSlide}
+                      activeIndex={chartData?.[0]?.analysis?.length - getSlideCount}
                       mouseTracking
                       items={items}
                       responsive={responsive}
@@ -211,8 +212,9 @@ const Chart = ({ selectedIndex }) => {
               {chartData?.[0]?.analysis && (
                 <>
                   <AliceCarousel
+                    onInitialized={(e) => setGetSlideCount(e.itemsInSlide)}
                     keyboardNavigation={true}
-                    activeIndex={nextSlide}
+                    activeIndex={chartData?.[0]?.analysis?.length - getSlideCount}
                     mouseTracking
                     items={items}
                     responsive={responsive}

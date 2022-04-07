@@ -98,8 +98,7 @@ const FieldChart = ({ chartData, getChartDetailByPoints }) => {
         },
         data: chartData?.[0]?.graph.map((d) => d),
         symbol: "circle",
-        symbolSize: 10,
-        markPoint: { itemStyle: { color: "red" } }
+        symbolSize: 10
       }
     ]
   }
