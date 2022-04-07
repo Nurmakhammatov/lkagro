@@ -145,7 +145,7 @@ const ListOfMaps = ({ open }) => {
 
   useEffect(() => {
     if (!onMapView || !areaMap) return
-    onMapView.addLayers(areaMap, selectedIndex && true, handleListItemClick, openBottomBar)
+    onMapView.addLayers(areaMap, selectedIndex && true, handleListItemClick, openBottomBar, selectedIndex)
   }, [onMapView, areaMap, selectedIndex, indexes, openBottomBar])
 
   const handleSearch = (e) => {
