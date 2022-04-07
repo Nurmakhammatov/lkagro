@@ -7,6 +7,9 @@
   background-position-x: 50%;
   background-position-y: 20%;
 }
+.leftSide-menu-hover-items:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
 .alice-carousel__prev-btn {
     padding: 0 !important;
 }
