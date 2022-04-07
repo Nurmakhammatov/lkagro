@@ -1,0 +1,47 @@
+.left-sidebar-animation-open {
+  opacity: 1;
+  /* transition: opacity 1500ms cubic-bezier(1.4, 0, 0.2, 1) 0ms, transform 999ms cubic-bezier(1.4, 0, 0.2, 1) 0ms !important; */
+  animation: openAnimation 1s ease;
+  width: 15%;
+}
+.left-sidebar-animation-close {
+  opacity: 0;
+  /* transition: opacity 1500ms cubic-bezier(1.4, 0, 0.2, 1) 0ms, transform 999ms cubic-bezier(1.4, 0, 0.2, 1) 0ms !important; */
+  animation: closeAnimation 1s ease;
+  width: 0%;
+}
+
+@keyframes openAnimation {
+  0% {
+    opacity: 0;
+    transform: rotateY(0deg);
+    width: 0%;
+    left: 0px;
+  }
+  50% {
+    left: 100px;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(360deg);
+    width: 15%;
+    left: 0px;
+  }
+}
+@keyframes closeAnimation {
+  0% {
+    opacity: 1;
+    /* transform: rotateY(360deg); */
+    width: 15%;
+    left: 0px;
+  }
+  50% {
+    left: 100px;
+  }
+  100% {
+    opacity: 0;
+    /* transform: rotateY(0deg); */
+    width: 0%;
+    left: 0px;
+  }
+}

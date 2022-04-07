@@ -109,7 +109,7 @@ export default function SideBar() {
               {menuItems.map((item) => (
                 <NavLink onClick={item.path === "/map" ? () => dispatch(handleChangeKontur(!konturs)) : null} key={item.text} to={item.path} style={{ textDecoration: "none", color: "black" }}>
                   <ListItem className="leftSide-menu-hover-items" style={{ position: "relative" }} button selected={location.pathname === item.path}>
-                    <div style={{ minWidth: "8px", minHeight: "100%", backgroundColor: "#FAD652", position: "absolute", left: 0 }}></div>
+                    {konturs && <div style={{ minWidth: "8px", minHeight: "100%", backgroundColor: "#FAD652", position: "absolute", left: 0 }}></div>}
                     <ListItemIcon>
                       {location.pathname === item.path ? <>{konturs && <Paper square={true} elevation={0}></Paper>}</> : null}
                       {item.icon}
