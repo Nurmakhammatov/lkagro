@@ -106,22 +106,22 @@ const Chart = ({ selectedIndex }) => {
 
   useEffect(() => {
     getChartDetails();
-  }, [selectedIndex, indexes, dateFrom, dateTo]);
+  }, [indexes, dateFrom, dateTo]);
 
-  useEffect(() => {
-    if (!extraSidebar) {
-      const interval = setInterval(() => {
-        getChartDetails();
-      }, 2000);
-      setTimer(interval);
-    }
-    return () => clearInterval(timer);
-  }, [extraSidebar]);
+  // useEffect(() => {
+  //   if (!extraSidebar) {
+  //     const interval = setInterval(() => {
+  //       getChartDetails();
+  //     }, 2000);
+  //     setTimer(interval);
+  //   }
+  //   return () => clearInterval(timer);
+  // }, [extraSidebar]);
 
-  useEffect(async () => {
-    const { data } = await api.getFieldById(selectedIndex, [String(indexes)]);
-    dispatch(handleGetAreaMap(data));
-  }, [indexes]);
+  // useEffect(async () => {
+  //   const { data } = await api.getFieldById(selectedIndex, [String(indexes)]);
+  //   dispatch(handleGetAreaMap(data));
+  // }, [indexes]);
 
   const responsive = {
     0: { items: 1 },
@@ -317,6 +317,6 @@ const Chart = ({ selectedIndex }) => {
       </Box>
     </Grow>
   );
-};
+};;
 
 export default Chart;
