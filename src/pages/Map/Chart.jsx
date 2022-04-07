@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react"
 import { Grow, Box, Button, Grid } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
 import Satellite from "../../assets/satellite.png"
-import FieldChart from "../charts"
+import FieldChart from "./charts"
 import api from "./api/index"
 import PickerDate from "./../components/DatePicker/index"
 import { ArrowBack, ArrowDownward, ArrowForward, ArrowUpward } from "@mui/icons-material"
 import MultipleSelect from "./../components/MultiSelect/index"
 import AliceCarousel from "react-alice-carousel"
-import { handleGetAreaMap, handleOpenBottomBar } from "../../redux/features/sideBar/sideBarSlice"
+import { handleGetAreaMap, handleGetIndexes, handleOpenBottomBar } from "../../redux/features/sideBar/sideBarSlice"
 import moment from "moment"
 
 const Chart = ({ selectedIndex }) => {
@@ -26,14 +26,14 @@ const Chart = ({ selectedIndex }) => {
 
   const getChartDetails = async () => {
     const { data } = await api.getChartsData(selectedIndex, moment(dateFrom).format("YYYY-MM-DD"), moment(dateTo).format("YYYY-MM-DD"), indexes)
-    if (Number(localStorage.getItem("chartLength")) !== data?.[0]?.analysis?.length) {
-      localStorage.setItem("chartLength", data?.[0]?.analysis?.length)
-      setChartData(data)
-      const theLast = data?.[0]?.analysis[data?.[0]?.analysis.length - 1]
-
-      const result = await api.getFieldById(selectedIndex, [String(theLast.index)], moment(theLast.the_date).format("DD.MM.YYYY"), [theLast.id])
-      dispatch(handleGetAreaMap(result.data))
-    }
+    // !! if (Number(localStorage.getItem("chartLength")) !== data?.[0]?.analysis?.length) {
+    localStorage.setItem("chartLength", data?.[0]?.analysis?.length)
+    setChartData(data)
+    const theLast = data?.[0]?.analysis[data?.[0]?.analysis.length - 1]
+    const result = await api.getFieldById(selectedIndex, [String(theLast.index)], moment(theLast.the_date).format("DD.MM.YYYY"), [theLast.id])
+    dispatch(handleGetAreaMap(result.data))
+    dispatch(handleGetIndexes([result.data?.[0]?.index.toUpperCase()]))
+    // !! }
   }
 
   const getChartDetailByPoints = async (the_date, indexes, analysisIds) => {
@@ -61,7 +61,6 @@ const Chart = ({ selectedIndex }) => {
           fontSize: 10,
           minWidth: 130
         }}
-        // color="primary"
         variant="outlined"
       >
         <img style={{ marginRight: 5, width: 15 }} src={Satellite} alt="satellite" />
@@ -72,7 +71,7 @@ const Chart = ({ selectedIndex }) => {
 
   useEffect(() => {
     getChartDetails()
-  }, [indexes, dateFrom, dateTo])
+  }, [indexes, dateFrom, dateTo, selectedIndex])
 
   // useEffect(() => {
   //   if (!extraSidebar) {
@@ -97,14 +96,14 @@ const Chart = ({ selectedIndex }) => {
     3000: { items: 15 },
     4000: { items: 18 }
   }
-
+  console.log(chartData)
   return (
     <Grow in={chart} timeout={1500}>
       <Box
         square={true}
         sx={{
           width: !chart ? 0 : sidebar ? "85%" : "95%",
-          height: extraSidebar ? "calc(100vh - 95vh)" : "calc(100vh - 70vh)",
+          // height: extraSidebar ? "calc(100vh - 98vh)" : "calc(100vh - 70vh)",
           position: "absolute",
           bottom: 0,
           left: !chart ? 0 : sidebar ? "15%" : "5%",
@@ -119,7 +118,9 @@ const Chart = ({ selectedIndex }) => {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                margin: "5px 0px 0px 5px"
+                justifyContent: "space-between",
+                padding: "5px 0px",
+                alignItems: "center"
               }}
             >
               <Button
@@ -135,24 +136,16 @@ const Chart = ({ selectedIndex }) => {
               >
                 <ArrowDownward />
               </Button>
-              <Button
-                variant="outlined"
-                style={{
-                  color: "black",
-                  margin: "0px 5px",
-                  border: "2px solid #a9cc52"
-                }}
-                onClick={() => setNextSlide((prev) => (prev > 0 ? prev - 1 : 0))}
-              >
-                <ArrowBack />
-              </Button>
               <div
                 style={{
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
-                  width: "90%",
-                  overflow: "hidden"
+                  overflow: "hidden",
+                  width: "100%",
+                  padding: "0px 30px",
+                  overflow: "hidden",
+                  height: "40px"
                 }}
               >
                 {chartData?.[0]?.analysis && (
@@ -164,23 +157,12 @@ const Chart = ({ selectedIndex }) => {
                       items={items}
                       responsive={responsive}
                       controlsStrategy="alternate"
-                      disableButtonsControls={true}
+                      disableButtonsControls={false}
                       disableDotsControls={true}
                     />
                   </>
                 )}
               </div>
-              <Button
-                variant="outlined"
-                style={{
-                  color: "black",
-                  margin: "0px 5px",
-                  border: "2px solid #a9cc52"
-                }}
-                onClick={() => setNextSlide((prev) => (chartData?.[0]?.analysis.length - 11 > prev ? prev + 1 : chartData?.[0]?.analysis.length - 11))}
-              >
-                <ArrowForward />
-              </Button>
             </div>
             <Grid container px={1}>
               <Grid item xs={1.2}>
@@ -198,7 +180,9 @@ const Chart = ({ selectedIndex }) => {
             style={{
               display: "flex",
               flexDirection: "row",
-              margin: "5px 0px 0px 5px"
+              justifyContent: "space-between",
+              padding: "5px 0px",
+              alignItems: "center"
             }}
           >
             <Button
@@ -213,24 +197,15 @@ const Chart = ({ selectedIndex }) => {
             >
               <ArrowUpward />
             </Button>
-            <Button
-              variant="outlined"
-              style={{
-                color: "black",
-                margin: "0px 5px",
-                border: "2px solid #a9cc52"
-              }}
-              onClick={() => setNextSlide((prev) => (prev > 0 ? prev - 1 : 0))}
-            >
-              <ArrowBack />
-            </Button>
             <div
               style={{
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                width: "90%",
-                overflow: "hidden"
+                width: "100%",
+                padding: "0px 30px",
+                overflow: "hidden",
+                height: "40px"
               }}
             >
               {chartData?.[0]?.analysis && (
@@ -242,23 +217,12 @@ const Chart = ({ selectedIndex }) => {
                     items={items}
                     responsive={responsive}
                     controlsStrategy="alternate"
-                    disableButtonsControls={true}
+                    disableButtonsControls={false}
                     disableDotsControls={true}
                   />
                 </>
               )}
             </div>
-            <Button
-              variant="outlined"
-              style={{
-                color: "black",
-                margin: "0px 5px",
-                border: "2px solid #a9cc52"
-              }}
-              onClick={() => setNextSlide((prev) => (chartData?.[0]?.analysis.length - 11 > prev ? prev + 1 : chartData?.[0]?.analysis.length - 11))}
-            >
-              <ArrowForward />
-            </Button>
           </div>
         )}
       </Box>
