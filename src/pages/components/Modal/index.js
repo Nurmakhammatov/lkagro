@@ -1,12 +1,12 @@
-import { Close } from "@mui/icons-material";
-import { IconButton, Modal, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import React from "react";
-import DrawArea from "../DrawArea";
-import ImageUpload from "../ImageUpload";
+import { Close } from "@mui/icons-material"
+import { IconButton, Modal } from "@mui/material"
+import { Box } from "@mui/system"
+import React from "react"
+import DrawArea from "../DrawArea"
+import ImageUpload from "../ImageUpload"
 
 const ModalPrimary = ({ open, setOpen }) => {
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setOpen(false)
 
   const style = {
     position: "absolute",
@@ -19,16 +19,10 @@ const ModalPrimary = ({ open, setOpen }) => {
     boxShadow: 24,
     p: 4,
     zIndex: 9999,
-    padding: 0,
-  };
+    padding: 0
+  }
   return (
-    <Modal
-      // title={"title"}
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
       <Box sx={style}>
         <div style={{ borderBottom: "1px solid black", position: "relative" }}>
           <h3 style={{ textAlign: "center", margin: 5 }}>Танланг</h3>
@@ -38,7 +32,7 @@ const ModalPrimary = ({ open, setOpen }) => {
               position: "absolute",
               top: -5,
               right: 10,
-              cursor: "pointer",
+              cursor: "pointer"
             }}
           >
             <IconButton color="error" aria-label="add to shopping cart">
@@ -50,7 +44,7 @@ const ModalPrimary = ({ open, setOpen }) => {
           style={{
             padding: 10,
             display: "flex",
-            justifyContent: "space-evenly",
+            justifyContent: "space-evenly"
           }}
         >
           <div style={{ width: "45%" }}>
@@ -62,7 +56,7 @@ const ModalPrimary = ({ open, setOpen }) => {
         </div>
       </Box>
     </Modal>
-  );
-};
+  )
+}
 
-export default ModalPrimary;
+export default ModalPrimary

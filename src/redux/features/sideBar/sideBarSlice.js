@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 export const sideBarContursSlice = createSlice({
   name: "sideBarToggle",
   initialState: {
@@ -11,41 +11,41 @@ export const sideBarContursSlice = createSlice({
     areaMap: null,
     openBottomBar: false,
     fields: [],
-    result: [],
+    result: []
   },
   reducers: {
     handleSelectedIndex: (state, action) => {
-      state.selectedIndex = action.payload;
+      state.selectedIndex = action.payload
     },
     handleChangeKontur: (state, action) => {
-      state.maps = action.payload;
+      state.maps = action.payload
     },
     handleChangeIsChartOpen: (state, action) => {
-      state.chart = action.payload;
+      state.chart = action.payload
     },
     handleChangeSidebar: (state, action) => {
-      state.sidebar = action.payload;
+      state.sidebar = action.payload
     },
     handleCenterMap: (state, action) => {
-      state.centerMap = action.payload;
+      state.centerMap = action.payload
     },
     handleGetIndexes: (state, action) => {
-      state.indexes = action.payload;
+      state.indexes = action.payload
     },
     handleGetAreaMap: (state, action) => {
-      state.areaMap = action.payload;
+      state.areaMap = action.payload
     },
     handleOpenBottomBar: (state, action) => {
-      state.openBottomBar = action.payload;
+      state.openBottomBar = action.payload
     },
     handleGetFields: (state, action) => {
-      state.fields = action.payload;
+      state.fields = action.payload
     },
     handleGetFirstData: (state, action) => {
-      state.result = action.payload;
-    },
-  },
-});
+      state.result = action.payload
+    }
+  }
+})
 
 export const {
   handleChangeKontur,
@@ -57,7 +57,7 @@ export const {
   handleGetAreaMap,
   handleOpenBottomBar,
   handleGetFields,
-  handleGetFirstData,
-} = sideBarContursSlice.actions;
+  handleGetFirstData
+} = sideBarContursSlice.actions
 
-export default sideBarContursSlice.reducer;
+export default sideBarContursSlice.reducer

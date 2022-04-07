@@ -1,50 +1,23 @@
-import React, { useEffect, useState } from "react";
-import * as yup from "yup";
-import { useFormik } from "formik";
-import authApi from "./../../services/authService";
-import { Link, Navigate } from "react-router-dom";
-import LeftSide from "./LeftSide";
-import { toast } from "react-toastify";
-import {
-  Button,
-  TextField,
-  Grid,
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  InputAdornment,
-  IconButton,
-  Backdrop,
-  CircularProgress,
-  Collapse,
-  Stack,
-  Box,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import React, { useEffect, useState } from "react"
+import * as yup from "yup"
+import { useFormik } from "formik"
+import authApi from "./../../services/authService"
+import { Link, Navigate } from "react-router-dom"
+import LeftSide from "./LeftSide"
+import { toast } from "react-toastify"
+import { Button, TextField, Grid, Typography, FormControl, InputLabel, Select, MenuItem, InputAdornment, IconButton, Backdrop, CircularProgress, Collapse, Stack, Box } from "@mui/material"
+import { Visibility, VisibilityOff } from "@mui/icons-material"
 
-const phoneRegExp = /^\+998[0-9]{9}/;
-const specialChars = /^[A-Za-z0-9]+$/;
-const numbers = /^[+-+0-9]+$/;
-const onlyLetters = /^[A-Za-zА-Яа-яҚ-Ққ-қҲ-Ҳҳ-ҳҒ-Ғғ-ғЎ-Ўў-ў]+$/;
+const phoneRegExp = /^\+998[0-9]{9}/
+const specialChars = /^[A-Za-z0-9]+$/
+const numbers = /^[+-+0-9]+$/
+const onlyLetters = /^[A-Za-zА-Яа-яҚ-Ққ-қҲ-Ҳҳ-ҳҒ-Ғғ-ғЎ-Ўў-ў]+$/
 
 const validationSchema = yup.object({
-  firstName: yup
-    .string()
-    .min(3, "3 та белгидан кам бўлмасин")
-    .matches(onlyLetters, "Фақат харф киритинг")
-    .required("Исм киритинг"),
-  lastName: yup
-    .string()
-    .min(3, "3 та белгидан кам бўлмасин")
-    .matches(onlyLetters, "Фақат харф киритинг")
-    .required("Фамилия киритинг"),
+  firstName: yup.string().min(3, "3 та белгидан кам бўлмасин").matches(onlyLetters, "Фақат харф киритинг").required("Исм киритинг"),
+  lastName: yup.string().min(3, "3 та белгидан кам бўлмасин").matches(onlyLetters, "Фақат харф киритинг").required("Фамилия киритинг"),
   secondName: yup.string().matches(onlyLetters, "Фақат харф киритинг"),
-  agroName: yup
-    .string()
-    .min(4, "4 та белгидан кам бўлмасин")
-    .required("Хўжалик номини киритинг"),
+  agroName: yup.string().min(4, "4 та белгидан кам бўлмасин").required("Хўжалик номини киритинг"),
   phoneNumber: yup
     .string()
     .max(13, "Киритилган бегилар 13 тадан кўп бўлмасин")
@@ -57,56 +30,41 @@ const validationSchema = yup.object({
   districtId: yup.string(),
   clusterId: yup.string(),
   address: yup.string(),
-  login: yup
-    .string()
-    .min(5, "5 та белгидан кам бўлмасин")
-    .matches(
-      specialChars,
-      "Лотин алифбоси харфларини ва рақам киритинг киритинг"
-    )
-    .required("Логин киритинг"),
-  password: yup
-    .string()
-    .matches(
-      specialChars,
-      "Лотин алифбоси харфларини ва рақам киритинг киритинг"
-    )
-    .required("Парол киритинг"),
+  login: yup.string().min(5, "5 та белгидан кам бўлмасин").matches(specialChars, "Лотин алифбоси харфларини ва рақам киритинг киритинг").required("Логин киритинг"),
+  password: yup.string().matches(specialChars, "Лотин алифбоси харфларини ва рақам киритинг киритинг").required("Парол киритинг"),
   passwordConfirm: yup
     .string()
     .oneOf([yup.ref("password"), null], "Пароллар бир хил эмас")
-    .required("Паролни тасдиқланг"),
-});
+    .required("Паролни тасдиқланг")
+})
 
 export default function SignUp() {
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [stats, setStats] = useState(null)
+  const [loading, setLoading] = React.useState(false)
 
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+  const [showPassword, setShowPassword] = useState(false)
+  const handleClickShowPassword = () => setShowPassword(!showPassword)
+  const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const handleClickShowPasswordConfirm = () =>
-    setShowPasswordConfirm(!showPasswordConfirm);
-  const handleMouseDownPasswordConfirm = () =>
-    setShowPasswordConfirm(!showPasswordConfirm);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
+  const handleClickShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm)
+  const handleMouseDownPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm)
 
   const getStats = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const { data } = await authApi.getStats();
-      setStats(data.data);
-      setLoading(false);
+      const { data } = await authApi.getStats()
+      setStats(data.data)
+      setLoading(false)
     } catch (ex) {
-      setLoading(false);
-      toast.toast.error(ex.response.statusText);
+      setLoading(false)
+      toast.toast.error(ex.response.statusText)
     }
-  };
+  }
 
   useEffect(() => {
-    getStats();
-  }, []);
+    getStats()
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -122,11 +80,11 @@ export default function SignUp() {
       address: "",
       login: "",
       password: "",
-      passwordConfirm: "",
+      passwordConfirm: ""
     },
-    validationSchema: validationSchema,
+    validationSchema,
     onSubmit: async (values) => {
-      setLoading(true);
+      setLoading(true)
       try {
         await authApi.register(
           values.firstName,
@@ -142,20 +100,18 @@ export default function SignUp() {
           values.login,
           values.password,
           values.passwordConfirm
-        );
-        setLoading(false);
+        )
+        setLoading(false)
       } catch (ex) {
-        setLoading(false);
-        toast.error(ex.response.data.message.en);
+        setLoading(false)
+        toast.error(ex.response.data.message.en)
       }
-    },
-  });
+    }
+  })
 
-  if (authApi.getCurrentUser()) return <Navigate to="/" />;
-  let tumanlar = [];
-  tumanlar = stats?.districts?.filter(
-    (item) => formik.values.regionId === item.region_id
-  );
+  if (authApi.getCurrentUser()) return <Navigate to="/" />
+  let tumanlar = []
+  tumanlar = stats?.districts?.filter((item) => formik.values.regionId === item.region_id)
 
   return (
     <>
@@ -166,7 +122,7 @@ export default function SignUp() {
             style={{
               display: "flex",
               justifyContent: "center",
-              marginTop: "10px",
+              marginTop: "10px"
             }}
           >
             <Link to="/login" style={{ textDecoration: "none" }}>
@@ -185,19 +141,14 @@ export default function SignUp() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              p: 2,
+              p: 2
             }}
           >
             <form onSubmit={formik.handleSubmit}>
               <Typography align="center" variant="h6" mb={2}>
                 Рўйхатдан ўтиш
                 <Stack>
-                  <Typography
-                    align="end"
-                    variant="caption"
-                    pt={2}
-                    sx={{ fontWeight: 600, color: "warning.main" }}
-                  >
+                  <Typography align="end" variant="caption" pt={2} sx={{ fontWeight: 600, color: "warning.main" }}>
                     * - тўлдириш шарт
                   </Typography>
                 </Stack>
@@ -210,12 +161,8 @@ export default function SignUp() {
                   label="*Исм"
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.firstName && Boolean(formik.errors.firstName)
-                  }
-                  helpertext={
-                    formik.touched.firstName && formik.errors.firstName
-                  }
+                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                  helpertext={formik.touched.firstName && formik.errors.firstName}
                 />
                 <TextField
                   fullWidth
@@ -224,9 +171,7 @@ export default function SignUp() {
                   label="*Фамилия"
                   value={formik.values.lastName}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.lastName && Boolean(formik.errors.lastName)
-                  }
+                  error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                   helpertext={formik.touched.lastName && formik.errors.lastName}
                 />
 
@@ -237,23 +182,13 @@ export default function SignUp() {
                   label="*Отасининг исми"
                   value={formik.values.secondName}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.secondName &&
-                    Boolean(formik.errors.secondName)
-                  }
-                  helpertext={
-                    formik.touched.secondName && formik.errors.secondName
-                  }
+                  error={formik.touched.secondName && Boolean(formik.errors.secondName)}
+                  helpertext={formik.touched.secondName && formik.errors.secondName}
                 />
               </Stack>
               <Stack direction="row" spacing={1} pb={2}>
                 <FormControl fullWidth>
-                  <InputLabel
-                    error={
-                      formik.touched.frankId && Boolean(formik.errors.frankId)
-                    }
-                    helpertext={formik.touched.frankId && formik.errors.frankId}
-                  >
+                  <InputLabel error={formik.touched.frankId && Boolean(formik.errors.frankId)} helpertext={formik.touched.frankId && formik.errors.frankId}>
                     *Хўжалик тури
                   </InputLabel>
                   <Select
@@ -262,9 +197,7 @@ export default function SignUp() {
                     value={formik.values.frankId}
                     label="*Хўжалик тури"
                     onChange={formik.handleChange}
-                    error={
-                      formik.touched.frankId && Boolean(formik.errors.frankId)
-                    }
+                    error={formik.touched.frankId && Boolean(formik.errors.frankId)}
                     helpertext={formik.touched.frankId && formik.errors.frankId}
                   >
                     {stats?.franks?.map((item) => (
@@ -275,18 +208,10 @@ export default function SignUp() {
                   </Select>
                 </FormControl>
 
-                <Collapse in={formik.values.frankId === 4 ? true : false}>
+                <Collapse in={formik.values.frankId === 4 && true}>
                   {formik.values.frankId === 4 ? (
                     <FormControl sx={{ width: 150 }}>
-                      <InputLabel
-                        error={
-                          formik.touched.clusterId &&
-                          Boolean(formik.errors.clusterId)
-                        }
-                        helpertext={
-                          formik.touched.clusterId && formik.errors.clusterId
-                        }
-                      >
+                      <InputLabel error={formik.touched.clusterId && Boolean(formik.errors.clusterId)} helpertext={formik.touched.clusterId && formik.errors.clusterId}>
                         Кластер*
                       </InputLabel>
                       <Select
@@ -295,13 +220,8 @@ export default function SignUp() {
                         value={formik.values.clusterId}
                         label="Кластер"
                         onChange={formik.handleChange}
-                        error={
-                          formik.touched.clusterId &&
-                          Boolean(formik.errors.clusterId)
-                        }
-                        helpertext={
-                          formik.touched.clusterId && formik.errors.clusterId
-                        }
+                        error={formik.touched.clusterId && Boolean(formik.errors.clusterId)}
+                        helpertext={formik.touched.clusterId && formik.errors.clusterId}
                       >
                         {stats?.franks?.map((item) => (
                           <MenuItem key={item.id} value={item.id}>
@@ -314,14 +234,7 @@ export default function SignUp() {
                 </Collapse>
 
                 <FormControl fullWidth>
-                  <InputLabel
-                    error={
-                      formik.touched.regionId && Boolean(formik.errors.regionId)
-                    }
-                    helpertext={
-                      formik.touched.regionId && formik.errors.regionId
-                    }
-                  >
+                  <InputLabel error={formik.touched.regionId && Boolean(formik.errors.regionId)} helpertext={formik.touched.regionId && formik.errors.regionId}>
                     *Вилоят, шаҳар
                   </InputLabel>
                   <Select
@@ -330,12 +243,8 @@ export default function SignUp() {
                     value={formik.values.regionId}
                     label="*Вилоят, шаҳар"
                     onChange={formik.handleChange}
-                    error={
-                      formik.touched.regionId && Boolean(formik.errors.regionId)
-                    }
-                    helpertext={
-                      formik.touched.regionId && formik.errors.regionId
-                    }
+                    error={formik.touched.regionId && Boolean(formik.errors.regionId)}
+                    helpertext={formik.touched.regionId && formik.errors.regionId}
                   >
                     {stats?.regions?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
@@ -347,14 +256,7 @@ export default function SignUp() {
 
                 <FormControl fullWidth>
                   <InputLabel>Туман</InputLabel>
-                  <Select
-                    disabled={tumanlar?.length === 0 ? true : false}
-                    id="districtId"
-                    name="districtId"
-                    value={formik.values.districtId}
-                    label="Туман"
-                    onChange={formik.handleChange}
-                  >
+                  <Select disabled={tumanlar?.length === 0 && true} id="districtId" name="districtId" value={formik.values.districtId} label="Туман" onChange={formik.handleChange}>
                     {tumanlar?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
                         {item.district_name_cr}
@@ -371,9 +273,7 @@ export default function SignUp() {
                   label="*Хўжалик номи"
                   value={formik.values.agroName}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.agroName && Boolean(formik.errors.agroName)
-                  }
+                  error={formik.touched.agroName && Boolean(formik.errors.agroName)}
                   helpertext={formik.touched.agroName && formik.errors.agroName}
                 />
 
@@ -385,13 +285,8 @@ export default function SignUp() {
                   label="*Телефон рақам"
                   value={formik.values.phoneNumber}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.phoneNumber &&
-                    Boolean(formik.errors.phoneNumber)
-                  }
-                  helpertext={
-                    formik.touched.phoneNumber && formik.errors.phoneNumber
-                  }
+                  error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                  helpertext={formik.touched.phoneNumber && formik.errors.phoneNumber}
                 />
               </Stack>
               <Stack direction="row" spacing={1} pb={2}>
@@ -402,9 +297,7 @@ export default function SignUp() {
                   label="Манзил"
                   value={formik.values.address}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.address && Boolean(formik.errors.address)
-                  }
+                  error={formik.touched.address && Boolean(formik.errors.address)}
                   helpertext={formik.touched.address && formik.errors.address}
                 />
               </Stack>
@@ -431,71 +324,41 @@ export default function SignUp() {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
+                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
                           {showPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
-                    ),
+                    )
                   }}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
+                  error={formik.touched.password && Boolean(formik.errors.password)}
                   helpertext={formik.touched.password && formik.errors.password}
                 />
 
                 <TextField
-                  disabled={formik.values.password === "" ? true : false}
+                  disabled={formik.values.password === "" && true}
                   fullWidth
                   id="passwordConfirm"
                   name="passwordConfirm"
                   label="*Паролни тасдиқлаш"
                   type={showPasswordConfirm ? "text" : "password"}
-                  value={
-                    formik.values.password === ""
-                      ? (formik.values.passwordConfirm = "")
-                      : formik.values.passwordConfirm
-                  }
+                  value={formik.values.password === "" ? (formik.values.passwordConfirm = "") : formik.values.passwordConfirm}
                   onChange={formik.handleChange}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPasswordConfirm}
-                          onMouseDown={handleMouseDownPasswordConfirm}
-                        >
-                          {showPasswordConfirm ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
+                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowPasswordConfirm} onMouseDown={handleMouseDownPasswordConfirm}>
+                          {showPasswordConfirm ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
-                    ),
+                    )
                   }}
-                  error={
-                    formik.touched.passwordConfirm &&
-                    Boolean(formik.errors.passwordConfirm)
-                  }
-                  helpertext={
-                    formik.touched.passwordConfirm &&
-                    formik.errors.passwordConfirm
-                  }
+                  error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
+                  helpertext={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
                 />
               </Stack>
 
               <Stack direction="row" spacing={1} pb={2}>
-                <Button
-                  fullWidth
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  sx={{ mt: 2, py: 1.5 }}
-                >
+                <Button fullWidth color="primary" variant="contained" type="submit" sx={{ mt: 2, py: 1.5 }}>
                   Тасдиқлаш
                 </Button>
               </Stack>
@@ -504,12 +367,9 @@ export default function SignUp() {
         </Grid>
       </Grid>
 
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
+      <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
     </>
-  );
+  )
 }
