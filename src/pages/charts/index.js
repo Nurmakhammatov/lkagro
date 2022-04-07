@@ -2,11 +2,11 @@ import ReactECharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 
 const FieldChart = ({ chartData, getChartDetailByPoints }) => {
-  const [time, setTime] = useState([]);
-  const [chiqishArr, setChiqishArr] = useState([]);
-  const [kirishArr, setKirishArr] = useState([]);
-  const [chiqish, setChiqish] = useState([]);
-  const [kirish, setKirish] = useState([]);
+  // const [time, setTime] = useState([]);
+  // const [chiqishArr, setChiqishArr] = useState([]);
+  // const [kirishArr, setKirishArr] = useState([]);
+  // const [chiqish, setChiqish] = useState([]);
+  // const [kirish, setKirish] = useState([]);
 
   localStorage.setItem("chartLength", chartData?.[0]?.analysis.length);
 

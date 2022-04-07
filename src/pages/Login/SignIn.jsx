@@ -29,7 +29,6 @@ const validationSchema = yup.object({
 export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  // const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const formik = useFormik({
@@ -81,12 +80,6 @@ export default function SignIn() {
               minHeight: "100vh",
             }}
           >
-            {/* <Stack
-              direction="column"
-              // justifyContent="center"
-              // alignItems="center"
-              spacing={2}
-            > */}
             <form onSubmit={formik.handleSubmit} style={{}}>
               <Stack
                 direction="column"
@@ -139,13 +132,11 @@ export default function SignIn() {
                   color="primary"
                   variant="contained"
                   type="submit"
-                  // sx={{ mt: 2 }}
                 >
                   Кириш
                 </Button>
               </Stack>
             </form>
-            {/* </Stack> */}
           </Box>
         </Grid>
       </Grid>
